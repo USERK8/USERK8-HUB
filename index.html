@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>USERK8 | Galactic Hub</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       background: black;
-      overflow: hidden;
+      overflow-x: hidden;
       font-family: 'Segoe UI', sans-serif;
     }
 
@@ -17,13 +17,19 @@
       top: 0;
       left: 0;
       z-index: 0;
+      transition: opacity 1.5s ease;
+      opacity: 0;
+    }
+
+    canvas.visible {
+      opacity: 1;
     }
 
     header {
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 80px 20px 40px;
+      padding: 100px 20px 60px;
       color: #00fff7;
     }
 
@@ -42,7 +48,6 @@
     .logo-text {
       font-size: 2rem;
       font-weight: bold;
-      color: #00fff7;
     }
 
     h1 {
@@ -73,6 +78,10 @@
       transform: scale(1.08);
       box-shadow: 0 0 15px #00fff7;
     }
+
+    .spacer {
+      height: 300vh;
+    }
   </style>
 </head>
 <body>
@@ -90,6 +99,8 @@
     </div>
   </header>
 
+  <div class="spacer"></div>
+
   <script>
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
@@ -101,10 +112,11 @@
       centerX = width / 2;
       centerY = height / 2;
     }
+
     resize();
     window.addEventListener('resize', resize);
 
-    class Star {
+    class GalaxyStar {
       constructor() {
         this.reset();
       }
@@ -120,18 +132,17 @@
 
         this.yOffset = (Math.random() - 0.5) * distance * tilt;
 
-        // VIBRANT COLORS
         const colors = [
-          'rgba(255,255,255,',   // white
-          'rgba(255,100,100,',   // strong red
-          'rgba(255,255,100,',   // yellow
-          'rgba(100,255,255,',   // cyan
-          'rgba(100,100,255,',   // blue
-          'rgba(255,100,255,'    // magenta
+          'rgba(255,255,255,',
+          'rgba(255,160,160,',
+          'rgba(255,255,160,',
+          'rgba(160,255,255,',
+          'rgba(160,160,255,',
+          'rgba(255,160,255,'
         ];
         const color = colors[Math.floor(Math.random() * colors.length)];
-        this.alpha = Math.max(0.4, 1 - this.radius / 400);
-        this.size = Math.random() * 1.5 + 0.5;
+        this.alpha = Math.max(0.3, 1 - this.radius / 400); // toned down
+        this.size = Math.random() * 1.2 + 0.3;
         this.color = color + this.alpha + ')';
       }
 
@@ -150,16 +161,31 @@
       }
     }
 
-    const stars = [];
-    const starCount = 1000;
+    class BackgroundStar {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 1.2;
+        this.alpha = Math.random() * 0.4 + 0.1;
+        this.color = `rgba(255,255,255,${this.alpha})`;
+      }
 
-    for (let i = 0; i < starCount; i++) {
-      stars.push(new Star());
+      draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
     }
+
+    const galaxyStars = [];
+    const backgroundStars = [];
+    for (let i = 0; i < 1000; i++) galaxyStars.push(new GalaxyStar());
+    for (let i = 0; i < 300; i++) backgroundStars.push(new BackgroundStar());
 
     function drawCoreGlow() {
       const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 80);
-      gradient.addColorStop(0, 'rgba(255,255,255,0.4)');
+      gradient.addColorStop(0, 'rgba(255,255,255,0.2)');
       gradient.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.beginPath();
       ctx.arc(centerX, centerY, 80, 0, Math.PI * 2);
@@ -169,15 +195,28 @@
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
+
+      backgroundStars.forEach(star => star.draw(ctx));
       drawCoreGlow();
-      for (let star of stars) {
+      galaxyStars.forEach(star => {
         star.update();
         star.draw(ctx);
-      }
+      });
+
       requestAnimationFrame(animate);
     }
 
     animate();
+
+    // Fade in on scroll
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 100) {
+        canvas.classList.add('visible');
+      } else {
+        canvas.classList.remove('visible');
+      }
+    });
   </script>
 </body>
 </html>
