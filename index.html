@@ -77,24 +77,23 @@
 
     .shooting-star {
       position: absolute;
-      width: 2px;
-      height: 80px;
+      width: 80px;
+      height: 2px;
       background: white;
       opacity: 0.7;
-      transform: rotate(45deg);
       animation: fall 1.5s linear infinite;
     }
 
     @keyframes fall {
       0% {
-        transform: translate(-100vw, -100vh) rotate(45deg);
+        transform: translate(-100vw, -100vh);
         opacity: 0;
       }
       20% {
         opacity: 1;
       }
       100% {
-        transform: translate(100vw, 100vh) rotate(45deg);
+        transform: translate(100vw, 100vh);
         opacity: 0;
       }
     }
@@ -109,30 +108,40 @@
       content: '';
       position: absolute;
       bottom: 0;
-      width: 100%;
+      left: 0;
+      width: 40%;
       height: 100px;
       background: black;
-      clip-path: polygon(0 100%, 25% 60%, 50% 90%, 75% 50%, 100% 80%, 100% 100%, 0 100%);
+      clip-path: polygon(0 100%, 10% 60%, 30% 90%, 50% 40%, 100% 80%, 100% 100%, 0 100%);
     }
 
     #tree {
       position: absolute;
       bottom: 110px;
-      left: 75%;
-      width: 20px;
-      height: 60px;
+      left: 18%;
+      width: 10px;
+      height: 50px;
       background: black;
+      border-radius: 2px;
+    }
+
+    #tree::before, #tree::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: black;
+      border-radius: 50%;
+    }
+
+    #tree::before {
+      bottom: 30px;
+      left: -15px;
     }
 
     #tree::after {
-      content: '';
-      position: absolute;
-      bottom: 60px;
-      left: -30px;
-      width: 80px;
-      height: 60px;
-      background: #004400;
-      clip-path: polygon(40px 0, 0 60px, 80px 60px);
+      bottom: 55px;
+      left: -10px;
     }
   </style>
 </head>
