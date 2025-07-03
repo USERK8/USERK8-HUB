@@ -82,6 +82,30 @@
     .spacer {
       height: 300vh;
     }
+
+    section.about {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 20px;
+      color: #f0f0f0;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    section.about h2 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #00fff7;
+    }
+
+    section.about.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -100,6 +124,18 @@
   </header>
 
   <div class="spacer"></div>
+
+  <section class="about hidden">
+    <h2>About This Page</h2>
+    <p>
+      Welcome to the USERK8 Galactic Hub — your entry point into all the creations, innovations, and wild experiments by none other than <strong>P. Sohan Kumar Reddy</strong>.
+      This page is powered by pure code and limitless imagination. The galaxy you're seeing is fully generated with HTML5 Canvas, without a single image file.
+    </p>
+    <p>
+      Explore the Project Hub, get in touch, or just vibe with the stars 🌌  
+      USERK8 isn’t just a name — it's a mission 🚀
+    </p>
+  </section>
 
   <script>
     const canvas = document.getElementById('galaxy');
@@ -141,7 +177,7 @@
           'rgba(255,160,255,'
         ];
         const color = colors[Math.floor(Math.random() * colors.length)];
-        this.alpha = Math.max(0.3, 1 - this.radius / 400); // toned down
+        this.alpha = Math.max(0.3, 1 - this.radius / 400);
         this.size = Math.random() * 1.2 + 0.3;
         this.color = color + this.alpha + ')';
       }
@@ -208,13 +244,25 @@
 
     animate();
 
-    // Fade in on scroll
+    const aboutSection = document.querySelector('.about');
+
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
+
+      // Show galaxy
       if (scrollY > 100) {
         canvas.classList.add('visible');
       } else {
         canvas.classList.remove('visible');
+      }
+
+      // Reveal about section
+      const sectionTop = aboutSection.offsetTop;
+      const sectionHeight = aboutSection.offsetHeight;
+      if (scrollY + window.innerHeight > sectionTop + sectionHeight / 4) {
+        aboutSection.classList.add('visible');
+      } else {
+        aboutSection.classList.remove('visible');
       }
     });
   </script>
