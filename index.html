@@ -5,17 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>USERK8 Central</title>
   <style>
-    body {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0a0a0a;
+      background: linear-gradient(to bottom, #555555, #000000);
       color: #00fff7;
+      overflow-x: hidden;
+    }
+
+    body {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
       text-align: center;
-      padding-top: 100px;
+      padding: 80px 20px 40px;
+    }
+
+    .logo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 15px #00fff7;
+    }
+
+    .logo-text {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #00fff7;
     }
 
     h1 {
       font-size: 3rem;
       margin-bottom: 40px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -27,18 +67,107 @@
       border-radius: 12px;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.3s ease;
+      text-decoration: none;
     }
 
     .btn:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px #00fff7;
     }
+
+    .shooting-star {
+      position: absolute;
+      width: 2px;
+      height: 80px;
+      background: white;
+      opacity: 0.7;
+      transform: rotate(45deg);
+      animation: fall 1.5s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translate(-100vw, -100vh) rotate(45deg);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(100vw, 100vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    #cliff {
+      position: relative;
+      height: 300px;
+      background: linear-gradient(to top, #111111, transparent);
+    }
+
+    #cliff::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      background: black;
+      clip-path: polygon(0 100%, 25% 60%, 50% 90%, 75% 50%, 100% 80%, 100% 100%, 0 100%);
+    }
+
+    #tree {
+      position: absolute;
+      bottom: 110px;
+      left: 75%;
+      width: 20px;
+      height: 60px;
+      background: black;
+    }
+
+    #tree::after {
+      content: '';
+      position: absolute;
+      bottom: 60px;
+      left: -30px;
+      width: 80px;
+      height: 60px;
+      background: #004400;
+      clip-path: polygon(40px 0, 0 60px, 80px 60px);
+    }
   </style>
 </head>
 <body>
-  <h1>Welcome to USERK8 Central</h1>
-  <a href="ph.html">
-    <button class="btn">Project Hub</button>
-  </a>
+  <header>
+    <div class="logo">
+      <div class="logo-text">USERK8</div>
+    </div>
+    <h1>Welcome to USERK8 Central</h1>
+    <div class="btn-container">
+      <a href="ph.html" class="btn">Project Hub</a>
+      <a href="contact.html" class="btn">Contact</a>
+      <a href="as.html" class="btn">About</a>
+    </div>
+  </header>
+
+  <div id="cliff"></div>
+  <div id="tree"></div>
+
+  <script>
+    function createStar() {
+      const star = document.createElement('div');
+      star.classList.add('shooting-star');
+      star.style.top = Math.random() * window.innerHeight + 'px';
+      star.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(star);
+
+      setTimeout(() => {
+        star.remove();
+      }, 1500);
+    }
+
+    setInterval(() => {
+      if (Math.random() > 0.6) createStar();
+    }, 1500);
+  </script>
 </body>
 </html>
