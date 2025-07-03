@@ -69,7 +69,7 @@
 
     .space {
       position: relative;
-      height: 400vh; /* scrollable area */
+      height: 400vh; /* gives enough scroll space */
       background: black;
     }
 
@@ -81,7 +81,7 @@
       height: 100vh;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 2s ease;
+      transition: opacity 1.5s ease;
     }
 
     .stars {
@@ -89,9 +89,14 @@
     }
 
     .milkyway {
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, transparent 80%);
+      top: 40vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150vw;
+      height: 40vh;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+      filter: blur(25px) brightness(1.5);
       z-index: 2;
-      filter: blur(6px);
     }
 
     .nebula {
@@ -131,20 +136,25 @@
   </div>
 
   <script>
-    // FADE ELEMENTS ON SCROLL
+    // FADE IN/OUT ON SCROLL
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const wh = window.innerHeight;
 
-      if (scrollY > 100) document.getElementById('stars').classList.add('fade-in');
-      if (scrollY > wh * 0.6) document.getElementById('milkyway').classList.add('fade-in');
-      if (scrollY > wh * 1.5) document.getElementById('nebula').classList.add('fade-in');
+      const stars = document.getElementById('stars');
+      const milkyway = document.getElementById('milkyway');
+      const nebula = document.getElementById('nebula');
+
+      // Show/hide based on scroll
+      scrollY > 100 ? stars.classList.add('fade-in') : stars.classList.remove('fade-in');
+      scrollY > wh * 0.6 ? milkyway.classList.add('fade-in') : milkyway.classList.remove('fade-in');
+      scrollY > wh * 1.5 ? nebula.classList.add('fade-in') : nebula.classList.remove('fade-in');
     });
 
     // STARFIELD CANVAS
     const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
-    const stars = [];
+    const starsArray = [];
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -153,7 +163,7 @@
 
     function createStars(count) {
       for (let i = 0; i < count; i++) {
-        stars.push({
+        starsArray.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
           radius: Math.random() * 1.2,
@@ -165,7 +175,7 @@
 
     function drawStars() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let star of stars) {
+      for (let star of starsArray) {
         star.alpha += star.speed;
         if (star.alpha > 1 || star.alpha < 0.1) star.speed *= -1;
 
