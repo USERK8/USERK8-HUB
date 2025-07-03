@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>USERK8 | Pure Galaxy</title>
+  <title>USERK8 | Spinning Galaxy</title>
   <style>
     html, body {
       margin: 0;
@@ -69,7 +69,7 @@
 
     .space {
       position: relative;
-      height: 400vh; /* gives enough scroll space */
+      height: 400vh; /* Big scroll */
       background: black;
     }
 
@@ -89,14 +89,36 @@
     }
 
     .milkyway {
-      top: 40vh;
+      position: fixed;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      width: 150vw;
-      height: 40vh;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, transparent 70%);
-      filter: blur(25px) brightness(1.5);
+      width: 400px;
+      height: 400px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: conic-gradient(
+        rgba(255,255,255,0.15) 0deg,
+        rgba(255,255,255,0.1) 60deg,
+        transparent 120deg,
+        rgba(255,255,255,0.1) 180deg,
+        transparent 240deg,
+        rgba(255,255,255,0.15) 300deg,
+        rgba(255,255,255,0.1) 360deg
+      );
+      filter: blur(30px) brightness(1.5);
+      opacity: 0;
       z-index: 2;
+      transition: opacity 1.5s ease;
+      animation: spin 60s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
     }
 
     .nebula {
@@ -136,7 +158,7 @@
   </div>
 
   <script>
-    // FADE IN/OUT ON SCROLL
+    // Fade in/out based on scroll
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const wh = window.innerHeight;
@@ -145,13 +167,12 @@
       const milkyway = document.getElementById('milkyway');
       const nebula = document.getElementById('nebula');
 
-      // Show/hide based on scroll
       scrollY > 100 ? stars.classList.add('fade-in') : stars.classList.remove('fade-in');
       scrollY > wh * 0.6 ? milkyway.classList.add('fade-in') : milkyway.classList.remove('fade-in');
       scrollY > wh * 1.5 ? nebula.classList.add('fade-in') : nebula.classList.remove('fade-in');
     });
 
-    // STARFIELD CANVAS
+    // Starfield canvas
     const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
     const starsArray = [];
