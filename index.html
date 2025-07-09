@@ -33,26 +33,7 @@
       color: #00fff7;
     }
 
-    .logo-container {
-      position: relative;
-      width: 190px;
-      height: 190px;
-      margin: 0 auto 20px;
-    }
-
-    .orbit-dot {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background-color: #00fff7;
-      border-radius: 50%;
-      box-shadow: 0 0 6px #00fff7;
-    }
-
     .logo {
-      position: absolute;
-      top: 20px;
-      left: 20px;
       width: 150px;
       height: 150px;
       border-radius: 50%;
@@ -60,8 +41,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0 auto 20px;
       box-shadow: 0 0 15px #00fff7;
-      z-index: 2;
     }
 
     .logo-text {
@@ -71,7 +52,7 @@
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin-bottom: 30px;
     }
 
@@ -107,17 +88,17 @@
       max-width: 800px;
       margin: 0 auto;
       padding: 100px 20px;
-      color: #f0f0f0;
-      font-size: 1.2rem;
+      color: #dcdcdc;
+      font-size: 1.1rem;
       line-height: 1.8;
-      text-align: center;
+      text-align: left;
       opacity: 0;
       transform: translateY(50px);
       transition: opacity 1s ease, transform 1s ease;
     }
 
     section.about h2 {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       margin-bottom: 20px;
       color: #00fff7;
     }
@@ -160,12 +141,10 @@
   <canvas id="galaxy"></canvas>
 
   <header>
-    <div class="logo-container" id="orbit-center">
-      <div class="logo">
-        <div class="logo-text">USERK8</div>
-      </div>
+    <div class="logo">
+      <div class="logo-text">USERK8</div>
     </div>
-    <h1>Welcome to USERK8 Central</h1>
+    <h1>Welcome to USERK8</h1>
     <div class="btn-container">
       <a href="ph.html" class="btn">Project Hub</a>
       <a href="contact.html" class="btn">Contact</a>
@@ -178,19 +157,20 @@
   <section class="about">
     <h2>About This Page</h2>
     <p>
-      Welcome to the USERK8 Galactic Hub — your entry point into all the creations, innovations, and wild experiments by none other than <strong>Sohan</strong>.
-      This page is powered by pure code and limitless imagination. The galaxy you're seeing is fully generated with HTML5 Canvas, without a single image file.
+      Hey, I’m <strong>Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
+      I built this entirely with code — no fancy libraries, no templates. Just imagination and a lot of late nights.
     </p>
     <p>
-      Explore the Project Hub, get in touch, or just vibe with the stars 🌌  
-      USERK8 isn’t just a name — it's an ambition 🚀
+      Scroll around, explore the hub, and if you find something cool, even better. This is just the beginning — more projects and crazy ideas coming soon.
+    </p>
+    <p>
+      Thanks for stopping by. You're now part of the USERK8 journey. 🚀
     </p>
   </section>
 
   <div id="scrollBox"><div id="rocket">🚀</div></div>
 
   <script>
-    // Canvas Galaxy
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
     let width, height, centerX, centerY;
@@ -312,21 +292,6 @@
     scrollBox.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
-    // Orbit Dots Behind Logo
-    const orbitCenter = document.getElementById('orbit-center');
-    const numDots = 30;
-    const orbitRadius = 95;
-
-    for (let i = 0; i < numDots; i++) {
-      const dot = document.createElement('div');
-      dot.classList.add('orbit-dot');
-      orbitCenter.appendChild(dot);
-
-      const angle = (2 * Math.PI * i) / numDots;
-      dot.style.left = `${95 + orbitRadius * Math.cos(angle)}px`;
-      dot.style.top = `${95 + orbitRadius * Math.sin(angle)}px`;
-    }
   </script>
 </body>
 </html>
