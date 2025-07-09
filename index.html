@@ -35,21 +35,32 @@
 
     .logo-container {
       position: relative;
-      width: 150px;
-      height: 150px;
+      width: 190px;
+      height: 190px;
       margin: 0 auto 20px;
     }
 
+    .orbit-dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background-color: #00fff7;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #00fff7;
+    }
+
     .logo {
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       background-color: black;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 0 15px #00fff7;
-      position: relative;
       z-index: 2;
     }
 
@@ -57,16 +68,6 @@
       font-size: 2rem;
       font-weight: bold;
       color: #00fff7;
-    }
-
-    .orbit-dot {
-      position: absolute;
-      border-radius: 50%;
-      background: #00fff7;
-      width: 6px;
-      height: 6px;
-      box-shadow: 0 0 8px #00fff7;
-      z-index: 1;
     }
 
     h1 {
@@ -126,7 +127,6 @@
       transform: translateY(0);
     }
 
-    /* Scroll to top button */
     #scrollBox {
       position: fixed;
       bottom: 30px;
@@ -160,7 +160,7 @@
   <canvas id="galaxy"></canvas>
 
   <header>
-    <div class="logo-container">
+    <div class="logo-container" id="orbit-center">
       <div class="logo">
         <div class="logo-text">USERK8</div>
       </div>
@@ -187,12 +187,10 @@
     </p>
   </section>
 
-  <!-- Scroll to Top -->
-  <div id="scrollBox">
-    <div id="rocket">🚀</div>
-  </div>
+  <div id="scrollBox"><div id="rocket">🚀</div></div>
 
   <script>
+    // Canvas Galaxy
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
     let width, height, centerX, centerY;
@@ -242,7 +240,6 @@
       draw(ctx) {
         const x = centerX + this.radius * Math.cos(this.angle);
         const y = centerY + this.radius * Math.sin(this.angle) * 0.1 + this.yOffset;
-
         ctx.beginPath();
         ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         ctx.fillStyle = this.color;
@@ -295,7 +292,6 @@
 
     animate();
 
-    // Scroll behavior
     const aboutSection = document.querySelector('.about');
     const scrollBox = document.getElementById('scrollBox');
 
@@ -317,10 +313,10 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Orbit particles
-    const orbitCenter = document.querySelector('.logo-container');
-    const numDots = 25;
-    const radius = 35;
+    // Orbit Dots Behind Logo
+    const orbitCenter = document.getElementById('orbit-center');
+    const numDots = 30;
+    const orbitRadius = 95;
 
     for (let i = 0; i < numDots; i++) {
       const dot = document.createElement('div');
@@ -328,29 +324,8 @@
       orbitCenter.appendChild(dot);
 
       const angle = (2 * Math.PI * i) / numDots;
-      const orbitRadius = radius - (i * 0.5);
-      const duration = 2 + Math.random() * 2;
-
-      dot.style.animation = `orbit${i} ${duration}s linear infinite`;
-
-      const keyframes = `
-        @keyframes orbit${i} {
-          0% {
-            transform: translate(
-              ${orbitRadius * Math.cos(angle)}px,
-              ${orbitRadius * Math.sin(angle)}px
-            );
-          }
-          100% {
-            transform: rotate(360deg) translate(
-              ${orbitRadius}px
-            ) rotate(-360deg);
-          }
-        }
-      `;
-
-      const styleSheet = document.styleSheets[0];
-      styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+      dot.style.left = `${95 + orbitRadius * Math.cos(angle)}px`;
+      dot.style.top = `${95 + orbitRadius * Math.sin(angle)}px`;
     }
   </script>
 </body>
