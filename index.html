@@ -33,21 +33,40 @@
       color: #00fff7;
     }
 
+    .logo-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+    }
+
     .logo {
-      width: 140px;
-      height: 140px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       background-color: black;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
       box-shadow: 0 0 15px #00fff7;
+      position: relative;
+      z-index: 2;
     }
 
     .logo-text {
       font-size: 2rem;
       font-weight: bold;
+      color: #00fff7;
+    }
+
+    .orbit-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: #00fff7;
+      width: 6px;
+      height: 6px;
+      box-shadow: 0 0 8px #00fff7;
+      z-index: 1;
     }
 
     h1 {
@@ -106,14 +125,45 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Scroll to top button */
+    #scrollBox {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: black;
+      border: 2px solid white;
+      display: none;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00fff7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #rocket {
+      font-size: 1.8rem;
+      animation: hoverRocket 1s infinite alternate;
+    }
+
+    @keyframes hoverRocket {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
   </style>
 </head>
 <body>
   <canvas id="galaxy"></canvas>
 
   <header>
-    <div class="logo">
-      <div class="logo-text">USERK8</div>
+    <div class="logo-container">
+      <div class="logo">
+        <div class="logo-text">USERK8</div>
+      </div>
     </div>
     <h1>Welcome to USERK8 Central</h1>
     <div class="btn-container">
@@ -125,7 +175,7 @@
 
   <div class="spacer"></div>
 
-  <section class="about hidden">
+  <section class="about">
     <h2>About This Page</h2>
     <p>
       Welcome to the USERK8 Galactic Hub — your entry point into all the creations, innovations, and wild experiments by none other than <strong>Sohan</strong>.
@@ -137,11 +187,16 @@
     </p>
   </section>
 
+  <!-- Scroll to Top -->
+  <div id="scrollBox">
+    <div id="rocket">🚀</div>
+  </div>
+
   <script>
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
-
     let width, height, centerX, centerY;
+
     function resize() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
@@ -161,11 +216,9 @@
         const angle = Math.random() * Math.PI * 2;
         const distance = Math.sqrt(Math.random()) * 300 + 60;
         const tilt = 0.15;
-
         this.radius = distance;
         this.angle = angle;
         this.speed = 0.0003 + Math.random() * 0.001;
-
         this.yOffset = (Math.random() - 0.5) * distance * tilt;
 
         const colors = [
@@ -231,32 +284,26 @@
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
-
       backgroundStars.forEach(star => star.draw(ctx));
       drawCoreGlow();
       galaxyStars.forEach(star => {
         star.update();
         star.draw(ctx);
       });
-
       requestAnimationFrame(animate);
     }
 
     animate();
 
+    // Scroll behavior
     const aboutSection = document.querySelector('.about');
+    const scrollBox = document.getElementById('scrollBox');
 
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
+      canvas.classList.toggle('visible', scrollY > 100);
+      scrollBox.style.display = scrollY > 200 ? 'flex' : 'none';
 
-      // Show galaxy
-      if (scrollY > 100) {
-        canvas.classList.add('visible');
-      } else {
-        canvas.classList.remove('visible');
-      }
-
-      // Reveal about section
       const sectionTop = aboutSection.offsetTop;
       const sectionHeight = aboutSection.offsetHeight;
       if (scrollY + window.innerHeight > sectionTop + sectionHeight / 4) {
@@ -265,6 +312,46 @@
         aboutSection.classList.remove('visible');
       }
     });
+
+    scrollBox.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Orbit particles
+    const orbitCenter = document.querySelector('.logo-container');
+    const numDots = 25;
+    const radius = 35;
+
+    for (let i = 0; i < numDots; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('orbit-dot');
+      orbitCenter.appendChild(dot);
+
+      const angle = (2 * Math.PI * i) / numDots;
+      const orbitRadius = radius - (i * 0.5);
+      const duration = 2 + Math.random() * 2;
+
+      dot.style.animation = `orbit${i} ${duration}s linear infinite`;
+
+      const keyframes = `
+        @keyframes orbit${i} {
+          0% {
+            transform: translate(
+              ${orbitRadius * Math.cos(angle)}px,
+              ${orbitRadius * Math.sin(angle)}px
+            );
+          }
+          100% {
+            transform: rotate(360deg) translate(
+              ${orbitRadius}px
+            ) rotate(-360deg);
+          }
+        }
+      `;
+
+      const styleSheet = document.styleSheets[0];
+      styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+    }
   </script>
 </body>
 </html>
