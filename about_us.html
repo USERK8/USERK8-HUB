@@ -59,71 +59,6 @@
             margin: 10px auto;
         }
 
-        .feedback-form {
-            margin: 40px auto 20px;
-        }
-
-        .feedback-form textarea {
-            width: 80%;
-            height: 150px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #666;
-            border-radius: 5px;
-            background-color: #111;
-            color: white;
-        }
-
-        .feedback-form input[type="submit"] {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #444;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .feedback-form input[type="submit"]:hover {
-            background-color: #666;
-        }
-
-        .feedbacks {
-            width: 80%;
-            margin: 30px auto;
-        }
-
-        .feedback {
-            background-color: #222;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            border: 1px solid #444;
-        }
-
-        .feedback button {
-            background: none;
-            border: none;
-            color: #ccc;
-            cursor: pointer;
-            margin: 0 5px;
-        }
-
-        .reply-box {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .reply-box textarea {
-            width: 90%;
-            height: 50px;
-            padding: 5px;
-            border-radius: 5px;
-            background-color: #111;
-            color: white;
-        }
-
         .credits {
             margin-top: 50px;
             font-size: 16px;
@@ -137,68 +72,13 @@
     </div>
 
     <h1>HELLO THERE,</h1>
-    <p>I AM SOHAN, I MADE THIS WEBPAGE...</p>
+    
     <p>IF YOU ENCOUNTER ANY PROBLEM REGARDING THE PAGES OR IF YOU HAVE ANY QUERIES OR DOUBTS, PLEASE LET ME KNOW.</p>
-    <p>I'LL TRY TO REPLY AS QUICKLY AS I CAN...</p>
+    <p>WE'LL TRY TO REPLY AS QUICKLY AS WE CAN...</p>
     <p>Send us your feedback at polisohankumarreddy@gmail.com</p>
-
+    
     <div class="credits">
-        <p>Credits: SOHAN</p>
+        <p>Credits -  SOHAN {userk8} :: SAMEER {SpaceS1}</p>
     </div>
-
-    <script>
-        document.getElementById('feedbackForm')?.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const message = document.getElementById('message').value;
-            const feedbacksDiv = document.getElementById('feedbacks');
-
-            const feedbackDiv = document.createElement('div');
-            feedbackDiv.className = 'feedback';
-
-            feedbackDiv.innerHTML = `
-                <p>${message}</p>
-                <button class="like-btn">👍 0</button>
-                <button class="dislike-btn">👎 0</button>
-                <div class="reply-box">
-                    <textarea placeholder="Reply..."></textarea>
-                    <button class="submit-reply">Reply</button>
-                </div>
-                <button class="reply-btn">Reply</button>
-            `;
-
-            feedbacksDiv.appendChild(feedbackDiv);
-            document.getElementById('message').value = '';
-
-            let likeCount = 0;
-            let dislikeCount = 0;
-
-            feedbackDiv.querySelector('.like-btn').addEventListener('click', function() {
-                likeCount++;
-                this.textContent = `👍 ${likeCount}`;
-            });
-
-            feedbackDiv.querySelector('.dislike-btn').addEventListener('click', function() {
-                dislikeCount++;
-                this.textContent = `👎 ${dislikeCount}`;
-            });
-
-            feedbackDiv.querySelector('.reply-btn').addEventListener('click', function() {
-                const replyBox = feedbackDiv.querySelector('.reply-box');
-                replyBox.style.display = replyBox.style.display === 'none' ? 'block' : 'none';
-            });
-
-            feedbackDiv.querySelector('.submit-reply').addEventListener('click', function() {
-                const replyMessage = feedbackDiv.querySelector('.reply-box textarea').value;
-                if (replyMessage.trim() !== '') {
-                    const replyDiv = document.createElement('div');
-                    replyDiv.className = 'feedback';
-                    replyDiv.innerHTML = `<p>${replyMessage}</p>`;
-                    feedbacksDiv.appendChild(replyDiv);
-                    feedbackDiv.querySelector('.reply-box textarea').value = '';
-                    feedbackDiv.querySelector('.reply-box').style.display = 'none';
-                }
-            });
-        });
-    </script>
 </body>
 </html>
