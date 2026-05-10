@@ -165,7 +165,27 @@
       text-shadow: 0 0 8px rgba(255,255,255,0.4);
       display: inline-block;
     }
+    /* -- DEATH: Dark Red to Light Red -- */
+.title-death {
+  font-weight: 900;
+  display: inline-block;
+  background: linear-gradient(to right, #300000, #ff4d4d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Use drop-shadow for clipped text to keep the glow */
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
+}
 
+/* -- RAY: Light Red to White -- */
+.title-ray {
+  font-weight: 900;
+  display: inline-block;
+  background: linear-gradient(to right, #ff4d4d, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+          
     /* ── floaty letter animations ── */
     .float-e  { animation: floatLetter 2.8s ease-in-out infinite; display: inline-block; }
     .float-i  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; }
@@ -174,6 +194,14 @@
     .float-t  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; }
     .float-A  { animation: floatLetter 3.4s ease-in-out infinite 0.8s; display: inline-block; }
     .float-I  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }
+    .float-E  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; }
+    .float-A  { animation: floatLetter 2.5s ease-in-out infinite 0.6s; display: inline-block; }
+    .float-T  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; }
+    .float-H  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; }
+    .float-A  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }
+    .float-D { animation: floatLetter 2.6s ease-in-out infinite 0.1s; display: inline-block; }
+    .float-R { animation: floatLetter 3.1s ease-in-out infinite 0.5s; display: inline-block; }
+    .float-Y { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }      
     @keyframes floatLetter {
       0%,100% { transform: translateY(0px); }
       50%      { transform: translateY(-5px); }
@@ -307,6 +335,37 @@
           <div class="spec-item"><span class="spec-icon">⚡</span><span>4-bit Quantized</span></div>
           <div class="spec-item"><span class="spec-icon">📚</span><span>4T Token Training</span></div>
           <div class="spec-item"><span class="spec-icon">📱</span><span>On-Device Inference</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  
+  <section class="upcoming">
+
+      <div class="project-card">
+        <span class="coming-soon-badge">COMING SOON</span>
+
+        <div class="project-title">
+          <span class="title-death">
+            <span class="float-D">D</span><span class="float-E">E</span><span class="float-A">A</span><span class="float-T">T</span><span class="float-H">H</span>
+          <span>&nbsp;</span>
+          <span class="title-ray">
+            <span class="float-R">R</span><span class="float-A">A</span><span class="float-Y">Y</span>
+          </span>
+        </div>
+
+        <div class="project-description">
+          The biotech giant Exteronic has fallen. The sky is bleeding toxic Black Rain, 
+          reshaping the DNA of anyone left in the Dead Zone. You are a mercenary on a 
+          contract for Matropics: Infiltrate, rescue the scientists, and survive the 
+          storm. But as your Integrity drops, the truth about Subject 0 begins to surface.
+        </div>
+        <div class="project-specs">
+          <div class="spec-item"><span class="spec-icon">🌧️</span><span>Survive The Black Rain</span></div>
+          <div class="spec-item"><span class="spec-icon">🔫</span><span>Fight For Your Life</span></div>
+          <div class="spec-item"><span class="spec-icon">☣️</span><span>Maintain Your Integrity</span></div>
+          <div class="spec-item"><span class="spec-icon">🔍</span><span>Solve The Mistries Burried Under The Blood</span></div>
         </div>
       </div>
     </div>
