@@ -186,7 +186,7 @@
     section.about, section.upcoming {
       max-width: 800px;
       margin: 0 auto;
-      padding: 100px 20px;
+      padding: 60px 20px;
       color: #dcdcdc;
       font-size: 1.1rem;
       line-height: 1.8;
@@ -198,11 +198,25 @@
       z-index: 1;
     }
 
+    section.about .content-wrapper,
+    section.upcoming .content-wrapper {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 255, 247, 0.3);
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 0 30px rgba(0, 255, 247, 0.2);
+    }
+
     section.about h2, section.upcoming h2 {
       font-size: 1.8rem;
       margin-bottom: 20px;
       color: #00fff7;
       text-shadow: 0 0 15px #00fff7;
+    }
+
+    section.about p {
+      margin-bottom: 15px;
     }
 
     section.about.visible, section.upcoming.visible {
@@ -211,7 +225,7 @@
     }
 
     .project-card {
-      background: linear-gradient(135deg, rgba(0, 255, 247, 0.05), rgba(0, 119, 255, 0.05));
+      background: linear-gradient(135deg, rgba(0, 255, 247, 0.08), rgba(0, 119, 255, 0.08));
       border: 2px solid #00fff7;
       border-radius: 15px;
       padding: 30px;
@@ -305,7 +319,7 @@
       right: 30px;
       width: 60px;
       height: 60px;
-      background: black;
+      background: rgba(0, 0, 0, 0.9);
       border: 2px solid #00fff7;
       cursor: pointer;
       z-index: 10;
@@ -357,45 +371,49 @@
   <div class="spacer"></div>
 
   <section class="about">
-    <h2>About This Page</h2>
-    <p>
-      Hey, I'm <strong>Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
-      I built this entirely with code — no fancy libraries, no templates. Just imagination and a lot of late nights.
-    </p>
-    <p>
-      Scroll around, explore the hub, and if you find something cool, even better. This is just the beginning — more projects and crazy ideas coming soon.
-    </p>
-    <p>
-      Thanks for stopping by. You're now part of the USERK8 journey. 🚀
-    </p>
+    <div class="content-wrapper">
+      <h2>About This Page</h2>
+      <p>
+        Hey, I'm <strong>Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
+        I built this entirely with code — no fancy libraries, no templates. Just imagination and a lot of late nights.
+      </p>
+      <p>
+        Scroll around, explore the hub, and if you find something cool, even better. This is just the beginning — more projects and crazy ideas coming soon.
+      </p>
+      <p>
+        Thanks for stopping by. You're now part of the USERK8 journey. 🚀
+      </p>
+    </div>
   </section>
 
   <section class="upcoming">
-    <h2>Upcoming Projects</h2>
-    <div class="project-card">
-      <span class="coming-soon-badge">COMING SOON</span>
-      <div class="project-title">Eight AI</div>
-      <div class="project-description">
-        On-device 1B parameter language model built from scratch for mobile devices. 
-        Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI capabilities 
-        directly on your phone without cloud dependency.
-      </div>
-      <div class="project-specs">
-        <div class="spec-item">
-          <span class="spec-icon">🧠</span>
-          <span>1B Parameters</span>
+    <div class="content-wrapper">
+      <h2>Upcoming Projects</h2>
+      <div class="project-card">
+        <span class="coming-soon-badge">COMING SOON</span>
+        <div class="project-title">Eight AI</div>
+        <div class="project-description">
+          On-device 1B parameter language model built from scratch for mobile devices. 
+          Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI capabilities 
+          directly on your phone without cloud dependency.
         </div>
-        <div class="spec-item">
-          <span class="spec-icon">⚡</span>
-          <span>4-bit Quantized</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-icon">📚</span>
-          <span>4T Token Training</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-icon">📱</span>
-          <span>On-Device Inference</span>
+        <div class="project-specs">
+          <div class="spec-item">
+            <span class="spec-icon">🧠</span>
+            <span>1B Parameters</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-icon">⚡</span>
+            <span>4-bit Quantized</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-icon">📚</span>
+            <span>4T Token Training</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-icon">📱</span>
+            <span>On-Device Inference</span>
+          </div>
         </div>
       </div>
     </div>
