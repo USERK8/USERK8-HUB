@@ -30,13 +30,8 @@
       top: 0;
       left: 0;
       z-index: 0;
-      transition: opacity 1.5s ease;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    canvas.visible {
       opacity: 1;
+      pointer-events: none;
     }
 
     header {
@@ -321,6 +316,7 @@
       opacity: 0;
       transform: scale(0);
       transition: opacity 0.3s ease, transform 0.3s ease;
+      display: none;
     }
 
     #scrollBox.show {
@@ -337,15 +333,6 @@
     @keyframes hoverRocket {
       0% { transform: translateY(0); }
       100% { transform: translateY(-6px); }
-    }
-
-    .shooting-star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 4px white;
     }
   </style>
 </head>
@@ -471,7 +458,7 @@
         ctx.fillStyle = this.color;
         ctx.fill();
         
-        // Add glow effect
+        // Add glow effect to some stars
         if (Math.random() > 0.98) {
           ctx.shadowBlur = 10;
           ctx.shadowColor = this.color;
@@ -489,7 +476,6 @@
         this.alpha = Math.random() * 0.4 + 0.1;
         this.twinkleSpeed = Math.random() * 0.02 + 0.01;
         this.twinklePhase = Math.random() * Math.PI * 2;
-        this.color = `rgba(255,255,255,${this.alpha})`;
       }
 
       update() {
@@ -612,7 +598,6 @@
 
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
-      canvas.classList.toggle('visible', scrollY > 100);
       
       if (scrollY > 200) {
         scrollBox.classList.add('show');
