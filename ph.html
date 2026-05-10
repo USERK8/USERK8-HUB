@@ -3,67 +3,228 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Hub | USERK8</title>
+  <title>Project Hub — USERK8</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cyan: #00cccc;
+      --bg: #06040f;
+      --glass: rgba(18, 7, 36, 0.6);
+      --border: rgba(0, 204, 204, 0.14);
+    }
+
     body {
-      background-color: #0a0a0a;
-      color: #00fff7;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding-top: 80px;
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Syne', sans-serif;
+      color: #ddd;
+      overflow-x: hidden;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 10% 5%,  rgba(30,13,53,0.95) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 90% 95%, rgba(0,50,60,0.75)  0%, transparent 55%),
+        #06040f;
     }
 
-    p {
-      color: #ccc;
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute; border-radius: 50%;
+      opacity: 0; animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0); }
+      10%  { opacity: 0.5; }
+      90%  { opacity: 0.1; }
+      100% { opacity: 0; transform: translateY(-100vh); }
     }
 
-    a {
-      color: #00fff7;
-      text-decoration: underline;
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(6,4,15,0.75);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 4px;
+      color: var(--cyan); opacity: 0.65; text-decoration: none;
+    }
+    .nav-home {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 3px;
+      color: #999; text-decoration: none;
+      border: 1px solid rgba(0,204,204,0.18);
+      padding: 7px 14px; border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .nav-home:hover { color: var(--cyan); border-color: var(--cyan); background: rgba(0,204,204,0.05); }
+
+    main {
+      position: relative; z-index: 1;
+      max-width: 900px; margin: 0 auto;
+      padding: 140px 24px 80px;
     }
 
-    .project-buttons {
-      margin-top: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
+    .page-title {
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      font-weight: 800; letter-spacing: -2px; line-height: 1;
+      margin-bottom: 12px;
+      opacity: 0; transform: translateY(28px);
+      animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+    }
+    .page-title span { color: var(--cyan); }
+
+    .page-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 3px;
+      color: #555; margin-bottom: 56px;
+      opacity: 0; animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s forwards;
     }
 
-    .project-buttons a {
-      display: inline-block;
-      padding: 12px 25px;
-      background-color: #111;
-      border: 1px solid #00fff7;
-      color: #00fff7;
+    @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── responsive project grid ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .project-card {
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 26px;
+      background: rgba(18, 7, 36, 0.55);
+      border: 1px solid rgba(0,204,204,0.13);
+      border-radius: 14px;
+      backdrop-filter: blur(16px);
       text-decoration: none;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      transition: background-color 0.3s, color 0.3s;
+      color: inherit;
+      position: relative; overflow: hidden;
+      opacity: 0; transform: translateY(20px);
+      animation: reveal 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
+      min-height: 140px;
+    }
+    .project-card:nth-child(1) { animation-delay: 0.3s; }
+    .project-card:nth-child(2) { animation-delay: 0.4s; }
+    .project-card:nth-child(3) { animation-delay: 0.5s; }
+    .project-card:nth-child(4) { animation-delay: 0.6s; }
+
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.3;
+    }
+    .project-card::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), #7a4dbf);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .project-card:hover {
+      border-color: rgba(0,204,204,0.35);
+      background: rgba(0,204,204,0.06);
+      transform: translateY(-4px);
+    }
+    .project-card:hover::after { opacity: 1; }
+
+    .card-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem; letter-spacing: 3px;
+      color: var(--cyan); opacity: 0.4;
+      margin-bottom: 14px;
+    }
+    .card-name {
+      font-size: 1.15rem; font-weight: 800;
+      color: #f0f0f0; letter-spacing: 0.5px;
+      flex: 1; display: flex; align-items: center;
+    }
+    .card-arrow {
+      font-size: 1.1rem; color: var(--cyan);
+      opacity: 0; transform: translateX(-6px);
+      transition: opacity 0.3s, transform 0.3s;
+      margin-top: 16px; align-self: flex-end;
+      font-family: 'Space Mono', monospace;
+    }
+    .project-card:hover .card-arrow {
+      opacity: 0.7; transform: translateX(0);
     }
 
-    .project-buttons a:hover {
-      background-color: #00fff7;
-      color: #000;
+    @media (max-width: 480px) {
+      nav { padding: 14px 20px; }
+      main { padding: 110px 16px 60px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card { min-height: 110px; padding: 22px 20px; }
     }
   </style>
 </head>
 <body>
-  <h1>Project Hub</h1>
-  <p>All your epic creations will show up here...</p>
 
-  <div class="project-buttons">
-    <a href="https://userk8.github.io/CODE-WORD/" target="_blank">CODE WORD</a>
-    <a href="https://userk8.github.io/QUIZ-BOT/" target="_blank">QUIZ BOT</a>
-    <a href="https://userk8.github.io/text_animation/" target="_blank">TEXT ANIMATION</a>
-    <a href="https://userk8.github.io/A-QUESTION/" target="_blank">ONE QUESTION</a>
-  </div>
+  <div class="bg-layer"></div>
+  <div class="particles" id="particles"></div>
 
-  <p style="margin-top: 40px;"><a href="index.html">← Back to Home</a></p>
+  <nav>
+    <a href="index.html" class="nav-logo">USERK8</a>
+    <a href="index.html" class="nav-home">← HOME</a>
+  </nav>
+
+  <main>
+    <h1 class="page-title">Project<br><span>Hub.</span></h1>
+    <p class="page-sub">// all the things we've built</p>
+
+    <div class="projects-grid">
+
+      <a class="project-card" href="https://userk8.github.io/CODE-WORD/" target="_blank">
+        <div class="card-num">01</div>
+        <div class="card-name">Code Word</div>
+        <div class="card-arrow">↗</div>
+      </a>
+
+      <a class="project-card" href="https://userk8.github.io/QUIZ-BOT/" target="_blank">
+        <div class="card-num">02</div>
+        <div class="card-name">Quiz Bot</div>
+        <div class="card-arrow">↗</div>
+      </a>
+
+      <a class="project-card" href="https://userk8.github.io/text_animation/" target="_blank">
+        <div class="card-num">03</div>
+        <div class="card-name">Text Animation</div>
+        <div class="card-arrow">↗</div>
+      </a>
+
+      <a class="project-card" href="https://userk8.github.io/A-QUESTION/" target="_blank">
+        <div class="card-num">04</div>
+        <div class="card-name">One Question</div>
+        <div class="card-arrow">↗</div>
+      </a>
+
+    </div>
+  </main>
+
+  <script>
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.bottom = '-8px';
+      const size = Math.random() > 0.6 ? 3 : 2;
+      p.style.width = p.style.height = size + 'px';
+      p.style.animationDuration = (14 + Math.random() * 18) + 's';
+      p.style.animationDelay = (Math.random() * 22) + 's';
+      p.style.background = Math.random() > 0.65 ? '#a070ff' : '#00cccc';
+      c.appendChild(p);
+    }
+  </script>
 </body>
 </html>
