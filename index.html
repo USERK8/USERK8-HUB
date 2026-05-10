@@ -2,14 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>USERK8 | Galactic Hub</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
       background: black;
       overflow-x: hidden;
       font-family: 'Segoe UI', sans-serif;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      position: relative;
     }
 
     canvas {
@@ -19,6 +32,7 @@
       z-index: 0;
       transition: opacity 1.5s ease;
       opacity: 0;
+      pointer-events: none;
     }
 
     canvas.visible {
@@ -42,18 +56,69 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 20px;
-      box-shadow: 0 0 15px #00fff7;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo::before {
+      content: '';
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: conic-gradient(
+        from 0deg,
+        #00fff7,
+        #00d4ff,
+        #0077ff,
+        #00fff7
+      );
+      animation: rotateBorder 4s linear infinite;
+      border-radius: 50%;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background: black;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    @keyframes rotateBorder {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .logo-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .logo-text {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: bold;
       color: #00fff7;
+      text-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7;
+      letter-spacing: 2px;
+    }
+
+    .logo-subtext {
+      font-size: 0.6rem;
+      color: #00d4ff;
+      margin-top: -5px;
+      letter-spacing: 3px;
     }
 
     h1 {
       font-size: 2.5rem;
       margin-bottom: 30px;
+      text-shadow: 0 0 20px #00fff7;
     }
 
     .btn-container {
@@ -61,6 +126,7 @@
       justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
+      padding: 0 10px;
     }
 
     .btn {
@@ -73,18 +139,56 @@
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.3s ease;
       text-decoration: none;
+      min-width: 140px;
+      text-align: center;
     }
 
     .btn:hover {
       transform: scale(1.08);
-      box-shadow: 0 0 15px #00fff7;
+      box-shadow: 0 0 25px #00fff7, 0 0 50px #00fff780;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .btn-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .btn {
+        width: 80%;
+        max-width: 300px;
+      }
+
+      .logo {
+        width: 120px;
+        height: 120px;
+      }
+
+      .logo::before {
+        width: 130px;
+        height: 130px;
+      }
+
+      .logo::after {
+        width: 110px;
+        height: 110px;
+      }
+
+      .logo-text {
+        font-size: 1.5rem;
+      }
     }
 
     .spacer {
-      height: 120vh;
+      height: 80vh;
     }
 
-    section.about {
+    section.about, section.upcoming {
       max-width: 800px;
       margin: 0 auto;
       padding: 100px 20px;
@@ -95,17 +199,109 @@
       opacity: 0;
       transform: translateY(50px);
       transition: opacity 1s ease, transform 1s ease;
+      position: relative;
+      z-index: 1;
     }
 
-    section.about h2 {
+    section.about h2, section.upcoming h2 {
       font-size: 1.8rem;
       margin-bottom: 20px;
       color: #00fff7;
+      text-shadow: 0 0 15px #00fff7;
     }
 
-    section.about.visible {
+    section.about.visible, section.upcoming.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .project-card {
+      background: linear-gradient(135deg, rgba(0, 255, 247, 0.05), rgba(0, 119, 255, 0.05));
+      border: 2px solid #00fff7;
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0, 255, 247, 0.3);
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #00fff7, #0077ff, #00fff7);
+      border-radius: 15px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+      animation: borderPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes borderPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .coming-soon-badge {
+      display: inline-block;
+      background: #00fff7;
+      color: black;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px #00fff7; }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px #00fff7; }
+    }
+
+    .project-title {
+      font-size: 1.6rem;
+      color: #00fff7;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .project-description {
+      font-size: 1rem;
+      color: #dcdcdc;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .project-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .spec-item {
+      background: rgba(0, 255, 247, 0.1);
+      border: 1px solid #00fff780;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      color: #00fff7;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spec-icon {
+      font-size: 1.2rem;
     }
 
     #scrollBox {
@@ -115,15 +311,22 @@
       width: 60px;
       height: 60px;
       background: black;
-      border: 2px solid white;
-      display: none;
+      border: 2px solid #00fff7;
       cursor: pointer;
       z-index: 10;
       border-radius: 8px;
-      box-shadow: 0 0 10px #00fff7;
-      display: flex;
+      box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
       align-items: center;
       justify-content: center;
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #scrollBox.show {
+      opacity: 1;
+      transform: scale(1);
+      display: flex;
     }
 
     #rocket {
@@ -135,6 +338,15 @@
       0% { transform: translateY(0); }
       100% { transform: translateY(-6px); }
     }
+
+    .shooting-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 4px white;
+    }
   </style>
 </head>
 <body>
@@ -142,7 +354,10 @@
 
   <header>
     <div class="logo">
-      <div class="logo-text">USERK8</div>
+      <div class="logo-content">
+        <div class="logo-text">USERK8</div>
+        <div class="logo-subtext">GALACTIC</div>
+      </div>
     </div>
     <h1>Welcome to USERK8</h1>
     <div class="btn-container">
@@ -157,7 +372,7 @@
   <section class="about">
     <h2>About This Page</h2>
     <p>
-      Hey, I’m <strong>Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
+      Hey, I'm <strong>Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
       I built this entirely with code — no fancy libraries, no templates. Just imagination and a lot of late nights.
     </p>
     <p>
@@ -166,6 +381,37 @@
     <p>
       Thanks for stopping by. You're now part of the USERK8 journey. 🚀
     </p>
+  </section>
+
+  <section class="upcoming">
+    <h2>Upcoming Projects</h2>
+    <div class="project-card">
+      <span class="coming-soon-badge">COMING SOON</span>
+      <div class="project-title">Eight AI</div>
+      <div class="project-description">
+        On-device 1B parameter language model built from scratch for mobile devices. 
+        Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI capabilities 
+        directly on your phone without cloud dependency.
+      </div>
+      <div class="project-specs">
+        <div class="spec-item">
+          <span class="spec-icon">🧠</span>
+          <span>1B Parameters</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-icon">⚡</span>
+          <span>4-bit Quantized</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-icon">📚</span>
+          <span>4T Token Training</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-icon">📱</span>
+          <span>On-Device Inference</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <div id="scrollBox"><div id="rocket">🚀</div></div>
@@ -203,13 +449,13 @@
           'rgba(255,255,255,',
           'rgba(255,160,160,',
           'rgba(255,255,160,',
-          'rgba(160,255,255,',
+          'rgba(0,255,247,',
           'rgba(160,160,255,',
-          'rgba(255,160,255,'
+          'rgba(0,212,255,'
         ];
         const color = colors[Math.floor(Math.random() * colors.length)];
         this.alpha = Math.max(0.3, 1 - this.radius / 400);
-        this.size = Math.random() * 1.2 + 0.3;
+        this.size = Math.random() * 1.5 + 0.3;
         this.color = color + this.alpha + ')';
       }
 
@@ -224,6 +470,14 @@
         ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         ctx.fillStyle = this.color;
         ctx.fill();
+        
+        // Add glow effect
+        if (Math.random() > 0.98) {
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = this.color;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
       }
     }
 
@@ -233,60 +487,149 @@
         this.y = Math.random() * height;
         this.size = Math.random() * 1.2;
         this.alpha = Math.random() * 0.4 + 0.1;
+        this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+        this.twinklePhase = Math.random() * Math.PI * 2;
         this.color = `rgba(255,255,255,${this.alpha})`;
       }
 
+      update() {
+        this.twinklePhase += this.twinkleSpeed;
+      }
+
       draw(ctx) {
+        const twinkle = Math.sin(this.twinklePhase) * 0.3 + 0.7;
+        const alpha = this.alpha * twinkle;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
         ctx.fill();
+      }
+    }
+
+    class ShootingStar {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height / 2;
+        this.length = Math.random() * 80 + 40;
+        this.speed = Math.random() * 8 + 6;
+        this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
+        this.opacity = 1;
+        this.active = true;
+      }
+
+      update() {
+        if (!this.active) return;
+        
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.opacity -= 0.01;
+
+        if (this.opacity <= 0 || this.x > width || this.y > height) {
+          this.active = false;
+        }
+      }
+
+      draw(ctx) {
+        if (!this.active) return;
+
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        
+        const gradient = ctx.createLinearGradient(0, 0, -this.length, 0);
+        gradient.addColorStop(0, `rgba(255,255,255,${this.opacity})`);
+        gradient.addColorStop(1, `rgba(255,255,255,0)`);
+        
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-this.length, 0);
+        ctx.stroke();
+        
+        ctx.restore();
       }
     }
 
     const galaxyStars = [];
     const backgroundStars = [];
+    const shootingStars = [];
+    
     for (let i = 0; i < 1000; i++) galaxyStars.push(new GalaxyStar());
     for (let i = 0; i < 300; i++) backgroundStars.push(new BackgroundStar());
 
     function drawCoreGlow() {
-      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 80);
-      gradient.addColorStop(0, 'rgba(255,255,255,0.2)');
+      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 100);
+      gradient.addColorStop(0, 'rgba(0,255,247,0.3)');
+      gradient.addColorStop(0.5, 'rgba(0,212,255,0.1)');
       gradient.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.beginPath();
-      ctx.arc(centerX, centerY, 80, 0, Math.PI * 2);
+      ctx.arc(centerX, centerY, 100, 0, Math.PI * 2);
       ctx.fillStyle = gradient;
       ctx.fill();
     }
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
-      backgroundStars.forEach(star => star.draw(ctx));
+      
+      backgroundStars.forEach(star => {
+        star.update();
+        star.draw(ctx);
+      });
+      
       drawCoreGlow();
+      
       galaxyStars.forEach(star => {
         star.update();
         star.draw(ctx);
       });
+
+      // Shooting stars
+      if (Math.random() > 0.99 && shootingStars.length < 3) {
+        shootingStars.push(new ShootingStar());
+      }
+
+      shootingStars.forEach((star, index) => {
+        star.update();
+        star.draw(ctx);
+        if (!star.active) {
+          shootingStars.splice(index, 1);
+        }
+      });
+
       requestAnimationFrame(animate);
     }
 
     animate();
 
     const aboutSection = document.querySelector('.about');
+    const upcomingSection = document.querySelector('.upcoming');
     const scrollBox = document.getElementById('scrollBox');
 
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       canvas.classList.toggle('visible', scrollY > 100);
-      scrollBox.style.display = scrollY > 200 ? 'flex' : 'none';
-
-      const sectionTop = aboutSection.offsetTop;
-      const sectionHeight = aboutSection.offsetHeight;
-      if (scrollY + window.innerHeight > sectionTop + sectionHeight / 4) {
-        aboutSection.classList.add('visible');
+      
+      if (scrollY > 200) {
+        scrollBox.classList.add('show');
       } else {
-        aboutSection.classList.remove('visible');
+        scrollBox.classList.remove('show');
       }
+
+      const checkSection = (section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        if (scrollY + window.innerHeight > sectionTop + sectionHeight / 4) {
+          section.classList.add('visible');
+        }
+      };
+
+      checkSection(aboutSection);
+      checkSection(upcomingSection);
     });
 
     scrollBox.addEventListener('click', () => {
