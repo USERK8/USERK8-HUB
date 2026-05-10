@@ -3,92 +3,323 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UserK8 Projects</title>
+  <title>Project Hub — USERK8</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cyan: #00cccc;
+      --cyan-dim: #007777;
+      --purple: #1e0d35;
+      --purple-mid: #2a1050;
+      --purple-light: #7a4dbf;
+      --bg: #06040f;
+      --glass: rgba(18, 7, 36, 0.6);
+      --border: rgba(0, 204, 204, 0.14);
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
-      background: linear-gradient(135deg, #1d2b64, #f8cdda);
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-      background-size: cover;
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Syne', sans-serif;
+      color: #ddd;
+      overflow-x: hidden;
     }
 
-    .pattern {
-      background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-      padding: 40px;
+    /* ── background ── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 10% 5%,  rgba(30,13,53,0.95) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 90% 95%, rgba(0,50,60,0.75)  0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(90,40,140,0.12) 0%, transparent 60%),
+        #06040f;
+    }
+    .bg-layer::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: 0.5; pointer-events: none;
     }
 
-    .container {
-      max-width: 850px;
-      margin: auto;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 30px;
+    /* ── particles ── */
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute; border-radius: 50%;
+      opacity: 0; animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      10%  { opacity: 0.5; }
+      90%  { opacity: 0.1; }
+      100% { opacity: 0; transform: translateY(-100vh) scale(0.2); }
+    }
+
+    /* ── nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(6,4,15,0.75);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 4px;
+      color: var(--cyan); opacity: 0.65; text-decoration: none;
+    }
+    .nav-home {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 3px;
+      color: #999; text-decoration: none;
+      border: 1px solid rgba(0,204,204,0.18);
+      padding: 7px 14px; border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .nav-home:hover { color: var(--cyan); border-color: var(--cyan); background: rgba(0,204,204,0.05); }
+
+    /* ── main ── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 920px; margin: 0 auto;
+      padding: 148px 40px 100px;
+    }
+
+    /* ── page title ── */
+    .page-title {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 800; letter-spacing: -2px; line-height: 1;
+      margin-bottom: 64px;
+      opacity: 0; transform: translateY(28px);
+      animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+    }
+    .page-title span { color: var(--cyan); }
+    @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── section label ── */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 4px;
+      color: var(--cyan); opacity: 0.55;
+      margin-bottom: 18px; text-transform: uppercase;
+    }
+
+    /* ── glass card ── */
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px 40px;
+      backdrop-filter: blur(22px);
+      margin-bottom: 24px;
+      opacity: 0; transform: translateY(22px);
+      animation: reveal 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+      position: relative; overflow: hidden;
+    }
+    .glass-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.35;
+    }
+    .glass-card:nth-child(1) { animation-delay: 0.25s; }
+    .glass-card:nth-child(2) { animation-delay: 0.4s; }
+    .glass-card:nth-child(3) { animation-delay: 0.55s; }
+
+    /* ── team members ── */
+    .team-list { display: flex; flex-direction: column; gap: 20px; }
+    .team-member {
+      display: flex; align-items: flex-start; gap: 20px;
+      padding: 22px 24px;
+      background: rgba(0,204,204,0.03);
+      border: 1px solid rgba(0,204,204,0.1);
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .team-member:hover {
+      border-color: rgba(0,204,204,0.3);
+      background: rgba(0,204,204,0.06);
+    }
+    .member-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem; flex-shrink: 0;
+    }
+    .avatar-cyan   { background: rgba(0,204,204,0.12); color: var(--cyan); border: 1px solid rgba(0,204,204,0.25); }
+    .avatar-purple { background: rgba(122,77,191,0.15); color: #b07ff0;    border: 1px solid rgba(122,77,191,0.3); }
+    .avatar-gray   { background: rgba(255,255,255,0.06); color: #888;       border: 1px solid rgba(255,255,255,0.1); }
+    .member-info { flex: 1; }
+    .member-name {
+      font-size: 1.05rem; font-weight: 700; color: #f0f0f0;
+      margin-bottom: 3px;
+    }
+    .member-handle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; color: var(--cyan); opacity: 0.65;
+      margin-bottom: 6px;
+    }
+    .member-role {
+      font-size: 0.8rem; color: #666;
+      font-family: 'Space Mono', monospace; letter-spacing: 1px;
     }
 
-    h1, h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #fff;
-      padding-bottom: 10px;
+    /* ── contact list ── */
+    .contact-list { display: flex; flex-direction: column; gap: 12px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      background: rgba(0,204,204,0.03);
+      border: 1px solid rgba(0,204,204,0.08);
+      border-radius: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .contact-item:hover { border-color: rgba(0,204,204,0.25); background: rgba(0,204,204,0.05); }
+    .contact-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .contact-item a { color: var(--cyan); text-decoration: none; opacity: 0.8; transition: opacity 0.2s; }
+    .contact-item a:hover { opacity: 1; }
+
+    /* ── projects grid ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .project-tile {
+      padding: 20px 22px;
+      background: rgba(0,204,204,0.04);
+      border: 1px solid rgba(0,204,204,0.1);
+      border-radius: 12px;
+      font-size: 0.95rem; font-weight: 700; color: #e0e0e0;
+      transition: all 0.3s;
+      cursor: default;
+      position: relative; overflow: hidden;
+    }
+    .project-tile::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple-light));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .project-tile:hover {
+      border-color: rgba(0,204,204,0.3);
+      background: rgba(0,204,204,0.07);
+      transform: translateY(-2px);
+    }
+    .project-tile:hover::after { opacity: 1; }
+    .project-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem; color: var(--cyan); opacity: 0.4;
+      margin-bottom: 8px; letter-spacing: 2px;
     }
 
-    p, li {
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    a {
-      color: #ffd700;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .team {
-      margin-top: 30px;
+    @media (max-width: 600px) {
+      main { padding: 110px 20px 80px; }
+      nav { padding: 14px 20px; }
+      .glass-card { padding: 26px 22px; }
     }
   </style>
 </head>
 <body>
-  <div class="pattern">
-    <div class="container">
 
-      <h1>About the Team</h1>
-      <p><strong>Owner, Moderator, Sonam kumar, and Mahar's husband:</strong> Poli Sohan Anil {Lamba khamba} Kumar Reddy (<code>userk8</code>)</p>
-      <p><strong>Member:</strong> Sameer Mishra {SpaceS1}</p>
-      <p><strong>Part-Time Helper:</strong> Gaurav Sardar</p>
+  <div class="bg-layer"></div>
+  <div class="particles" id="particles"></div>
 
-      <h2>Contact Emails</h2>
-      <ul>
-        <li><a href="mailto:polisohankumarreddy@gmail.com">polisohankumarreddy@gmail.com</a></li>
-        <li><a href="mailto:pratimaaarush4696@gmail.com">pratima4696@gmail.com</a></li>
-        <li><a href="mailto:GauravSardar1234@gmail.com">gauravsardar1234@gmail.com</a></li>
+  <nav>
+    <a href="index.html" class="nav-logo">USERK8</a>
+    <a href="index.html" class="nav-home">← HOME</a>
+  </nav>
 
-        <p> Respectively,</p>
-      </ul>
+  <main>
 
-      <h2>Our Other Projects</h2>
-      <ul>
-        <li>Code-Word</li>
-        <li>Quiz-Bot</li>
-        <li>Text Animation</li>
-        <li>USERK8.github.io</li>
-        <li>A-Question</li>
-        <li>Neuro-Grip</li>
-      </ul>
+    <h1 class="page-title">Project<br><span>Hub.</span></h1>
 
+    <!-- team -->
+    <div class="glass-card">
+      <div class="section-label">// the team</div>
+      <div class="team-list">
+
+        <div class="team-member">
+          <div class="member-avatar avatar-cyan">S</div>
+          <div class="member-info">
+            <div class="member-name">Sohan</div>
+            <div class="member-handle">{userk8}</div>
+            <div class="member-role">Owner · Moderator</div>
+          </div>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar avatar-purple">S</div>
+          <div class="member-info">
+            <div class="member-name">Sameer Mishra</div>
+            <div class="member-handle">{SpaceS1}</div>
+            <div class="member-role">Member</div>
+          </div>
+        </div>
+
+        <div class="team-member">
+          <div class="member-avatar avatar-gray">G</div>
+          <div class="member-info">
+            <div class="member-name">Gaurav Sardar</div>
+            <div class="member-handle">{GauravS}</div>
+            <div class="member-role">Part-Time Helper</div>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
+
+    <!-- contact -->
+    <div class="glass-card">
+      <div class="section-label">// contact</div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <div class="contact-dot" style="background: var(--cyan);"></div>
+          <a href="mailto:polisohankumarreddy@gmail.com">polisohankumarreddy@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-dot" style="background: #b07ff0;"></div>
+          <a href="mailto:pratimaaarush4696@gmail.com">pratima4696@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-dot" style="background: #888;"></div>
+          <a href="mailto:GauravSardar1234@gmail.com">gauravsardar1234@gmail.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- projects -->
+    <div class="glass-card">
+      <div class="section-label">// projects</div>
+      <div class="projects-grid">
+        <div class="project-tile"><div class="project-num">01</div>Code-Word</div>
+        <div class="project-tile"><div class="project-num">02</div>Quiz-Bot</div>
+        <div class="project-tile"><div class="project-num">03</div>Text Animation</div>
+        <div class="project-tile"><div class="project-num">04</div>A-Question</div>
+        <div class="project-tile"><div class="project-num">05</div>eight AI</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 45; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.bottom = '-8px';
+      const size = Math.random() > 0.6 ? 3 : 2;
+      p.style.width = p.style.height = size + 'px';
+      p.style.animationDuration = (14 + Math.random() * 18) + 's';
+      p.style.animationDelay = (Math.random() * 22) + 's';
+      p.style.background = Math.random() > 0.65 ? '#a070ff' : '#00cccc';
+      c.appendChild(p);
+    }
+  </script>
 </body>
 </html>
