@@ -186,23 +186,26 @@
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
     }
           
-    /* ── floaty letter animations ── */
-    .float-e  { animation: floatLetter 2.8s ease-in-out infinite; display: inline-block; }
-    .float-i  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; }
-    .float-g  { animation: floatLetter 2.5s ease-in-out infinite 0.6s; display: inline-block; }
-    .float-h  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; }
-    .float-t  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; }
-    .float-A  { animation: floatLetter 3.4s ease-in-out infinite 0.8s; display: inline-block; }
-    .float-I  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }
-    .float-E  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; }
-    .float-T  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; }
-    .float-H  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; }
-    .float-D { animation: floatLetter 2.6s ease-in-out infinite 0.1s; display: inline-block; }
-    .float-R { animation: floatLetter 3.1s ease-in-out infinite 0.5s; display: inline-block; }
-    .float-Y { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }      
+   /* ── FIXED floaty letter animations ── */
+    /* Added position: relative to all letters */
+    .float-e  { animation: floatLetter 2.8s ease-in-out infinite; display: inline-block; position: relative; }
+    .float-i  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; position: relative; }
+    .float-g  { animation: floatLetter 2.5s ease-in-out infinite 0.6s; display: inline-block; position: relative; }
+    .float-h  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; position: relative; }
+    .float-t  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; position: relative; }
+    .float-A  { animation: floatLetter 3.4s ease-in-out infinite 0.8s; display: inline-block; position: relative; }
+    .float-I  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; position: relative; }
+    .float-E  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; position: relative; }
+    .float-T  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; position: relative; }
+    .float-H  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; position: relative; }
+    .float-D  { animation: floatLetter 2.6s ease-in-out infinite 0.1s; display: inline-block; position: relative; }
+    .float-R  { animation: floatLetter 3.1s ease-in-out infinite 0.5s; display: inline-block; position: relative; }
+    .float-Y  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; position: relative; }      
+    
+    /* The Magic Fix: use 'top' instead of 'transform' */
     @keyframes floatLetter {
-      0%,100% { transform: translateY(0px); }
-      50%      { transform: translateY(-5px); }
+      0%,100% { top: 0px; }
+      50%     { top: -5px; }
     }
 
     .project-specs {
