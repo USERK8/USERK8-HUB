@@ -5,348 +5,219 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>USERK8 | Galactic Hub</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      margin: 0;
-      padding: 0;
       background: black;
       overflow-x: hidden;
       font-family: 'Segoe UI', sans-serif;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
     }
-
-    body {
-      position: relative;
-    }
-
     canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      opacity: 1;
+      position: fixed; top: 0; left: 0; z-index: 0;
       pointer-events: none;
     }
-
     header {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       text-align: center;
       padding: 100px 20px 60px;
       color: #00fff7;
     }
 
+    /* ── NEW LOGO: hexagon ring ── */
     .logo {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-color: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 150px; height: 150px;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 20px;
       position: relative;
-      overflow: hidden;
     }
-
-    .logo::before {
-      content: '';
+    .logo-hex-ring {
       position: absolute;
-      width: 160px;
-      height: 160px;
-      background: conic-gradient(
-        from 0deg,
-        #00fff7,
-        #00d4ff,
-        #0077ff,
-        #00fff7
-      );
-      animation: rotateBorder 4s linear infinite;
+      width: 150px; height: 150px;
+      animation: spinHex 8s linear infinite;
+    }
+    .logo-inner-circle {
+      width: 110px; height: 110px;
+      background: radial-gradient(circle at 40% 35%, #0a1a2e, #000);
       border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative; z-index: 2;
+      box-shadow: 0 0 20px rgba(0,255,247,0.25) inset;
     }
-
-    .logo::after {
-      content: '';
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      background: black;
-      border-radius: 50%;
-      z-index: 1;
+    @keyframes spinHex {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
-
-    @keyframes rotateBorder {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .logo-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
     .logo-text {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #00fff7;
-      text-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7;
+      font-size: 1.6rem; font-weight: 900;
+      background: linear-gradient(135deg, #00fff7, #0077ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       letter-spacing: 2px;
+      filter: drop-shadow(0 0 6px rgba(0,255,247,0.6));
     }
-
     .logo-subtext {
-      font-size: 0.6rem;
-      color: #00d4ff;
-      margin-top: -5px;
-      letter-spacing: 3px;
+      font-size: 0.5rem; letter-spacing: 4px;
+      color: #00d4ff; margin-top: -2px; opacity: 0.8;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 30px;
+      font-size: 2.5rem; margin-bottom: 30px;
       text-shadow: 0 0 20px #00fff7;
     }
-
     .btn-container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      padding: 0 10px;
+      display: flex; justify-content: center;
+      gap: 20px; flex-wrap: wrap; padding: 0 10px;
     }
-
     .btn {
-      background-color: #00fff7;
-      color: #0a0a0a;
-      padding: 14px 28px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
+      background-color: #00fff7; color: #0a0a0a;
+      padding: 14px 28px; font-size: 1.2rem;
+      border: none; border-radius: 10px; cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.3s ease;
-      text-decoration: none;
-      min-width: 140px;
-      text-align: center;
+      text-decoration: none; min-width: 140px; text-align: center;
     }
-
     .btn:hover {
       transform: scale(1.08);
       box-shadow: 0 0 25px #00fff7, 0 0 50px #00fff780;
     }
 
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2rem;
-      }
-
-      .btn-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-      }
-
-      .btn {
-        width: 80%;
-        max-width: 300px;
-      }
-
-      .logo {
-        width: 120px;
-        height: 120px;
-      }
-
-      .logo::before {
-        width: 130px;
-        height: 130px;
-      }
-
-      .logo::after {
-        width: 110px;
-        height: 110px;
-      }
-
-      .logo-text {
-        font-size: 1.5rem;
-      }
-    }
-
-    .spacer {
-      height: 80vh;
-    }
+    .spacer { height: 80vh; }
 
     section.about, section.upcoming {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 60px 20px;
-      color: #dcdcdc;
-      font-size: 1.1rem;
-      line-height: 1.8;
-      text-align: left;
-      opacity: 0;
-      transform: translateY(50px);
+      max-width: 800px; margin: 0 auto;
+      padding: 60px 20px; font-size: 1.1rem;
+      line-height: 1.8; text-align: left;
+      opacity: 0; transform: translateY(50px);
       transition: opacity 1s ease, transform 1s ease;
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
     }
-
     section.about .content-wrapper,
     section.upcoming .content-wrapper {
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(10, 10, 10, 0.82);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(0, 255, 247, 0.3);
-      border-radius: 15px;
-      padding: 40px;
-      box-shadow: 0 0 30px rgba(0, 255, 247, 0.2);
+      border: 1px solid rgba(0,255,247,0.3);
+      border-radius: 15px; padding: 40px;
+      box-shadow: 0 0 30px rgba(0,255,247,0.15);
     }
-
     section.about h2, section.upcoming h2 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: #00fff7;
-      text-shadow: 0 0 15px #00fff7;
+      font-size: 1.8rem; margin-bottom: 20px;
+      color: #00fff7; text-shadow: 0 0 15px #00fff7;
     }
-
-    section.about p {
-      margin-bottom: 15px;
+    section.about p,
+    .project-description {
+      color: #c8c8c8;
+      text-shadow: 0 0 8px rgba(0,0,0,0.9);
     }
-
+    section.about p { margin-bottom: 15px; }
     section.about.visible, section.upcoming.visible {
-      opacity: 1;
-      transform: translateY(0);
+      opacity: 1; transform: translateY(0);
     }
 
-    .project-card {
-      background: linear-gradient(135deg, rgba(0, 255, 247, 0.08), rgba(0, 119, 255, 0.08));
-      border: 2px solid #00fff7;
-      border-radius: 15px;
-      padding: 30px;
-      margin-top: 30px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 30px rgba(0, 255, 247, 0.3);
+    /* ── Spinning 8 / infinity symbol ── */
+    .infinity-wrap {
+      text-align: center; margin-bottom: 24px;
     }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(45deg, #00fff7, #0077ff, #00fff7);
-      border-radius: 15px;
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .project-card:hover::before {
-      opacity: 1;
-      animation: borderPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes borderPulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-
-    .coming-soon-badge {
+    .infinity-8 {
       display: inline-block;
-      background: #00fff7;
-      color: black;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      margin-bottom: 15px;
+      font-size: 4rem; font-weight: 900;
+      color: #00ccff;
+      line-height: 1;
+      text-shadow: 0 0 12px rgba(0,204,255,0.6);
+      animation: spin8 4s linear infinite;
+      transform-origin: center center;
+    }
+    @keyframes spin8 {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* ── Project card ── */
+    .project-card {
+      background: linear-gradient(135deg,rgba(0,255,247,0.05),rgba(0,119,255,0.05));
+      border: 2px solid #00fff7; border-radius: 15px;
+      padding: 30px; margin-top: 30px; position: relative; overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,255,247,0.2);
+    }
+    .coming-soon-badge {
+      display: inline-block; background: #00fff7; color: black;
+      padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;
+      font-weight: bold; margin-bottom: 15px;
       animation: pulse 2s ease-in-out infinite;
     }
-
     @keyframes pulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 10px #00fff7; }
-      50% { transform: scale(1.05); box-shadow: 0 0 20px #00fff7; }
+      0%,100% { transform: scale(1); box-shadow: 0 0 10px #00fff7; }
+      50%      { transform: scale(1.05); box-shadow: 0 0 20px #00fff7; }
     }
 
+    /* ── eight AI title ── */
     .project-title {
-      font-size: 1.6rem;
-      color: #00fff7;
+      font-size: 1.8rem; font-weight: bold;
       margin-bottom: 15px;
-      font-weight: bold;
+      display: flex; align-items: baseline; gap: 0;
+    }
+    .title-eight {
+      color: #00ccff;
+      text-shadow: 0 0 12px rgba(0,204,255,0.7);
+      display: inline-block;
+    }
+    .title-ai {
+      color: #ffffff; font-weight: 900;
+      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+      display: inline-block;
     }
 
-    .project-description {
-      font-size: 1rem;
-      color: #dcdcdc;
-      line-height: 1.6;
-      margin-bottom: 20px;
+    /* ── floaty letter animations ── */
+    .float-e  { animation: floatLetter 2.8s ease-in-out infinite; display: inline-block; }
+    .float-i  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; }
+    .float-g  { animation: floatLetter 2.5s ease-in-out infinite 0.6s; display: inline-block; }
+    .float-h  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; }
+    .float-t  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; }
+    .float-A  { animation: floatLetter 3.4s ease-in-out infinite 0.8s; display: inline-block; }
+    .float-I  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }
+    @keyframes floatLetter {
+      0%,100% { transform: translateY(0px); }
+      50%      { transform: translateY(-5px); }
     }
 
     .project-specs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 20px;
+      display: flex; flex-wrap: wrap;
+      gap: 15px; margin-top: 20px;
     }
-
     .spec-item {
-      background: rgba(0, 255, 247, 0.1);
+      background: rgba(0,255,247,0.08);
       border: 1px solid #00fff780;
-      border-radius: 8px;
-      padding: 10px 15px;
-      font-size: 0.9rem;
-      color: #00fff7;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      border-radius: 8px; padding: 10px 15px;
+      font-size: 0.9rem; color: #00fff7;
+      display: flex; align-items: center; gap: 8px;
     }
-
-    .spec-icon {
-      font-size: 1.2rem;
-    }
+    .spec-icon { font-size: 1.2rem; }
 
     #scrollBox {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      background: rgba(0, 0, 0, 0.9);
+      position: fixed; bottom: 30px; right: 30px;
+      width: 60px; height: 60px;
+      background: rgba(0,0,0,0.9);
       border: 2px solid #00fff7;
-      cursor: pointer;
-      z-index: 10;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0, 255, 247, 0.5);
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0);
+      cursor: pointer; z-index: 10; border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,255,247,0.5);
+      align-items: center; justify-content: center;
+      opacity: 0; transform: scale(0);
       transition: opacity 0.3s ease, transform 0.3s ease;
       display: none;
     }
-
-    #scrollBox.show {
-      opacity: 1;
-      transform: scale(1);
-      display: flex;
-    }
-
-    #rocket {
-      font-size: 1.8rem;
-      animation: hoverRocket 1s infinite alternate;
-    }
-
+    #scrollBox.show { opacity:1; transform:scale(1); display:flex; }
+    #rocket { font-size:1.8rem; animation: hoverRocket 1s infinite alternate; }
     @keyframes hoverRocket {
-      0% { transform: translateY(0); }
+      0%   { transform: translateY(0); }
       100% { transform: translateY(-6px); }
+    }
+
+    @media (max-width:768px) {
+      h1 { font-size: 2rem; }
+      .btn-container { flex-direction: column; align-items: center; gap:15px; }
+      .btn { width: 80%; max-width: 300px; }
+      .logo { width:120px; height:120px; }
+      .logo-hex-ring { width:120px; height:120px; }
+      .logo-inner-circle { width:88px; height:88px; }
+      .logo-text { font-size:1.3rem; }
     }
   </style>
 </head>
@@ -355,11 +226,29 @@
 
   <header>
     <div class="logo">
-      <div class="logo-content">
+      <svg class="logo-hex-ring" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#00fff7"/>
+            <stop offset="50%"  stop-color="#0077ff"/>
+            <stop offset="100%" stop-color="#00fff7"/>
+          </linearGradient>
+        </defs>
+        <polygon points="75,8 137,42 137,108 75,142 13,108 13,42" stroke="url(#hexGrad)" stroke-width="2.5" fill="none"/>
+        <polygon points="75,20 125,49 125,101 75,130 25,101 25,49" stroke="url(#hexGrad)" stroke-width="1" fill="none" stroke-dasharray="4 6" opacity="0.5"/>
+        <circle cx="75"  cy="8"   r="3" fill="#00fff7"/>
+        <circle cx="137" cy="42"  r="3" fill="#0077ff"/>
+        <circle cx="137" cy="108" r="3" fill="#00fff7"/>
+        <circle cx="75"  cy="142" r="3" fill="#0077ff"/>
+        <circle cx="13"  cy="108" r="3" fill="#00fff7"/>
+        <circle cx="13"  cy="42"  r="3" fill="#0077ff"/>
+      </svg>
+      <div class="logo-inner-circle">
         <div class="logo-text">USERK8</div>
         <div class="logo-subtext">GALACTIC</div>
       </div>
     </div>
+
     <h1>Welcome to USERK8</h1>
     <div class="btn-container">
       <a href="ph.html" class="btn">Project Hub</a>
@@ -374,7 +263,7 @@
     <div class="content-wrapper">
       <h2>About This Page</h2>
       <p>
-        Hey, I'm <strong>Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
+        Hey, I'm <strong style="color:#00fff7;">Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
         I built this entirely with code — no fancy libraries, no templates. Just imagination and a lot of late nights.
       </p>
       <p>
@@ -389,31 +278,34 @@
   <section class="upcoming">
     <div class="content-wrapper">
       <h2>Upcoming Projects</h2>
+
+      <div class="infinity-wrap">
+        <span class="infinity-8">8</span>
+      </div>
+
       <div class="project-card">
         <span class="coming-soon-badge">COMING SOON</span>
-        <div class="project-title">Eight AI</div>
+
+        <div class="project-title">
+          <span class="title-eight">
+            <span class="float-e">e</span><span class="float-i">i</span><span class="float-g">g</span><span class="float-h">h</span><span class="float-t">t</span>
+          </span>
+          <span>&nbsp;</span>
+          <span class="title-ai">
+            <span class="float-A">A</span><span class="float-I">I</span>
+          </span>
+        </div>
+
         <div class="project-description">
-          On-device 1B parameter language model built from scratch for mobile devices. 
-          Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI capabilities 
+          On-device 1B parameter language model built from scratch for mobile devices.
+          Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI capabilities
           directly on your phone without cloud dependency.
         </div>
         <div class="project-specs">
-          <div class="spec-item">
-            <span class="spec-icon">🧠</span>
-            <span>1B Parameters</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-icon">⚡</span>
-            <span>4-bit Quantized</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-icon">📚</span>
-            <span>4T Token Training</span>
-          </div>
-          <div class="spec-item">
-            <span class="spec-icon">📱</span>
-            <span>On-Device Inference</span>
-          </div>
+          <div class="spec-item"><span class="spec-icon">🧠</span><span>1B Parameters</span></div>
+          <div class="spec-item"><span class="spec-icon">⚡</span><span>4-bit Quantized</span></div>
+          <div class="spec-item"><span class="spec-icon">📚</span><span>4T Token Training</span></div>
+          <div class="spec-item"><span class="spec-icon">📱</span><span>On-Device Inference</span></div>
         </div>
       </div>
     </div>
@@ -429,185 +321,109 @@
     function resize() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      centerX = width / 2;
-      centerY = height / 2;
+      centerX = width / 2; centerY = height / 2;
     }
-
     resize();
     window.addEventListener('resize', resize);
 
     class GalaxyStar {
-      constructor() {
-        this.reset();
-      }
-
+      constructor() { this.reset(); }
       reset() {
         const angle = Math.random() * Math.PI * 2;
         const distance = Math.sqrt(Math.random()) * 300 + 60;
-        const tilt = 0.15;
         this.radius = distance;
         this.angle = angle;
         this.speed = 0.0003 + Math.random() * 0.001;
-        this.yOffset = (Math.random() - 0.5) * distance * tilt;
-
+        this.yOffset = (Math.random() - 0.5) * distance * 0.15;
         const colors = [
-          'rgba(255,255,255,',
-          'rgba(255,160,160,',
-          'rgba(255,255,160,',
-          'rgba(0,255,247,',
-          'rgba(160,160,255,',
-          'rgba(0,212,255,'
+          'rgba(255,255,255,', 'rgba(255,160,160,', 'rgba(255,255,160,',
+          'rgba(0,255,247,',   'rgba(160,160,255,', 'rgba(0,212,255,'
         ];
         const color = colors[Math.floor(Math.random() * colors.length)];
         this.alpha = Math.max(0.3, 1 - this.radius / 400);
         this.size = Math.random() * 1.5 + 0.3;
         this.color = color + this.alpha + ')';
       }
-
-      update() {
-        this.angle += this.speed;
-      }
-
-      draw(ctx) {
+      update() { this.angle += this.speed; }
+      draw(c) {
         const x = centerX + this.radius * Math.cos(this.angle);
         const y = centerY + this.radius * Math.sin(this.angle) * 0.1 + this.yOffset;
-        ctx.beginPath();
-        ctx.arc(x, y, this.size, 0, 2 * Math.PI);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-        
-        // Add glow effect to some stars
-        if (Math.random() > 0.98) {
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = this.color;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        }
+        c.beginPath(); c.arc(x, y, this.size, 0, 2 * Math.PI);
+        c.fillStyle = this.color; c.fill();
       }
     }
 
     class BackgroundStar {
       constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
+        this.x = Math.random() * window.innerWidth;
+        this.y = Math.random() * window.innerHeight;
         this.size = Math.random() * 1.2;
         this.alpha = Math.random() * 0.4 + 0.1;
         this.twinkleSpeed = Math.random() * 0.02 + 0.01;
         this.twinklePhase = Math.random() * Math.PI * 2;
       }
-
-      update() {
-        this.twinklePhase += this.twinkleSpeed;
-      }
-
-      draw(ctx) {
-        const twinkle = Math.sin(this.twinklePhase) * 0.3 + 0.7;
-        const alpha = this.alpha * twinkle;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-        ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-        ctx.fill();
+      update() { this.twinklePhase += this.twinkleSpeed; }
+      draw(c) {
+        const a = this.alpha * (Math.sin(this.twinklePhase) * 0.3 + 0.7);
+        c.beginPath(); c.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        c.fillStyle = `rgba(255,255,255,${a})`; c.fill();
       }
     }
 
     class ShootingStar {
-      constructor() {
-        this.reset();
-      }
-
+      constructor() { this.reset(); }
       reset() {
         this.x = Math.random() * width;
         this.y = Math.random() * height / 2;
         this.length = Math.random() * 80 + 40;
         this.speed = Math.random() * 8 + 6;
         this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
-        this.opacity = 1;
-        this.active = true;
+        this.opacity = 1; this.active = true;
       }
-
       update() {
         if (!this.active) return;
-        
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed;
         this.opacity -= 0.01;
-
-        if (this.opacity <= 0 || this.x > width || this.y > height) {
-          this.active = false;
-        }
+        if (this.opacity <= 0 || this.x > width || this.y > height) this.active = false;
       }
-
-      draw(ctx) {
+      draw(c) {
         if (!this.active) return;
-
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        
-        const gradient = ctx.createLinearGradient(0, 0, -this.length, 0);
-        gradient.addColorStop(0, `rgba(255,255,255,${this.opacity})`);
-        gradient.addColorStop(1, `rgba(255,255,255,0)`);
-        
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(-this.length, 0);
-        ctx.stroke();
-        
-        ctx.restore();
+        c.save(); c.translate(this.x, this.y); c.rotate(this.angle);
+        const g = c.createLinearGradient(0, 0, -this.length, 0);
+        g.addColorStop(0, `rgba(255,255,255,${this.opacity})`);
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        c.strokeStyle = g; c.lineWidth = 2;
+        c.beginPath(); c.moveTo(0,0); c.lineTo(-this.length,0); c.stroke();
+        c.restore();
       }
     }
 
-    const galaxyStars = [];
-    const backgroundStars = [];
-    const shootingStars = [];
-    
+    const galaxyStars = [], bgStars = [], shooters = [];
     for (let i = 0; i < 1000; i++) galaxyStars.push(new GalaxyStar());
-    for (let i = 0; i < 300; i++) backgroundStars.push(new BackgroundStar());
+    for (let i = 0; i < 300; i++) bgStars.push(new BackgroundStar());
 
-    function drawCoreGlow() {
-      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 100);
-      gradient.addColorStop(0, 'rgba(0,255,247,0.3)');
-      gradient.addColorStop(0.5, 'rgba(0,212,255,0.1)');
-      gradient.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, 100, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
+    function drawCore() {
+      const g = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 100);
+      g.addColorStop(0, 'rgba(0,255,247,0.25)');
+      g.addColorStop(0.5, 'rgba(0,212,255,0.08)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.beginPath(); ctx.arc(centerX, centerY, 100, 0, Math.PI * 2);
+      ctx.fillStyle = g; ctx.fill();
     }
 
     function animate() {
       ctx.clearRect(0, 0, width, height);
-      
-      backgroundStars.forEach(star => {
-        star.update();
-        star.draw(ctx);
-      });
-      
-      drawCoreGlow();
-      
-      galaxyStars.forEach(star => {
-        star.update();
-        star.draw(ctx);
-      });
-
-      // Shooting stars
-      if (Math.random() > 0.99 && shootingStars.length < 3) {
-        shootingStars.push(new ShootingStar());
+      bgStars.forEach(s => { s.update(); s.draw(ctx); });
+      drawCore();
+      galaxyStars.forEach(s => { s.update(); s.draw(ctx); });
+      if (Math.random() > 0.99 && shooters.length < 3) shooters.push(new ShootingStar());
+      for (let i = shooters.length - 1; i >= 0; i--) {
+        shooters[i].update(); shooters[i].draw(ctx);
+        if (!shooters[i].active) shooters.splice(i, 1);
       }
-
-      shootingStars.forEach((star, index) => {
-        star.update();
-        star.draw(ctx);
-        if (!star.active) {
-          shootingStars.splice(index, 1);
-        }
-      });
-
       requestAnimationFrame(animate);
     }
-
     animate();
 
     const aboutSection = document.querySelector('.about');
@@ -615,29 +431,18 @@
     const scrollBox = document.getElementById('scrollBox');
 
     window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      
-      if (scrollY > 200) {
-        scrollBox.classList.add('show');
-      } else {
-        scrollBox.classList.remove('show');
-      }
-
-      const checkSection = (section) => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        if (scrollY + window.innerHeight > sectionTop + sectionHeight / 4) {
-          section.classList.add('visible');
-        }
-      };
-
-      checkSection(aboutSection);
-      checkSection(upcomingSection);
+      scrollBox.classList.toggle('show', window.scrollY > 200);
     });
 
-    scrollBox.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    [aboutSection, upcomingSection].forEach(sec => observer.observe(sec));
+
+    scrollBox.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   </script>
 </body>
 </html>
