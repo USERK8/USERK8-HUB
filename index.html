@@ -129,6 +129,38 @@
       to   { transform: rotate(360deg); }
     }
 
+    /* ── Death Ray render image ── */
+    .dr-render-wrap {
+      position: relative;
+      width: calc(100% + 60px);
+      margin: -30px -30px 24px -30px;
+      border-radius: 13px 13px 0 0;
+      overflow: hidden;
+      max-height: 260px;
+    }
+    .dr-render-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      filter: saturate(1.1) brightness(0.85);
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+    }
+    .project-card:hover .dr-render-img {
+      transform: scale(1.04);
+      filter: saturate(1.2) brightness(0.95);
+    }
+    .dr-render-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 40%,
+        rgba(10,0,0,0.85) 100%
+      );
+      pointer-events: none;
+    }
+
     /* ── Project cards ── */
     .project-card {
       background: linear-gradient(135deg, rgba(0,255,247,0.05), rgba(0,119,255,0.05));
@@ -340,6 +372,12 @@
       <!-- DEATH RAY -->
       <div class="project-card" style="border-color:#ff3333; background: linear-gradient(135deg, rgba(80,0,0,0.12), rgba(20,0,0,0.08)); box-shadow: 0 0 35px rgba(255,30,30,0.18);">
         <span class="coming-soon-badge" style="background:#ff3333; color:#fff;">COMING SOON</span>
+
+        <div class="dr-render-wrap">
+          <img src="death-ray-render-1.png" alt="Death Ray render" class="dr-render-img" />
+          <div class="dr-render-overlay"></div>
+        </div>
+
         <div class="project-title">
           <span class="title-death">
             <span class="float-D">D</span><span class="float-E">E</span><span class="float-A">A</span><span class="float-T">T</span><span class="float-H">H</span>
