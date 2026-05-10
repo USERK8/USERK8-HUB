@@ -6,25 +6,26 @@
   <title>USERK8 | Galactic Hub</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
+    /* ── BASE STYLES ── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       background: black;
       overflow-x: hidden;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       width: 100%; height: 100%;
     }
     canvas {
       position: fixed; top: 0; left: 0; z-index: 0;
       pointer-events: none;
     }
+
+    /* ── HEADER & LOGO ── */
     header {
       position: relative; z-index: 1;
       text-align: center;
       padding: 100px 20px 60px;
       color: #00fff7;
     }
-
-    /* ── NEW LOGO: hexagon ring ── */
     .logo {
       width: 150px; height: 150px;
       display: flex; align-items: center; justify-content: center;
@@ -65,6 +66,8 @@
       font-size: 2.5rem; margin-bottom: 30px;
       text-shadow: 0 0 20px #00fff7;
     }
+
+    /* ── BUTTONS ── */
     .btn-container {
       display: flex; justify-content: center;
       gap: 20px; flex-wrap: wrap; padding: 0 10px;
@@ -81,8 +84,10 @@
       box-shadow: 0 0 25px #00fff7, 0 0 50px #00fff780;
     }
 
+    /* ── LAYOUT SPACING ── */
     .spacer { height: 80vh; }
 
+    /* ── CONTENT SECTIONS ── */
     section.about, section.upcoming {
       max-width: 800px; margin: 0 auto;
       padding: 60px 20px; font-size: 1.1rem;
@@ -91,8 +96,7 @@
       transition: opacity 1s ease, transform 1s ease;
       position: relative; z-index: 1;
     }
-    section.about .content-wrapper,
-    section.upcoming .content-wrapper {
+    .content-wrapper {
       background: rgba(10, 10, 10, 0.82);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(0,255,247,0.3);
@@ -103,35 +107,11 @@
       font-size: 1.8rem; margin-bottom: 20px;
       color: #00fff7; text-shadow: 0 0 15px #00fff7;
     }
-    section.about p,
-    .project-description {
-      color: #c8c8c8;
-      text-shadow: 0 0 8px rgba(0,0,0,0.9);
-    }
-    section.about p { margin-bottom: 15px; }
     section.about.visible, section.upcoming.visible {
       opacity: 1; transform: translateY(0);
     }
 
-    /* ── Spinning 8 / infinity symbol ── */
-    .infinity-wrap {
-      text-align: center; margin-bottom: 24px;
-    }
-    .infinity-8 {
-      display: inline-block;
-      font-size: 4rem; font-weight: 900;
-      color: #00ccff;
-      line-height: 1;
-      text-shadow: 0 0 12px rgba(0,204,255,0.6);
-      animation: spin8 4s linear infinite;
-      transform-origin: center center;
-    }
-    @keyframes spin8 {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    /* ── Project card ── */
+    /* ── PROJECT CARDS ── */
     .project-card {
       background: linear-gradient(135deg,rgba(0,255,247,0.05),rgba(0,119,255,0.05));
       border: 2px solid #00fff7; border-radius: 15px;
@@ -149,360 +129,286 @@
       50%      { transform: scale(1.05); box-shadow: 0 0 20px #00fff7; }
     }
 
-    /* ── eight AI title ── */
+    /* ── TITLES & GRADIENTS ── */
     .project-title {
       font-size: 1.8rem; font-weight: bold;
       margin-bottom: 15px;
       display: flex; align-items: baseline; gap: 0;
     }
-    .title-eight {
-      color: #00ccff;
-      text-shadow: 0 0 12px rgba(0,204,255,0.7);
-      display: inline-block;
-    }
-    .title-ai {
-      color: #ffffff; font-weight: 900;
-      text-shadow: 0 0 8px rgba(255,255,255,0.4);
-      display: inline-block;
-    }
-    /* -- DEATH: Dark Red to Light Red -- */
-.title-death {
-  font-weight: 900;
-  display: inline-block;
-  background: linear-gradient(to right, #300000, #ff4d4d);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  /* Use drop-shadow for clipped text to keep the glow */
-  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
-}
 
-/* -- RAY: Light Red to White -- */
-.title-ray {
-  font-weight: 900;
-  display: inline-block;
-  background: linear-gradient(to right, #ff4d4d, #ffffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-}
-          
-    /* ── floaty letter animations ── */
-    .float-e  { animation: floatLetter 2.8s ease-in-out infinite; display: inline-block; }
-    .float-i  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; }
-    .float-g  { animation: floatLetter 2.5s ease-in-out infinite 0.6s; display: inline-block; }
-    .float-h  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; }
-    .float-t  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; }
-    .float-A  { animation: floatLetter 3.4s ease-in-out infinite 0.8s; display: inline-block; }
-    .float-I  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }
-    .float-E  { animation: floatLetter 3.2s ease-in-out infinite 0.3s; display: inline-block; }
-    .float-A  { animation: floatLetter 2.5s ease-in-out infinite 0.6s; display: inline-block; }
-    .float-T  { animation: floatLetter 3.0s ease-in-out infinite 0.1s; display: inline-block; }
-    .float-H  { animation: floatLetter 2.7s ease-in-out infinite 0.4s; display: inline-block; }
-    .float-A  { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }
-    .float-D { animation: floatLetter 2.6s ease-in-out infinite 0.1s; display: inline-block; }
-    .float-R { animation: floatLetter 3.1s ease-in-out infinite 0.5s; display: inline-block; }
-    .float-Y { animation: floatLetter 2.9s ease-in-out infinite 0.2s; display: inline-block; }      
+    /* -- eight AI -- */
+    .title-eight { color: #00ccff; text-shadow: 0 0 12px rgba(0,204,255,0.7); }
+    .title-ai { color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+
+    /* -- DEATH RAY -- */
+    .title-death {
+      background: linear-gradient(to right, #440000, #ff4d4d);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
+    }
+    .title-ray {
+      background: linear-gradient(to right, #ff4d4d, #ffffff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+    }
+
+    .project-description { color: #c8c8c8; margin-bottom: 15px; }
+
+    /* ── FLOAT ANIMATIONS ── */
+    [class^="float-"] { display: inline-block; animation: floatLetter 3s ease-in-out infinite; }
+    .float-e { animation-delay: 0.1s; } .float-i { animation-delay: 0.2s; }
+    .float-g { animation-delay: 0.3s; } .float-h { animation-delay: 0.4s; }
+    .float-t { animation-delay: 0.5s; } .float-A { animation-delay: 0.6s; }
+    .float-I { animation-delay: 0.7s; } .float-D { animation-delay: 0.1s; }
+    .float-E { animation-delay: 0.2s; } .float-A2 { animation-delay: 0.3s; } 
+    .float-T { animation-delay: 0.4s; } .float-H { animation-delay: 0.5s; }
+    .float-R { animation-delay: 0.6s; } .float-A3 { animation-delay: 0.7s; }
+    .float-Y { animation-delay: 0.8s; }
+
     @keyframes floatLetter {
-      0%,100% { transform: translateY(0px); }
-      50%      { transform: translateY(-5px); }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
     }
 
-    .project-specs {
-      display: flex; flex-wrap: wrap;
-      gap: 15px; margin-top: 20px;
-    }
+    /* ── SPECS ── */
+    .project-specs { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
     .spec-item {
-      background: rgba(0,255,247,0.08);
-      border: 1px solid #00fff780;
-      border-radius: 8px; padding: 10px 15px;
-      font-size: 0.9rem; color: #00fff7;
+      background: rgba(0,255,247,0.08); border: 1px solid #00fff780;
+      border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; color: #00fff7;
       display: flex; align-items: center; gap: 8px;
     }
-    .spec-icon { font-size: 1.2rem; }
 
+    /* ── SCROLL TOP ── */
     #scrollBox {
       position: fixed; bottom: 30px; right: 30px;
-      width: 60px; height: 60px;
-      background: rgba(0,0,0,0.9);
-      border: 2px solid #00fff7;
-      cursor: pointer; z-index: 10; border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,255,247,0.5);
-      align-items: center; justify-content: center;
-      opacity: 0; transform: scale(0);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      display: none;
+      width: 60px; height: 60px; background: rgba(0,0,0,0.9);
+      border: 2px solid #00fff7; cursor: pointer; z-index: 10; border-radius: 8px;
+      display: none; align-items: center; justify-content: center;
+      transition: 0.3s;
     }
-    #scrollBox.show { opacity:1; transform:scale(1); display:flex; }
+    #scrollBox.show { display: flex; animation: fadeIn 0.3s forwards; }
     #rocket { font-size:1.8rem; animation: hoverRocket 1s infinite alternate; }
-    @keyframes hoverRocket {
-      0%   { transform: translateY(0); }
-      100% { transform: translateY(-6px); }
-    }
+    @keyframes hoverRocket { from { transform: translateY(0); } to { transform: translateY(-6px); } }
 
     @media (max-width:768px) {
       h1 { font-size: 2rem; }
-      .btn-container { flex-direction: column; align-items: center; gap:15px; }
-      .btn { width: 80%; max-width: 300px; }
-      .logo { width:120px; height:120px; }
-      .logo-hex-ring { width:120px; height:120px; }
-      .logo-inner-circle { width:88px; height:88px; }
-      .logo-text { font-size:1.3rem; }
+      .btn { width: 80%; }
     }
   </style>
 </head>
 <body>
-  <canvas id="galaxy"></canvas>
 
-  <header>
-    <div class="logo">
-      <svg class="logo-hex-ring" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stop-color="#00fff7"/>
-            <stop offset="50%"  stop-color="#0077ff"/>
-            <stop offset="100%" stop-color="#00fff7"/>
-          </linearGradient>
-        </defs>
-        <polygon points="75,8 137,42 137,108 75,142 13,108 13,42" stroke="url(#hexGrad)" stroke-width="2.5" fill="none"/>
-        <polygon points="75,20 125,49 125,101 75,130 25,101 25,49" stroke="url(#hexGrad)" stroke-width="1" fill="none" stroke-dasharray="4 6" opacity="0.5"/>
-        <circle cx="75"  cy="8"   r="3" fill="#00fff7"/>
-        <circle cx="137" cy="42"  r="3" fill="#0077ff"/>
-        <circle cx="137" cy="108" r="3" fill="#00fff7"/>
-        <circle cx="75"  cy="142" r="3" fill="#0077ff"/>
-        <circle cx="13"  cy="108" r="3" fill="#00fff7"/>
-        <circle cx="13"  cy="42"  r="3" fill="#0077ff"/>
-      </svg>
-      <div class="logo-inner-circle">
-        <div class="logo-text">USERK8</div>
-        <div class="logo-subtext">GALACTIC</div>
+<canvas id="galaxy"></canvas>
+
+<header>
+  <div class="logo">
+    <svg class="logo-hex-ring" viewBox="0 0 150 150">
+      <defs>
+        <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#00fff7"/><stop offset="50%" stop-color="#0077ff"/><stop offset="100%" stop-color="#00fff7"/>
+        </linearGradient>
+      </defs>
+      <polygon points="75,8 137,42 137,108 75,142 13,108 13,42" stroke="url(#hexGrad)" stroke-width="2.5" fill="none"/>
+      <circle cx="75" cy="8" r="3" fill="#00fff7"/>
+      <circle cx="137" cy="42" r="3" fill="#0077ff"/>
+      <circle cx="137" cy="108" r="3" fill="#00fff7"/>
+      <circle cx="75" cy="142" r="3" fill="#0077ff"/>
+      <circle cx="13" cy="108" r="3" fill="#00fff7"/>
+      <circle cx="13" cy="42" r="3" fill="#0077ff"/>
+    </svg>
+    <div class="logo-inner-circle">
+      <div class="logo-text">USERK8</div>
+      <div class="logo-subtext">GALACTIC</div>
+    </div>
+  </div>
+  <h1>Welcome to USERK8</h1>
+  <div class="btn-container">
+    <a href="ph.html" class="btn">Project Hub</a>
+    <a href="contact.html" class="btn">Contact</a>
+    <a href="about_us.html" class="btn">About</a>
+  </div>
+</header>
+
+<div class="spacer"></div>
+
+<section class="about">
+  <div class="content-wrapper">
+    <h2>About This Page</h2>
+    <p>Hey, I'm <strong style="color:#00fff7;">Sohan</strong>. This site is where I keep all my tech experiments and creations. Built entirely with pure code—no libraries, just raw imagination and a lot of late nights.</p>
+    <p>Thanks for stopping by. You're now part of the USERK8 journey. 🚀</p>
+  </div>
+</section>
+
+<section class="upcoming">
+  <div class="content-wrapper">
+    <h2>Upcoming Projects</h2>
+
+    <div class="project-card">
+      <span class="coming-soon-badge">COMING SOON</span>
+      <div class="project-title">
+        <span class="title-eight">
+          <span class="float-e">e</span><span class="float-i">i</span><span class="float-g">g</span><span class="float-h">h</span><span class="float-t">t</span>
+        </span>
+        <span>&nbsp;</span>
+        <span class="title-ai">
+          <span class="float-A">A</span><span class="float-I">I</span>
+        </span>
+      </div>
+      <div class="project-description">
+        On-device 1B parameter language model built from scratch for mobile devices. Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI directly on your phone.
+      </div>
+      <div class="project-specs">
+        <div class="spec-item"><span>🧠</span><span>1B Parameters</span></div>
+        <div class="spec-item"><span>⚡</span><span>4-bit Quantized</span></div>
+        <div class="spec-item"><span>📚</span><span>4T Token Training</span></div>
+        <div class="spec-item"><span>📱</span><span>Local Inference</span></div>
       </div>
     </div>
 
-    <h1>Welcome to USERK8</h1>
-    <div class="btn-container">
-      <a href="ph.html" class="btn">Project Hub</a>
-      <a href="contact.html" class="btn">Contact</a>
-      <a href="about_us.html" class="btn">About</a>
-    </div>
-  </header>
-
-  <div class="spacer"></div>
-
-  <section class="about">
-    <div class="content-wrapper">
-      <h2>About This Page</h2>
-      <p>
-        Hey, I'm <strong style="color:#00fff7;">Sohan</strong>. This site is where I keep all my tech experiments, creations, and whatever wild stuff I come up with.
-        I built this entirely with code — no fancy libraries, no templates. Just imagination and a lot of late nights.
-      </p>
-      <p>
-        Scroll around, explore the hub, and if you find something cool, even better. This is just the beginning — more projects and crazy ideas coming soon.
-      </p>
-      <p>
-        Thanks for stopping by. You're now part of the USERK8 journey. 🚀
-      </p>
-    </div>
-  </section>
-
-  <section class="upcoming">
-    <div class="content-wrapper">
-      <h2>Upcoming Projects</h2>
-
-      <div class="infinity-wrap">
-        <span class="infinity-8">8</span>
+    <div class="project-card" style="border-color: #ff4d4d; box-shadow: 0 0 30px rgba(255,77,77,0.15);">
+      <span class="coming-soon-badge" style="background: #ff4d4d;">COMING SOON</span>
+      <div class="project-title">
+        <span class="title-death">
+          <span class="float-D">D</span><span class="float-E">E</span><span class="float-A2">A</span><span class="float-T">T</span><span class="float-H">H</span>
+        </span>
+        <span>&nbsp;</span>
+        <span class="title-ray">
+          <span class="float-R">R</span><span class="float-A3">A</span><span class="float-Y">Y</span>
+        </span>
       </div>
-
-      <div class="project-card">
-        <span class="coming-soon-badge">COMING SOON</span>
-
-        <div class="project-title">
-          <span class="title-eight">
-            <span class="float-e">e</span><span class="float-i">i</span><span class="float-g">g</span><span class="float-h">h</span><span class="float-t">t</span>
-          </span>
-          <span>&nbsp;</span>
-          <span class="title-ai">
-            <span class="float-A">A</span><span class="float-I">I</span>
-          </span>
-        </div>
-
-        <div class="project-description">
-          On-device 1B parameter language model built from scratch for mobile devices.
-          Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI capabilities
-          directly on your phone without cloud dependency.
-        </div>
-        <div class="project-specs">
-          <div class="spec-item"><span class="spec-icon">🧠</span><span>1B Parameters</span></div>
-          <div class="spec-item"><span class="spec-icon">⚡</span><span>4-bit Quantized</span></div>
-          <div class="spec-item"><span class="spec-icon">📚</span><span>4T Token Training</span></div>
-          <div class="spec-item"><span class="spec-icon">📱</span><span>On-Device Inference</span></div>
-        </div>
+      <div class="project-description">
+        The biotech giant Exteronic has fallen. The sky is bleeding toxic Black Rain, reshaping the DNA of anyone left in the Dead Zone. Infiltrate, survive, and uncover the truth about Subject 0.
+      </div>
+      <div class="project-specs">
+        <div class="spec-item" style="color:#ff4d4d; border-color:#ff4d4d80;"><span>🌧️</span><span>Survive Black Rain</span></div>
+        <div class="spec-item" style="color:#ff4d4d; border-color:#ff4d4d80;"><span>🔫</span><span>Tactical Combat</span></div>
+        <div class="spec-item" style="color:#ff4d4d; border-color:#ff4d4d80;"><span>☣️</span><span>Integrity System</span></div>
+        <div class="spec-item" style="color:#ff4d4d; border-color:#ff4d4d80;"><span>🔍</span><span>Subject 0 Mystery</span></div>
       </div>
     </div>
-  </section>
- 
-  
-  <section class="upcoming">
 
-      <div class="project-card">
-        <span class="coming-soon-badge">COMING SOON</span>
+  </div>
+</section>
 
-        <div class="project-title">
-          <span class="title-death">
-            <span class="float-D">D</span><span class="float-E">E</span><span class="float-A">A</span><span class="float-T">T</span><span class="float-H">H</span>
-          <span>&nbsp;</span>
-          <span class="title-ray">
-            <span class="float-R">R</span><span class="float-A">A</span><span class="float-Y">Y</span>
-          </span>
-        </div>
+<div id="scrollBox"><div id="rocket">🚀</div></div>
 
-        <div class="project-description">
-          The biotech giant Exteronic has fallen. The sky is bleeding toxic Black Rain, 
-          reshaping the DNA of anyone left in the Dead Zone. You are a mercenary on a 
-          contract for Matropics: Infiltrate, rescue the scientists, and survive the 
-          storm. But as your Integrity drops, the truth about Subject 0 begins to surface.
-        </div>
-        <div class="project-specs">
-          <div class="spec-item"><span class="spec-icon">🌧️</span><span>Survive The Black Rain</span></div>
-          <div class="spec-item"><span class="spec-icon">🔫</span><span>Fight For Your Life</span></div>
-          <div class="spec-item"><span class="spec-icon">☣️</span><span>Maintain Your Integrity</span></div>
-          <div class="spec-item"><span class="spec-icon">🔍</span><span>Solve The Mistries Burried Under The Blood</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<script>
+  const canvas = document.getElementById('galaxy');
+  const ctx = canvas.getContext('2d');
+  let width, height, centerX, centerY;
 
-  <div id="scrollBox"><div id="rocket">🚀</div></div>
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    centerX = width / 2; centerY = height / 2;
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-  <script>
-    const canvas = document.getElementById('galaxy');
-    const ctx = canvas.getContext('2d');
-    let width, height, centerX, centerY;
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      centerX = width / 2; centerY = height / 2;
+  // ── GALAXY STARS ──
+  class GalaxyStar {
+    constructor() { this.reset(); }
+    reset() {
+      this.angle = Math.random() * Math.PI * 2;
+      this.radius = Math.sqrt(Math.random()) * 300 + 60;
+      this.speed = 0.0003 + Math.random() * 0.001;
+      this.yOffset = (Math.random() - 0.5) * this.radius * 0.15;
+      this.size = Math.random() * 1.5 + 0.3;
+      const colors = ['rgba(255,255,255,', 'rgba(0,255,247,', 'rgba(0,212,255,'];
+      this.colorBase = colors[Math.floor(Math.random() * colors.length)];
+      this.alpha = Math.max(0.3, 1 - this.radius / 400);
     }
-    resize();
-    window.addEventListener('resize', resize);
-
-    class GalaxyStar {
-      constructor() { this.reset(); }
-      reset() {
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.sqrt(Math.random()) * 300 + 60;
-        this.radius = distance;
-        this.angle = angle;
-        this.speed = 0.0003 + Math.random() * 0.001;
-        this.yOffset = (Math.random() - 0.5) * distance * 0.15;
-        const colors = [
-          'rgba(255,255,255,', 'rgba(255,160,160,', 'rgba(255,255,160,',
-          'rgba(0,255,247,',   'rgba(160,160,255,', 'rgba(0,212,255,'
-        ];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        this.alpha = Math.max(0.3, 1 - this.radius / 400);
-        this.size = Math.random() * 1.5 + 0.3;
-        this.color = color + this.alpha + ')';
-      }
-      update() { this.angle += this.speed; }
-      draw(c) {
-        const x = centerX + this.radius * Math.cos(this.angle);
-        const y = centerY + this.radius * Math.sin(this.angle) * 0.1 + this.yOffset;
-        c.beginPath(); c.arc(x, y, this.size, 0, 2 * Math.PI);
-        c.fillStyle = this.color; c.fill();
-      }
+    update() { this.angle += this.speed; }
+    draw(c) {
+      const x = centerX + this.radius * Math.cos(this.angle);
+      const y = centerY + this.radius * Math.sin(this.angle) * 0.1 + this.yOffset;
+      c.beginPath(); c.arc(x, y, this.size, 0, 2 * Math.PI);
+      c.fillStyle = this.colorBase + this.alpha + ')'; c.fill();
     }
+  }
 
-    class BackgroundStar {
-      constructor() {
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * window.innerHeight;
-        this.size = Math.random() * 1.2;
-        this.alpha = Math.random() * 0.4 + 0.1;
-        this.twinkleSpeed = Math.random() * 0.02 + 0.01;
-        this.twinklePhase = Math.random() * Math.PI * 2;
-      }
-      update() { this.twinklePhase += this.twinkleSpeed; }
-      draw(c) {
-        const a = this.alpha * (Math.sin(this.twinklePhase) * 0.3 + 0.7);
-        c.beginPath(); c.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-        c.fillStyle = `rgba(255,255,255,${a})`; c.fill();
-      }
+  // ── BACKGROUND TWINKLE STARS ──
+  class BackgroundStar {
+    constructor() {
+      this.x = Math.random() * window.innerWidth;
+      this.y = Math.random() * window.innerHeight;
+      this.size = Math.random() * 1.2;
+      this.alpha = Math.random() * 0.4 + 0.1;
+      this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+      this.twinklePhase = Math.random() * Math.PI * 2;
     }
-
-    class ShootingStar {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height / 2;
-        this.length = Math.random() * 80 + 40;
-        this.speed = Math.random() * 8 + 6;
-        this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
-        this.opacity = 1; this.active = true;
-      }
-      update() {
-        if (!this.active) return;
-        this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed;
-        this.opacity -= 0.01;
-        if (this.opacity <= 0 || this.x > width || this.y > height) this.active = false;
-      }
-      draw(c) {
-        if (!this.active) return;
-        c.save(); c.translate(this.x, this.y); c.rotate(this.angle);
-        const g = c.createLinearGradient(0, 0, -this.length, 0);
-        g.addColorStop(0, `rgba(255,255,255,${this.opacity})`);
-        g.addColorStop(1, 'rgba(255,255,255,0)');
-        c.strokeStyle = g; c.lineWidth = 2;
-        c.beginPath(); c.moveTo(0,0); c.lineTo(-this.length,0); c.stroke();
-        c.restore();
-      }
+    update() { this.twinklePhase += this.twinkleSpeed; }
+    draw(c) {
+      const a = this.alpha * (Math.sin(this.twinklePhase) * 0.3 + 0.7);
+      c.beginPath(); c.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+      c.fillStyle = `rgba(255,255,255,${a})`; c.fill();
     }
+  }
 
-    const galaxyStars = [], bgStars = [], shooters = [];
-    for (let i = 0; i < 1000; i++) galaxyStars.push(new GalaxyStar());
-    for (let i = 0; i < 300; i++) bgStars.push(new BackgroundStar());
-
-    function drawCore() {
-      const g = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 100);
-      g.addColorStop(0, 'rgba(0,255,247,0.25)');
-      g.addColorStop(0.5, 'rgba(0,212,255,0.08)');
+  // ── SHOOTING STARS ──
+  class ShootingStar {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height / 2;
+      this.length = Math.random() * 80 + 40;
+      this.speed = Math.random() * 8 + 6;
+      this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
+      this.opacity = 1; this.active = true;
+    }
+    update() {
+      if (!this.active) return;
+      this.x += Math.cos(this.angle) * this.speed;
+      this.y += Math.sin(this.angle) * this.speed;
+      this.opacity -= 0.01;
+      if (this.opacity <= 0 || this.x > width || this.y > height) this.active = false;
+    }
+    draw(c) {
+      if (!this.active) return;
+      c.save(); c.translate(this.x, this.y); c.rotate(this.angle);
+      const g = c.createLinearGradient(0, 0, -this.length, 0);
+      g.addColorStop(0, `rgba(255,255,255,${this.opacity})`);
       g.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.beginPath(); ctx.arc(centerX, centerY, 100, 0, Math.PI * 2);
-      ctx.fillStyle = g; ctx.fill();
+      c.strokeStyle = g; c.lineWidth = 2;
+      c.beginPath(); c.moveTo(0,0); c.lineTo(-this.length,0); c.stroke();
+      c.restore();
     }
+  }
 
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      bgStars.forEach(s => { s.update(); s.draw(ctx); });
-      drawCore();
-      galaxyStars.forEach(s => { s.update(); s.draw(ctx); });
-      if (Math.random() > 0.99 && shooters.length < 3) shooters.push(new ShootingStar());
-      for (let i = shooters.length - 1; i >= 0; i--) {
-        shooters[i].update(); shooters[i].draw(ctx);
-        if (!shooters[i].active) shooters.splice(i, 1);
-      }
-      requestAnimationFrame(animate);
+  const galaxyStars = [], bgStars = [], shooters = [];
+  for (let i = 0; i < 800; i++) galaxyStars.push(new GalaxyStar());
+  for (let i = 0; i < 200; i++) bgStars.push(new BackgroundStar());
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    
+    // Draw background twinkle
+    bgStars.forEach(s => { s.update(); s.draw(ctx); });
+    
+    // Draw spinning galaxy
+    galaxyStars.forEach(s => { s.update(); s.draw(ctx); });
+    
+    // Random shooting stars
+    if (Math.random() > 0.99 && shooters.length < 3) shooters.push(new ShootingStar());
+    for (let i = shooters.length - 1; i >= 0; i--) {
+      shooters[i].update(); shooters[i].draw(ctx);
+      if (!shooters[i].active) shooters.splice(i, 1);
     }
-    animate();
+    
+    requestAnimationFrame(animate);
+  }
+  animate();
 
-    const aboutSection = document.querySelector('.about');
-    const upcomingSection = document.querySelector('.upcoming');
-    const scrollBox = document.getElementById('scrollBox');
+  // ── OBSERVERS ──
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  sections.forEach(sec => observer.observe(sec));
 
-    window.addEventListener('scroll', () => {
-      scrollBox.classList.toggle('show', window.scrollY > 200);
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1 });
-
-    [aboutSection, upcomingSection].forEach(sec => observer.observe(sec));
-
-    scrollBox.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  </script>
+  const scrollBox = document.getElementById('scrollBox');
+  window.addEventListener('scroll', () => { scrollBox.classList.toggle('show', window.scrollY > 300); });
+  scrollBox.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
 </body>
 </html>
