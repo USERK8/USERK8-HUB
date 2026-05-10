@@ -1,93 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABOUT US</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(-45deg,
-                #330000, #2F0000, #1A0000, #4B3621, #4D2E1A,
-                #8B4000, #665500, #014421, #013220, #003333,
-                #191970, #1C1C1C, #000000, #2A003F, #1B003B,
-                #3b0a2a, #0a0014, #002b36, #0f0f0f
-            );
-            background-size: 2000% 2000%;
-            animation: gradientBG 90s ease infinite;
-            color: white;
-            text-align: center;
-            overflow-y: auto;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — USERK8</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    :root {
+      --cyan: #00cccc;
+      --cyan-dim: #008888;
+      --purple: #1e0d35;
+      --purple-mid: #2a1050;
+      --purple-light: #6a3fa0;
+      --bg: #06040f;
+      --glass: rgba(20, 8, 40, 0.55);
+      --border: rgba(0, 204, 204, 0.15);
+    }
 
-        .home-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
+    html { scroll-behavior: smooth; }
 
-        .home-button a {
-            padding: 10px 15px;
-            font-size: 18px;
-            background-color: #222;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            border: 1px solid #555;
-        }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Syne', sans-serif;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-        h1 {
-            margin-top: 100px;
-            font-size: 48px;
-            color: #ffcccc;
-        }
+    /* ── animated background ── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(30, 13, 53, 0.9) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 90%, rgba(0, 60, 70, 0.7) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 60% 40%, rgba(106, 63, 160, 0.2) 0%, transparent 50%),
+        #06040f;
+    }
 
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 10px auto;
-        }
+    /* subtle noise grain */
+    .bg-layer::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+    }
 
-        .credits {
-            margin-top: 50px;
-            font-size: 16px;
-            color: #aaa;
-        }
+    /* ── floating particles ── */
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: var(--cyan);
+      opacity: 0;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.2; }
+      100% { opacity: 0; transform: translateY(-100vh) scale(0.3); }
+    }
 
-        .credits div {
-            margin: 5px 0;
-        }
-    </style>
+    /* ── nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(6, 4, 15, 0.7);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 4px;
+      color: var(--cyan); opacity: 0.7;
+      text-decoration: none;
+    }
+    .nav-home {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 3px;
+      color: #aaa; text-decoration: none;
+      border: 1px solid rgba(0,204,204,0.2);
+      padding: 8px 16px; border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    .nav-home:hover {
+      color: var(--cyan);
+      border-color: var(--cyan);
+      background: rgba(0,204,204,0.05);
+    }
+
+    /* ── main layout ── */
+    main {
+      position: relative; z-index: 1;
+      max-width: 900px; margin: 0 auto;
+      padding: 160px 40px 100px;
+    }
+
+    /* ── big heading ── */
+    .headline {
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -3px;
+      margin-bottom: 60px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .headline span { color: var(--cyan); }
+    .headline .dim { color: rgba(255,255,255,0.2); }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── glass card ── */
+    .glass-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      backdrop-filter: blur(20px);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: reveal 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.4;
+    }
+    .glass-card:nth-child(2) { animation-delay: 0.35s; }
+    .glass-card:nth-child(3) { animation-delay: 0.5s; }
+    .glass-card:nth-child(4) { animation-delay: 0.65s; }
+
+    .card-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 4px;
+      color: var(--cyan); opacity: 0.6;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .card-text {
+      font-size: 1.05rem; line-height: 1.8;
+      color: #c8c8c8;
+    }
+    .card-text a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0,204,204,0.3);
+      transition: border-color 0.2s;
+    }
+    .card-text a:hover { border-color: var(--cyan); }
+
+    /* ── credits grid ── */
+    .credits-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 0;
+    }
+    .credit-item {
+      background: rgba(0, 204, 204, 0.04);
+      border: 1px solid rgba(0,204,204,0.12);
+      border-radius: 12px;
+      padding: 28px;
+      position: relative;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .credit-item:hover {
+      border-color: rgba(0,204,204,0.35);
+      background: rgba(0,204,204,0.07);
+    }
+    .credit-name {
+      font-size: 1.3rem; font-weight: 800;
+      color: #fff; letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .credit-handle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem; color: var(--cyan);
+      opacity: 0.7; letter-spacing: 1px;
+    }
+    .credit-dot {
+      position: absolute; top: 20px; right: 20px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--cyan); opacity: 0.5;
+    }
+
+    /* ── divider ── */
+    .divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      margin: 32px 0;
+      opacity: 0.4;
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 120px 20px 80px; }
+      nav { padding: 16px 20px; }
+      .credits-grid { grid-template-columns: 1fr; }
+      .glass-card { padding: 28px 24px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="home-button">
-        <a href="index.html">HOME</a>
+
+  <div class="bg-layer"></div>
+  <div class="particles" id="particles"></div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">USERK8</a>
+    <a href="index.html" class="nav-home">← HOME</a>
+  </nav>
+
+  <main>
+
+    <h1 class="headline">
+      Hello<span>.</span><br>
+      <span class="dim">we're glad</span><br>
+      you're here<span>.</span>
+    </h1>
+
+    <div class="glass-card">
+      <div class="card-label">// what this is</div>
+      <p class="card-text">
+        If you run into any problems with the pages, have questions, or just want to say something — we're listening. Drop us a message and we'll get back to you as fast as we can.
+      </p>
+      <div class="divider"></div>
+      <p class="card-text">
+        Reach us at <a href="mailto:polisohankumarreddy@gmail.com">polisohankumarreddy@gmail.com</a>
+      </p>
     </div>
 
-    <h1>HELLO THERE,</h1>
-    
-    <p>IF YOU ENCOUNTER ANY PROBLEM REGARDING THE PAGES OR IF YOU HAVE ANY QUERIES OR DOUBTS, PLEASE LET ME KNOW.</p>
-    <p>WE'LL TRY TO REPLY AS QUICKLY AS WE CAN...</p>
-    <p>Send us your feedback at polisohankumarreddy@gmail.com</p>
-    
-    <div class="credits">
-        <div>Credits -</div>
-        <div>SOHAN</div>
-        <div>{userk8}</div>
-        <br>
-        <div>SAMEER</div>
-        <div>{SpaceS1}</div>
+    <div class="glass-card">
+      <div class="card-label">// the people</div>
+      <div class="credits-grid">
+        <div class="credit-item">
+          <div class="credit-dot"></div>
+          <div class="credit-name">Sohan</div>
+          <div class="credit-handle">{userk8}</div>
+        </div>
+        <div class="credit-item">
+          <div class="credit-dot" style="background: #a070ff;"></div>
+          <div class="credit-name">Sameer</div>
+          <div class="credit-handle">{SpaceS1}</div>
+        </div>
+      </div>
     </div>
+
+  </main>
+
+  <script>
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.bottom = '-10px';
+      p.style.animationDuration = (12 + Math.random() * 20) + 's';
+      p.style.animationDelay = (Math.random() * 20) + 's';
+      p.style.width = p.style.height = (Math.random() > 0.6 ? 3 : 2) + 'px';
+      p.style.opacity = 0;
+      if (Math.random() > 0.7) p.style.background = '#a070ff';
+      container.appendChild(p);
+    }
+  </script>
 </body>
 </html>
