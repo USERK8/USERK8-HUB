@@ -87,7 +87,7 @@
 
     .spacer { height: 80vh; }
 
-    section.about, section.upcoming {
+    section.about, section.live, section.upcoming {
       max-width: 800px; margin: 0 auto;
       padding: 60px 20px; font-size: 1.1rem;
       line-height: 1.8; text-align: left;
@@ -96,6 +96,7 @@
       position: relative; z-index: 1;
     }
     section.about .content-wrapper,
+    section.live .content-wrapper,
     section.upcoming .content-wrapper {
       background: rgba(10, 10, 10, 0.85);
       backdrop-filter: blur(12px);
@@ -103,7 +104,7 @@
       border-radius: 15px; padding: 40px;
       box-shadow: 0 0 30px rgba(0,255,247,0.15);
     }
-    section.about h2, section.upcoming h2 {
+    section.about h2, section.live h2, section.upcoming h2 {
       font-size: 1.8rem; margin-bottom: 20px;
       color: #00fff7; text-shadow: 0 0 15px #00fff7;
     }
@@ -111,22 +112,8 @@
       color: #c8c8c8;
     }
     section.about p { margin-bottom: 15px; }
-    section.about.visible, section.upcoming.visible {
+    section.about.visible, section.live.visible, section.upcoming.visible {
       opacity: 1; transform: translateY(0);
-    }
-
-    /* ── Spinning 8 ── */
-    .infinity-wrap { text-align: center; margin-bottom: 24px; }
-    .infinity-8 {
-      display: inline-block;
-      font-size: 4rem; font-weight: 900;
-      color: #00ccff; line-height: 1;
-      text-shadow: 0 0 16px rgba(0,204,255,0.7), 0 0 40px rgba(0,204,255,0.3);
-      animation: spin8 4s linear infinite;
-    }
-    @keyframes spin8 {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
     }
 
     /* ── Death Ray render image ── */
@@ -183,25 +170,117 @@
       50%      { transform: scale(1.05); }
     }
 
-    /* ── eight AI ── */
+    /* ── LIVE badge ── */
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent;
+      border: 1px solid rgba(0,255,247,0.4);
+      color: #00fff7;
+      padding: 5px 14px; border-radius: 20px; font-size: 0.8rem;
+      font-weight: bold; margin-bottom: 15px;
+      letter-spacing: 0.08em;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #00fff7;
+      box-shadow: 0 0 6px #00fff7;
+      animation: livePulse 1.6s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    /* ── eight AI live card ── */
+    .live-card {
+      background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(0,80,120,0.04));
+      border: 1px solid rgba(0,255,247,0.35);
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .live-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,255,247,0.7);
+      box-shadow: 0 0 35px rgba(0,255,247,0.15);
+    }
+    .live-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      margin-bottom: 14px;
+    }
+    .live-card-title {
+      font-size: 1.8rem; font-weight: bold;
+      display: flex; align-items: baseline; gap: 0;
+    }
+    .lc-eight {
+      color: #00ccff;
+      text-shadow: 0 0 12px rgba(0,204,255,0.7);
+    }
+    .lc-ai {
+      color: #ffffff; font-weight: 900;
+      text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    }
+    .live-card-desc {
+      color: #c8c8c8;
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+    .live-card-footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .live-specs {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .live-spec {
+      background: rgba(0,255,247,0.07);
+      border: 1px solid rgba(0,255,247,0.2);
+      border-radius: 8px; padding: 7px 13px;
+      font-size: 0.82rem; color: #00fff7;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .try-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none;
+      padding: 12px 24px;
+      background: #00fff7;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      letter-spacing: 0.04em;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+      white-space: nowrap;
+    }
+    .try-link:hover {
+      transform: scale(1.07) translateY(-2px);
+      box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff760;
+    }
+    .try-arrow { font-size: 1rem; }
+
+    /* ── section divider line ── */
+    .section-divider {
+      max-width: 800px; margin: 0 auto;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,255,247,0.2), transparent);
+      position: relative; z-index: 1;
+    }
+
+    /* ── Project title ── */
     .project-title {
       font-size: 1.8rem; font-weight: bold;
       margin-bottom: 15px;
       display: flex; align-items: baseline;
       flex-wrap: wrap; gap: 0;
     }
-    .title-eight {
-      color: #00ccff;
-      text-shadow: 0 0 12px rgba(0,204,255,0.7);
-      display: inline-block;
-    }
-    .title-ai {
-      color: #ffffff; font-weight: 900;
-      text-shadow: 0 0 8px rgba(255,255,255,0.5);
-      display: inline-block;
-    }
 
-    /* ── DEATH RAY — fixed visibility ── */
+    /* ── DEATH RAY ── */
     .title-death {
       font-size: 1.8rem; font-weight: 900;
       display: inline-block;
@@ -280,6 +359,8 @@
       .logo-hex-ring { width:120px; height:120px; }
       .logo-inner-circle { width:88px; height:88px; }
       .logo-text { font-size:1.3rem; }
+      .live-card-footer { flex-direction: column; align-items: flex-start; }
+      .try-link { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -337,38 +418,54 @@
     </div>
   </section>
 
+  <!-- ── LIVE SECTION ── -->
+  <section class="live">
+    <div class="content-wrapper">
+      <h2>Live</h2>
+
+      <div class="live-card">
+        <div class="live-card-header">
+          <div class="live-card-title">
+            <span class="lc-eight">
+              <span class="float-e">e</span><span class="float-i">i</span><span class="float-g">g</span><span class="float-h">h</span><span class="float-t">t</span>
+            </span>
+            <span>&nbsp;</span>
+            <span class="lc-ai">
+              <span class="float-A">A</span><span class="float-I">I</span>
+            </span>
+          </div>
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            live now
+          </div>
+        </div>
+
+        <p class="live-card-desc">
+          On-device 1B parameter language model built from scratch for mobile devices.
+          4-bit quantized for maximum efficiency — powerful AI directly on your phone, no cloud needed.
+        </p>
+
+        <div class="live-card-footer">
+          <div class="live-specs">
+            <div class="live-spec"><span>🧠</span><span>1B Parameters</span></div>
+            <div class="live-spec"><span>⚡</span><span>4-bit Quantized</span></div>
+            <div class="live-spec"><span>📱</span><span>On-Device</span></div>
+          </div>
+          <a href="https://userk8.github.io/eight-ai/" class="try-link" target="_blank">
+            try eight ai <span class="try-arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── UPCOMING SECTION ── -->
   <section class="upcoming">
     <div class="content-wrapper">
       <h2>Upcoming Projects</h2>
-
-      <div class="infinity-wrap">
-        <span class="infinity-8">8</span>
-      </div>
-
-      <!-- eight AI -->
-      <div class="project-card">
-        <span class="coming-soon-badge">COMING SOON</span>
-        <div class="project-title">
-          <span class="title-eight">
-            <span class="float-e">e</span><span class="float-i">i</span><span class="float-g">g</span><span class="float-h">h</span><span class="float-t">t</span>
-          </span>
-          <span>&nbsp;</span>
-          <span class="title-ai">
-            <span class="float-A">A</span><span class="float-I">I</span>
-          </span>
-        </div>
-        <div class="project-description">
-          On-device 1B parameter language model built from scratch for mobile devices.
-          Engineered for maximum efficiency with 4-bit quantization, enabling powerful AI capabilities
-          directly on your phone without cloud dependency.
-        </div>
-        <div class="project-specs">
-          <div class="spec-item"><span class="spec-icon">🧠</span><span>1B Parameters</span></div>
-          <div class="spec-item"><span class="spec-icon">⚡</span><span>4-bit Quantized</span></div>
-          <div class="spec-item"><span class="spec-icon">📚</span><span>4T Token Training</span></div>
-          <div class="spec-item"><span class="spec-icon">📱</span><span>On-Device Inference</span></div>
-        </div>
-      </div>
 
       <!-- DEATH RAY -->
       <div class="project-card" style="border-color:#ff3333; background: linear-gradient(135deg, rgba(80,0,0,0.12), rgba(20,0,0,0.08)); box-shadow: 0 0 35px rgba(255,30,30,0.18);">
@@ -421,8 +518,7 @@
     resize();
     window.addEventListener('resize', resize);
 
-    // tilt angle in radians — galaxy plane rotated toward viewer
-    const TILT = Math.cos(28 * Math.PI / 180); // ~0.88
+    const TILT = Math.cos(28 * Math.PI / 180);
 
     class GalaxyStar {
       constructor() { this.reset(); }
@@ -445,7 +541,6 @@
       draw(c) {
         const fx = this.radius * Math.cos(this.angle);
         const fy = this.radius * Math.sin(this.angle) * 0.2 + this.armOffset;
-        // apply tilt: compress y axis by cosine of tilt angle
         const screenY = fy * TILT;
         c.beginPath();
         c.arc(centerX + fx, centerY + screenY, this.size, 0, Math.PI * 2);
@@ -545,6 +640,7 @@
     animate();
 
     const aboutSection    = document.querySelector('.about');
+    const liveSection     = document.querySelector('.live');
     const upcomingSection = document.querySelector('.upcoming');
     const scrollBox       = document.getElementById('scrollBox');
 
@@ -558,7 +654,7 @@
       });
     }, { threshold: 0.08 });
 
-    [aboutSection, upcomingSection].forEach(sec => observer.observe(sec));
+    [aboutSection, liveSection, upcomingSection].forEach(sec => observer.observe(sec));
     scrollBox.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   </script>
 </body>
