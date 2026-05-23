@@ -28,7 +28,6 @@
       from { opacity: 0; transform: translateY(30px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     .logo {
       width: 150px; height: 150px;
       display: flex; align-items: center; justify-content: center;
@@ -64,7 +63,6 @@
       font-size: 0.5rem; letter-spacing: 4px;
       color: #00d4ff; margin-top: -2px; opacity: 0.8;
     }
-
     h1 {
       font-size: 2.5rem; margin-bottom: 30px;
       text-shadow: 0 0 20px #00fff7;
@@ -84,9 +82,7 @@
       transform: scale(1.1) translateY(-3px);
       box-shadow: 0 0 25px #00fff7, 0 0 50px #00fff780;
     }
-
     .spacer { height: 80vh; }
-
     section.about, section.live, section.upcoming {
       max-width: 800px; margin: 0 auto;
       padding: 60px 20px; font-size: 1.1rem;
@@ -115,7 +111,6 @@
     section.about.visible, section.live.visible, section.upcoming.visible {
       opacity: 1; transform: translateY(0);
     }
-
     /* ── Death Ray render image ── */
     .dr-render-wrap {
       position: relative;
@@ -148,7 +143,6 @@
       );
       pointer-events: none;
     }
-
     /* ── Project cards ── */
     .project-card {
       background: linear-gradient(135deg, rgba(0,255,247,0.05), rgba(0,119,255,0.05));
@@ -158,7 +152,6 @@
       transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
     }
     .project-card:hover { transform: translateY(-4px); }
-
     .coming-soon-badge {
       display: inline-block; background: #00fff7; color: black;
       padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;
@@ -169,7 +162,6 @@
       0%,100% { transform: scale(1); }
       50%      { transform: scale(1.05); }
     }
-
     /* ── LIVE badge ── */
     .live-badge {
       display: inline-flex; align-items: center; gap: 8px;
@@ -190,7 +182,6 @@
       0%,100% { opacity: 1; transform: scale(1); }
       50%      { opacity: 0.4; transform: scale(0.75); }
     }
-
     /* ── eight AI live card ── */
     .live-card {
       background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(0,80,120,0.04));
@@ -263,7 +254,6 @@
       box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff760;
     }
     .try-arrow { font-size: 1rem; }
-
     /* ── section divider line ── */
     .section-divider {
       max-width: 800px; margin: 0 auto;
@@ -271,7 +261,6 @@
       background: linear-gradient(90deg, transparent, rgba(0,255,247,0.2), transparent);
       position: relative; z-index: 1;
     }
-
     /* ── Project title ── */
     .project-title {
       font-size: 1.8rem; font-weight: bold;
@@ -279,7 +268,6 @@
       display: flex; align-items: baseline;
       flex-wrap: wrap; gap: 0;
     }
-
     /* ── DEATH RAY ── */
     .title-death {
       font-size: 1.8rem; font-weight: 900;
@@ -298,7 +286,6 @@
         0 0 10px rgba(255,100,100,0.8),
         0 0 25px rgba(255,80,80,0.4);
     }
-
     /* ── floaty letters ── */
     .float-e  { animation: fl 2.8s ease-in-out infinite;       display:inline-block; position:relative; }
     .float-i  { animation: fl 3.2s ease-in-out infinite 0.3s;  display:inline-block; position:relative; }
@@ -317,7 +304,6 @@
       0%,100% { top: 0px; }
       50%     { top: -5px; }
     }
-
     .project-specs {
       display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px;
     }
@@ -331,7 +317,6 @@
     }
     .spec-item:hover { background: rgba(0,255,247,0.14); transform: translateY(-2px); }
     .spec-icon { font-size: 1.2rem; }
-
     #scrollBox {
       position: fixed; bottom: 30px; right: 30px;
       width: 60px; height: 60px;
@@ -350,7 +335,6 @@
       0%   { transform: translateY(0); }
       100% { transform: translateY(-6px); }
     }
-
     @media (max-width:768px) {
       h1 { font-size: 2rem; }
       .btn-container { flex-direction: column; align-items: center; gap:15px; }
@@ -366,7 +350,6 @@
 </head>
 <body>
   <canvas id="galaxy"></canvas>
-
   <header>
     <div class="logo">
       <svg class="logo-hex-ring" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
@@ -391,7 +374,6 @@
         <div class="logo-subtext">GALACTIC</div>
       </div>
     </div>
-
     <h1>Welcome to the Projects of userk8__</h1>
     <div class="btn-container">
       <a href="ph.html"         class="btn">Project Hub</a>
@@ -399,9 +381,7 @@
       <a href="about_us.html"   class="btn">About</a>
     </div>
   </header>
-
   <div class="spacer"></div>
-
   <section class="about">
     <div class="content-wrapper">
       <h2>About This Page</h2>
@@ -417,12 +397,10 @@
       </p>
     </div>
   </section>
-
   <!-- ── LIVE SECTION ── -->
   <section class="live">
     <div class="content-wrapper">
       <h2>Live</h2>
-
       <div class="live-card">
         <div class="live-card-header">
           <div class="live-card-title">
@@ -439,12 +417,10 @@
             live now
           </div>
         </div>
-
         <p class="live-card-desc">
           On-device 1B parameter language model built from scratch for mobile devices.
           4-bit quantized for maximum efficiency — powerful AI directly on your phone, no cloud needed.
         </p>
-
         <div class="live-card-footer">
           <div class="live-specs">
             <div class="live-spec"><span>🧠</span><span>1B Parameters</span></div>
@@ -456,26 +432,20 @@
           </a>
         </div>
       </div>
-
     </div>
   </section>
-
   <div class="section-divider"></div>
-
   <!-- ── UPCOMING SECTION ── -->
   <section class="upcoming">
     <div class="content-wrapper">
       <h2>Upcoming Projects</h2>
-
       <!-- DEATH RAY -->
       <div class="project-card" style="border-color:#ff3333; background: linear-gradient(135deg, rgba(80,0,0,0.12), rgba(20,0,0,0.08)); box-shadow: 0 0 35px rgba(255,30,30,0.18);">
         <span class="coming-soon-badge" style="background:#ff3333; color:#fff;">COMING SOON</span>
-
         <div class="dr-render-wrap">
-          <img src="poster-death-ray" alt="Death Ray render" class="dr-render-img" />
+          <img src="death-ray-render-1.png" alt="Death Ray render" class="dr-render-img" />
           <div class="dr-render-overlay"></div>
         </div>
-
         <div class="project-title">
           <span class="title-death">
             <span class="float-D">D</span><span class="float-E">E</span><span class="float-A">A</span><span class="float-T">T</span><span class="float-H">H</span>
@@ -498,17 +468,13 @@
           <div class="spec-item" style="color:#ff7070; border-color:#ff333360; background:rgba(255,30,30,0.07);"><span class="spec-icon">🔍</span><span>Uncover The Truth</span></div>
         </div>
       </div>
-
     </div>
   </section>
-
   <div id="scrollBox"><div id="rocket">🚀</div></div>
-
   <script>
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
     let width, height, centerX, centerY;
-
     function resize() {
       width  = canvas.width  = window.innerWidth;
       height = canvas.height = window.innerHeight;
@@ -517,9 +483,7 @@
     }
     resize();
     window.addEventListener('resize', resize);
-
     const TILT = Math.cos(28 * Math.PI / 180);
-
     class GalaxyStar {
       constructor() { this.reset(); }
       reset() {
@@ -548,7 +512,6 @@
         c.fill();
       }
     }
-
     class BackgroundStar {
       constructor() {
         this.x            = Math.random() * window.innerWidth;
@@ -567,7 +530,6 @@
         c.fill();
       }
     }
-
     class ShootingStar {
       constructor() { this.reset(); }
       reset() {
@@ -604,11 +566,9 @@
         c.restore();
       }
     }
-
     const galaxyStars = [], bgStars = [], shooters = [];
     for (let i = 0; i < 1200; i++) galaxyStars.push(new GalaxyStar());
     for (let i = 0; i < 280;  i++) bgStars.push(new BackgroundStar());
-
     function drawCore() {
       const halo = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 130);
       halo.addColorStop(0,   'rgba(0,255,247,0.20)');
@@ -619,14 +579,12 @@
       ctx.fillStyle = halo;
       ctx.fill();
     }
-
     let frameCount = 0;
     function animate() {
       ctx.clearRect(0, 0, width, height);
       bgStars.forEach(s => { s.update(); s.draw(ctx); });
       drawCore();
       galaxyStars.forEach(s => { s.update(); s.draw(ctx); });
-
       frameCount++;
       if (frameCount % 90 === 0 && shooters.length < 4) {
         shooters.push(new ShootingStar());
@@ -638,22 +596,18 @@
       requestAnimationFrame(animate);
     }
     animate();
-
     const aboutSection    = document.querySelector('.about');
     const liveSection     = document.querySelector('.live');
     const upcomingSection = document.querySelector('.upcoming');
     const scrollBox       = document.getElementById('scrollBox');
-
     window.addEventListener('scroll', () => {
       scrollBox.classList.toggle('show', window.scrollY > 200);
     });
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.08 });
-
     [aboutSection, liveSection, upcomingSection].forEach(sec => observer.observe(sec));
     scrollBox.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   </script>
