@@ -113,7 +113,7 @@
       opacity: 0; transform: translateY(20px);
       animation: reveal 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
       transition: border-color 0.3s, background 0.3s, transform 0.3s;
-      min-height: 140px;
+      min-height: 160px;
     }
     .project-card:nth-child(1) { animation-delay: 0.3s; }
     .project-card:nth-child(2) { animation-delay: 0.4s; }
@@ -150,7 +150,19 @@
     .card-name {
       font-size: 1.15rem; font-weight: 800;
       color: #f0f0f0; letter-spacing: 0.5px;
-      flex: 1; display: flex; align-items: center;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      line-height: 1.55;
+      color: #667;
+      letter-spacing: 0.4px;
+      flex: 1;
+      transition: color 0.3s;
+    }
+    .project-card:hover .card-desc {
+      color: rgba(0, 204, 204, 0.5);
     }
     .card-arrow {
       font-size: 1.1rem; color: var(--cyan);
@@ -167,7 +179,7 @@
       nav { padding: 14px 20px; }
       main { padding: 110px 16px 60px; }
       .projects-grid { grid-template-columns: 1fr; }
-      .project-card { min-height: 110px; padding: 22px 20px; }
+      .project-card { min-height: 130px; padding: 22px 20px; }
     }
   </style>
 </head>
@@ -190,41 +202,49 @@
       <a class="project-card" href="https://userk8.github.io/CODE-WORD/" target="_blank">
         <div class="card-num">01</div>
         <div class="card-name">Code Word</div>
+        <div class="card-desc">Learn programming through simple lines</div>
         <div class="card-arrow">↗</div>
       </a>
 
       <a class="project-card" href="https://userk8.github.io/QUIZ-BOT/" target="_blank">
         <div class="card-num">02</div>
         <div class="card-name">Quiz Bot</div>
+        <div class="card-desc">Challenge friends, test your knowledge, and climb the global leaderboard.</div>
         <div class="card-arrow">↗</div>
       </a>
 
       <a class="project-card" href="https://userk8.github.io/text_animation/" target="_blank">
         <div class="card-num">03</div>
         <div class="card-name">Text Animation</div>
+        <div class="card-desc">Send your friends animated texts to annoy them [developer's choice].</div>
         <div class="card-arrow">↗</div>
       </a>
 
       <a class="project-card" href="https://userk8.github.io/A-QUESTION/" target="_blank">
         <div class="card-num">04</div>
         <div class="card-name">One Question</div>
+        <div class="card-desc">A tiny webpage built around one important question—and one unforgettable answer.</div>
         <div class="card-arrow">↗</div>
       </a>
+
       <a class="project-card" href="https://userk8.github.io/PERIODIC-TABLE/" target="_blank">
         <div class="card-num">05</div>
         <div class="card-name">Periodic Table</div>
+        <div class="card-desc">Explore the periodic table with interactive elements, basic facts, and cool vibes....</div>
         <div class="card-arrow">↗</div>
       </a>
 
       <a class="project-card" href="https://userk8.github.io/eight-ai/" target="_blank">
         <div class="card-num">06</div>
         <div class="card-name">eight AI</div>
+        <div class="card-desc">Fine-tuned Gemma 3 1B model—go ahead, stress test it.</div>
         <div class="card-arrow">↗</div>
       </a>
 
       <a class="project-card" href="https://userk8.github.io/3D8/" target="_blank">
         <div class="card-num">07</div>
         <div class="card-name">3D8</div>
+        <div class="card-desc">Browser-based 3D viewer and mesh editor with basic modeling tools, and export support.</div>
         <div class="card-arrow">↗</div>
       </a>
 
