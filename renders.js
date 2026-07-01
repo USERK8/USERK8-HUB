@@ -113,9 +113,20 @@
   const thumbs = items.filter(i => i.type === 'image').slice(0, 3);
   widget.innerHTML =
     '<span class="stack-label">RENDERS</span>' +
-    thumbs.map(i => `<img class="stack-img" src="${i.src}" alt="" loading="lazy">`).join('') +
+    thumbs.map(i => `<img class="stack-img" data-src="${i.src}" alt="" decoding="async">`).join('') +
     `<span class="stack-count">${items.length}</span>`;
   document.body.appendChild(widget);
+
+  // don't pay the full-resolution decode cost for these tiny 72px thumbnails
+  // until the browser is actually idle — they're not critical on first paint
+  const loadThumbs = () => {
+    widget.querySelectorAll('img[data-src]').forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+    });
+  };
+  if ('requestIdleCallback' in window) requestIdleCallback(loadThumbs, { timeout: 2000 });
+  else setTimeout(loadThumbs, 1200);
 
   /* ── modal / lightbox ── */
   const modal = document.createElement('div');
@@ -159,6 +170,15 @@
   let currentDuration = IMAGE_DURATION;
   let activeVideoEl = null;
 
+  function releaseVideo(v) {
+    if (!v) return;
+    try {
+      v.pause();
+      v.removeAttribute('src');
+      v.load(); // forces the browser to actually drop the decoded/buffered frames
+    } catch (e) { /* no-op */ }
+  }
+
   function setFill(pct) {
     segs[currentIndex].querySelector('.fill').style.width = (pct * 100) + '%';
   }
@@ -176,7 +196,7 @@
     modal.classList.remove('visible');
     document.removeEventListener('keydown', onKeydown);
     stopTicker();
-    if (activeVideoEl) { activeVideoEl.pause(); activeVideoEl = null; }
+    if (activeVideoEl) { releaseVideo(activeVideoEl); activeVideoEl = null; }
     document.body.style.overflow = '';
     setTimeout(() => modal.classList.remove('open'), 250);
   }
@@ -190,7 +210,7 @@
 
   function loadSlide(index) {
     stopTicker();
-    if (activeVideoEl) { activeVideoEl.pause(); activeVideoEl = null; }
+    if (activeVideoEl) { releaseVideo(activeVideoEl); activeVideoEl = null; }
     mediaHolder.innerHTML = '';
     segs.forEach((s, i) => {
       s.querySelector('.fill').style.width = i < index ? '100%' : '0%';
@@ -202,6 +222,7 @@
 
     if (item.type === 'image') {
       const img = document.createElement('img');
+      img.decoding = 'async';
       img.src = item.src;
       img.alt = '';
       mediaHolder.appendChild(img);
@@ -210,6 +231,7 @@
       startImageTicker();
     } else {
       const video = document.createElement('video');
+      video.preload = 'auto';
       video.src = item.src;
       video.muted = muted;
       video.playsInline = true;
