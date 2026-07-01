@@ -319,7 +319,7 @@
     .spec-icon { font-size: 1.2rem; }
     #scrollBox {
       position: fixed; bottom: 30px; right: 30px;
-      width: 60px; height: 60px;
+      width: 42px; height: 42px;
       background: rgba(0,0,0,0.9);
       border: 2px solid #00fff7;
       cursor: pointer; z-index: 10; border-radius: 8px;
@@ -330,10 +330,30 @@
       display: none;
     }
     #scrollBox.show { opacity:1; transform:scale(1); display:flex; }
-    #rocket { font-size:1.8rem; animation: hoverRocket 1s ease-in-out infinite alternate; }
+    #rocket { animation: hoverRocket 1s ease-in-out infinite alternate; display:block; }
     @keyframes hoverRocket {
       0%   { transform: translateY(0); }
       100% { transform: translateY(-6px); }
+    }
+    /* ── rocket launch ── */
+    #scrollBox.launching {
+      animation: rocketLaunch 1s cubic-bezier(0.55,0,0.85,0.35) forwards;
+      pointer-events: none;
+      box-shadow: 0 0 25px rgba(0,255,247,0.8), 0 0 50px rgba(255,140,0,0.4);
+    }
+    #scrollBox.launching #rocket { animation: none; }
+    @keyframes rocketLaunch {
+      0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+      10%  { transform: translateY(-6px) scale(1.08) rotate(-4deg); }
+      100% { transform: translateY(-140vh) scale(0.6) rotate(-2deg); opacity: 0; }
+    }
+    .exhaust-particle {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9;
+      opacity: 0.9;
+      transition: transform 0.6s ease-out, opacity 0.6s ease-out;
     }
     @media (max-width:768px) {
       h1 { font-size: 2rem; }
@@ -470,7 +490,13 @@
       </div>
     </div>
   </section>
-  <div id="scrollBox"><div id="rocket">🚀</div></div>
+  <div id="scrollBox">
+    <svg id="rocket" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#00fff7" d="M12 2c2.5 2 4 5.5 4 9 0 1.7-.3 3.2-.8 4.5l1.6 1.6c.3.3.3.8 0 1.1l-.6.6c-.3.3-.8.3-1.1 0l-1.3-1.3c-.5.6-1.1 1.1-1.8 1.5v2.2c0 .4-.3.8-.8.8h-2.4c-.4 0-.8-.3-.8-.8v-2.2c-.7-.4-1.3-.9-1.8-1.5L4.9 18.7c-.3.3-.8.3-1.1 0l-.6-.6c-.3-.3-.3-.8 0-1.1l1.6-1.6C4.3 14.2 4 12.7 4 11c0-3.5 1.5-7 4-9 1.3-1 2.7-1 4 0z"/>
+      <circle cx="12" cy="10" r="2.1" fill="#0a1a2e"/>
+      <path fill="#ff6a00" d="M9.5 19.5c0 1.5 1 3 2.5 4 1.5-1 2.5-2.5 2.5-4-1 .6-4 .6-5 0z"/>
+    </svg>
+  </div>
   <script>
     const canvas = document.getElementById('galaxy');
     const ctx = canvas.getContext('2d');
@@ -600,16 +626,53 @@
     const liveSection     = document.querySelector('.live');
     const upcomingSection = document.querySelector('.upcoming');
     const scrollBox       = document.getElementById('scrollBox');
-    window.addEventListener('scroll', () => {
+    function updateRocketVisibility() {
       scrollBox.classList.toggle('show', window.scrollY > 200);
-    });
+    }
+    window.addEventListener('scroll', updateRocketVisibility);
+    window.addEventListener('load', updateRocketVisibility);
+    updateRocketVisibility();
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.08 });
     [aboutSection, liveSection, upcomingSection].forEach(sec => observer.observe(sec));
-    scrollBox.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    let isLaunching = false;
+    function spawnExhaustParticle(x, y) {
+      const p = document.createElement('div');
+      p.className = 'exhaust-particle';
+      const size = Math.random() * 5 + 3;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = (x + (Math.random() - 0.5) * 16) + 'px';
+      p.style.top = y + 'px';
+      const colors = ['#00fff7', '#ffaa00', '#ff6a00', '#ffffff'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      p.style.background = color;
+      p.style.boxShadow = `0 0 6px ${color}`;
+      document.body.appendChild(p);
+      requestAnimationFrame(() => {
+        p.style.transform = `translate(${(Math.random() - 0.5) * 46}px, ${36 + Math.random() * 34}px) scale(0.2)`;
+        p.style.opacity = '0';
+      });
+      setTimeout(() => p.remove(), 650);
+    }
+    scrollBox.addEventListener('click', () => {
+      if (isLaunching) return;
+      isLaunching = true;
+      scrollBox.classList.add('launching');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const particleTimer = setInterval(() => {
+        const rect = scrollBox.getBoundingClientRect();
+        spawnExhaustParticle(rect.left + rect.width / 2, rect.bottom - 4);
+      }, 35);
+      setTimeout(() => {
+        clearInterval(particleTimer);
+        scrollBox.classList.remove('launching');
+        isLaunching = false;
+      }, 1000);
+    });
   </script>
 </body>
 </html>
