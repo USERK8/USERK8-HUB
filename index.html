@@ -591,8 +591,8 @@
       }
     }
     const galaxyStars = [], bgStars = [], shooters = [];
-    for (let i = 0; i < 1200; i++) galaxyStars.push(new GalaxyStar());
-    for (let i = 0; i < 280;  i++) bgStars.push(new BackgroundStar());
+    for (let i = 0; i < 650; i++) galaxyStars.push(new GalaxyStar());
+    for (let i = 0; i < 150;  i++) bgStars.push(new BackgroundStar());
     function drawCore() {
       const halo = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 130);
       halo.addColorStop(0,   'rgba(0,255,247,0.20)');
@@ -630,8 +630,8 @@
     function updateRocketVisibility() {
       scrollBox.classList.toggle('show', getScrollY() > 200);
     }
-    window.addEventListener('scroll', updateRocketVisibility, true);
-    document.addEventListener('scroll', updateRocketVisibility, true);
+    window.addEventListener('scroll', updateRocketVisibility, { capture: true, passive: true });
+    document.addEventListener('scroll', updateRocketVisibility, { capture: true, passive: true });
     window.addEventListener('load', updateRocketVisibility);
     updateRocketVisibility();
     const observer = new IntersectionObserver((entries) => {
@@ -668,31 +668,37 @@
       const startY = getScrollY();
       if (startY <= 0) { isLaunching = false; scrollBox.classList.remove('launching'); return; }
 
-      // duration scales with how far the page has to travel, so the rocket
-      // always arrives at the top exactly when the page does
-      const MIN_DURATION = 500, MAX_DURATION = 1700, FACTOR = 0.55;
-      const duration = Math.min(MAX_DURATION, Math.max(MIN_DURATION, startY * FACTOR));
+      // rocket always flies at the same constant speed, no matter how far down the page is
+      const ROCKET_DURATION = 1200; // ms — fixed
+      // page scroll gets its own, slower, distance-proportional duration
+      const SCROLL_MIN = 900, SCROLL_MAX = 3200, SCROLL_SPEED = 0.9; // px per ms
+      const scrollDuration = Math.min(SCROLL_MAX, Math.max(SCROLL_MIN, startY / SCROLL_SPEED));
+
       const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
       const startTime = performance.now();
 
       const particleTimer = setInterval(() => {
         const rect = scrollBox.getBoundingClientRect();
         spawnExhaustParticle(rect.left + rect.width / 2, rect.bottom - 4);
-      }, 35);
+      }, 42);
+
+      const totalDuration = Math.max(ROCKET_DURATION, scrollDuration);
 
       function frame(now) {
-        const t = Math.min((now - startTime) / duration, 1);
-        const eased = easeOutCubic(t);
+        const elapsed = now - startTime;
 
-        window.scrollTo(0, startY * (1 - eased));
+        const scrollT = Math.min(elapsed / scrollDuration, 1);
+        window.scrollTo(0, startY * (1 - easeOutCubic(scrollT)));
 
+        const rocketT = Math.min(elapsed / ROCKET_DURATION, 1);
+        const eased = easeOutCubic(rocketT);
         const flyPx = eased * window.innerHeight * 1.4;
         const scale = 1 - eased * 0.4;
         const rotate = -4 * eased;
         scrollBox.style.transform = `translateY(-${flyPx}px) scale(${scale}) rotate(${rotate}deg)`;
         scrollBox.style.opacity = String(1 - eased);
 
-        if (t < 1) {
+        if (elapsed < totalDuration) {
           requestAnimationFrame(frame);
         } else {
           clearInterval(particleTimer);
