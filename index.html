@@ -7,11 +7,14 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      background: black;
+    html {
       overflow-x: hidden;
+    }
+    body {
+      background: black;
       font-family: 'Segoe UI', sans-serif;
-      width: 100%; height: 100%;
+      width: 100%;
+      min-height: 100%;
     }
     canvas {
       position: fixed; top: 0; left: 0; z-index: 0;
@@ -626,10 +629,14 @@
     const liveSection     = document.querySelector('.live');
     const upcomingSection = document.querySelector('.upcoming');
     const scrollBox       = document.getElementById('scrollBox');
-    function updateRocketVisibility() {
-      scrollBox.classList.toggle('show', window.scrollY > 200);
+    function getScrollY() {
+      return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
     }
-    window.addEventListener('scroll', updateRocketVisibility);
+    function updateRocketVisibility() {
+      scrollBox.classList.toggle('show', getScrollY() > 200);
+    }
+    window.addEventListener('scroll', updateRocketVisibility, true);
+    document.addEventListener('scroll', updateRocketVisibility, true);
     window.addEventListener('load', updateRocketVisibility);
     updateRocketVisibility();
     const observer = new IntersectionObserver((entries) => {
