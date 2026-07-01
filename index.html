@@ -340,16 +340,11 @@
     }
     /* ── rocket launch ── */
     #scrollBox.launching {
-      animation: rocketLaunch 1s cubic-bezier(0.55,0,0.85,0.35) forwards;
+      transition: none;
       pointer-events: none;
       box-shadow: 0 0 25px rgba(0,255,247,0.8), 0 0 50px rgba(255,140,0,0.4);
     }
     #scrollBox.launching #rocket { animation: none; }
-    @keyframes rocketLaunch {
-      0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-      10%  { transform: translateY(-6px) scale(1.08) rotate(-4deg); }
-      100% { transform: translateY(-140vh) scale(0.6) rotate(-2deg); opacity: 0; }
-    }
     .exhaust-particle {
       position: fixed;
       border-radius: 50%;
@@ -669,16 +664,46 @@
       if (isLaunching) return;
       isLaunching = true;
       scrollBox.classList.add('launching');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      const startY = getScrollY();
+      if (startY <= 0) { isLaunching = false; scrollBox.classList.remove('launching'); return; }
+
+      // duration scales with how far the page has to travel, so the rocket
+      // always arrives at the top exactly when the page does
+      const MIN_DURATION = 500, MAX_DURATION = 1700, FACTOR = 0.55;
+      const duration = Math.min(MAX_DURATION, Math.max(MIN_DURATION, startY * FACTOR));
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+      const startTime = performance.now();
+
       const particleTimer = setInterval(() => {
         const rect = scrollBox.getBoundingClientRect();
         spawnExhaustParticle(rect.left + rect.width / 2, rect.bottom - 4);
       }, 35);
-      setTimeout(() => {
-        clearInterval(particleTimer);
-        scrollBox.classList.remove('launching');
-        isLaunching = false;
-      }, 1000);
+
+      function frame(now) {
+        const t = Math.min((now - startTime) / duration, 1);
+        const eased = easeOutCubic(t);
+
+        window.scrollTo(0, startY * (1 - eased));
+
+        const flyPx = eased * window.innerHeight * 1.4;
+        const scale = 1 - eased * 0.4;
+        const rotate = -4 * eased;
+        scrollBox.style.transform = `translateY(-${flyPx}px) scale(${scale}) rotate(${rotate}deg)`;
+        scrollBox.style.opacity = String(1 - eased);
+
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          clearInterval(particleTimer);
+          scrollBox.style.transform = '';
+          scrollBox.style.opacity = '';
+          scrollBox.classList.remove('launching');
+          isLaunching = false;
+          updateRocketVisibility();
+        }
+      }
+      requestAnimationFrame(frame);
     });
   </script>
   <script src="renders.js" defer></script>
