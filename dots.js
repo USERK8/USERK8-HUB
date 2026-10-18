@@ -1,11 +1,13 @@
 (() => {
   const CONFIG = {
     spacing: 30,
-    baseRadius: 1.9,
+    baseRadius: 2.8,
     influence: 90,
     push: 16,
     ease: 0.05,
-    color: '255,255,255',
+    colorFrom: [255, 255, 255],
+    colorTo: [255, 45, 45],
+    heatEase: 0.06,
     baseAlpha: 0.16,
     driftAmount: 6,
     driftSpeed: 0.7,
@@ -20,7 +22,7 @@
   const ring = document.getElementById('ring');
   const main = document.querySelector('main');
 
-  let w = 0, h = 0, n = 0, hx, hy, px, py, ph, sp;
+  let w = 0, h = 0, n = 0, hx, hy, px, py, ph, sp, heat;
   const client = { x: -9999, y: -9999 };
   let rx = -9999, ry = -9999, rs = 1, rsTarget = 1;
 
@@ -42,6 +44,7 @@
     hx = new Float32Array(n); hy = new Float32Array(n);
     px = new Float32Array(n); py = new Float32Array(n);
     ph = new Float32Array(n); sp = new Float32Array(n);
+    heat = new Float32Array(n);
     let i = 0;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++, i++) {
@@ -64,7 +67,7 @@
     const R = CONFIG.influence, P = CONFIG.push, E = CONFIG.ease;
 
     for (let i = 0; i < n; i++) {
-      if (hy[i] < top || hy[i] > bottom) { px[i] = hx[i]; py[i] = hy[i]; continue; }
+      if (hy[i] < top || hy[i] > bottom) { px[i] = hx[i]; py[i] = hy[i]; heat[i] = 0; continue; }
       const dx = hx[i] - mx, dy = hy[i] - my;
       const d = Math.hypot(dx, dy);
       let tx = hx[i] + Math.sin(t * sp[i] + ph[i]) * A;
@@ -80,9 +83,14 @@
       }
       px[i] += (tx - px[i]) * E;
       py[i] += (ty - py[i]) * E;
-      ctx.fillStyle = 'rgba(' + CONFIG.color + ',' + (CONFIG.baseAlpha + near * 0.22) + ')';
+      heat[i] += (near - heat[i]) * CONFIG.heatEase;
+      const k = Math.min(1, heat[i] * 1.4);
+      const cr = CONFIG.colorFrom[0] + (CONFIG.colorTo[0] - CONFIG.colorFrom[0]) * k;
+      const cg = CONFIG.colorFrom[1] + (CONFIG.colorTo[1] - CONFIG.colorFrom[1]) * k;
+      const cb = CONFIG.colorFrom[2] + (CONFIG.colorTo[2] - CONFIG.colorFrom[2]) * k;
+      ctx.fillStyle = 'rgba(' + (cr | 0) + ',' + (cg | 0) + ',' + (cb | 0) + ',' + (CONFIG.baseAlpha + k * 0.55) + ')';
       ctx.beginPath();
-      ctx.arc(px[i], py[i], CONFIG.baseRadius + near * 0.5, 0, 6.2832);
+      ctx.arc(px[i], py[i], CONFIG.baseRadius + k * 0.8, 0, 6.2832);
       ctx.fill();
     }
 
