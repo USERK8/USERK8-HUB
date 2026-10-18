@@ -26,18 +26,15 @@
       position: relative;
     }
 
-    /* hide the system cursor on mouse devices (the ring replaces it) */
     @media (hover: hover) and (pointer: fine) {
       html, body, a, .project-card { cursor: none; }
     }
 
-    /* ── dot field (drawn by dots.js, scrolls with the page) ── */
     #dots { position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none; }
 
-    /* ── hollow circle cursor ── */
     .ring {
       position: fixed; left: 0; top: 0;
-      width: 36px; height: 36px; margin: -18px 0 0 -18px;
+      width: 52px; height: 52px; margin: -26px 0 0 -26px;
       border: 1.5px solid var(--cyan);
       border-radius: 50%;
       background: transparent;
@@ -50,7 +47,6 @@
     }
     .ring.show { opacity: 1; }
 
-    /* ── nav ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -78,7 +74,6 @@
       box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.5);
     }
 
-    /* ── layout ── */
     main {
       position: relative; z-index: 2;
       max-width: 900px; margin: 0 auto;
@@ -103,18 +98,18 @@
 
     @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
 
-    /* ── project grid ── */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px; width: 100%;
     }
 
-    /* opaque cyan cards */
     .project-card {
       display: flex; flex-direction: column; justify-content: space-between;
       min-height: 160px; padding: 28px 26px;
-      background: linear-gradient(135deg, #07302f, #031516);
+      background: linear-gradient(135deg, rgba(7, 48, 47, 0.5), rgba(3, 21, 22, 0.4));
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
       border: 1px solid rgba(var(--cyan-rgb), 0.5);
       border-radius: 18px;
       box-shadow: 0 0 26px rgba(var(--cyan-rgb), 0.12);
@@ -134,7 +129,7 @@
 
     .project-card:hover {
       border-color: rgba(var(--cyan-rgb), 0.9);
-      background: linear-gradient(135deg, #0a4443, #041d1e);
+      background: linear-gradient(135deg, rgba(10, 68, 67, 0.65), rgba(4, 29, 30, 0.55));
       box-shadow: 0 0 36px rgba(var(--cyan-rgb), 0.3);
       transform: translateY(-4px);
     }
