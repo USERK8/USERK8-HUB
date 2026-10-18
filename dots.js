@@ -1,14 +1,13 @@
-
 (() => {
   const CONFIG = {
-    spacing: 30,          
-    baseRadius: 1.2,      
-    influence: 90,         
-    push: 16,              
-    ease: 0.12,           
-    color: '255,255,255',  
-    baseAlpha: 0.16,      
-    ringHotScale: 1.7      
+    spacing: 30,
+    baseRadius: 1.9,
+    influence: 90,
+    push: 16,
+    ease: 0.05,
+    color: '255,255,255',
+    baseAlpha: 0.16,
+    ringHotScale: 1.7
   };
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -20,13 +19,13 @@
   const main = document.querySelector('main');
 
   let w = 0, h = 0, n = 0, hx, hy, px, py;
-  const client = { x: -9999, y: -9999 };   
+  const client = { x: -9999, y: -9999 };
   let rx = -9999, ry = -9999, rs = 1, rsTarget = 1;
 
   function build() {
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     w = document.documentElement.clientWidth;
-    h = Math.max(innerHeight, main.offsetHeight);       
+    h = Math.max(innerHeight, main.offsetHeight);
     while (w * h * dpr * dpr > 12e6 && dpr > 1) dpr -= 0.25;
     dpr = Math.max(1, dpr);
     canvas.style.width = w + 'px';
@@ -52,7 +51,6 @@
   function draw() {
     ctx.clearRect(0, 0, w, h);
 
-    
     const mx = client.x + window.scrollX;
     const my = client.y + window.scrollY;
     const top = window.scrollY - 40, bottom = window.scrollY + innerHeight + 40;
@@ -78,7 +76,6 @@
       ctx.arc(px[i], py[i], CONFIG.baseRadius + near * 0.5, 0, 6.2832);
       ctx.fill();
     }
-
 
     rx += (client.x - rx) * 0.4;
     ry += (client.y - ry) * 0.4;
@@ -115,7 +112,6 @@
     rsTarget = hot ? CONFIG.ringHotScale : 1;
   });
 
-  
   let pending = false;
   function queueBuild() {
     if (pending) return;
