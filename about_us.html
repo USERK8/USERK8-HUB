@@ -5,220 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — USERK8</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --cyan: #00cccc;
-      --cyan-dim: #008888;
-      --purple: #1e0d35;
-      --purple-mid: #2a1050;
-      --purple-light: #6a3fa0;
-      --bg: #06040f;
-      --glass: rgba(20, 8, 40, 0.55);
-      --border: rgba(0, 204, 204, 0.15);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      min-height: 100vh;
-      background: var(--bg);
-      font-family: 'Syne', sans-serif;
-      color: #e0e0e0;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* ── animated background ── */
-    .bg-layer {
-      position: fixed; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(30, 13, 53, 0.9) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 90%, rgba(0, 60, 70, 0.7) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 40% at 60% 40%, rgba(106, 63, 160, 0.2) 0%, transparent 50%),
-        #06040f;
-    }
-
-    /* subtle noise grain */
-    .bg-layer::after {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    /* ── floating particles ── */
-    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .particle {
-      position: absolute;
-      width: 2px; height: 2px;
-      border-radius: 50%;
-      background: var(--cyan);
-      opacity: 0;
-      animation: floatUp linear infinite;
-    }
-    @keyframes floatUp {
-      0%   { opacity: 0; transform: translateY(0) scale(1); }
-      10%  { opacity: 0.6; }
-      90%  { opacity: 0.2; }
-      100% { opacity: 0; transform: translateY(-100vh) scale(0.3); }
-    }
-
-    /* ── nav ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 40px;
-      background: rgba(6, 4, 15, 0.7);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.75rem; letter-spacing: 4px;
-      color: var(--cyan); opacity: 0.7;
-      text-decoration: none;
-    }
-    .nav-home {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem; letter-spacing: 3px;
-      color: #aaa; text-decoration: none;
-      border: 1px solid rgba(0,204,204,0.2);
-      padding: 8px 16px; border-radius: 4px;
-      transition: all 0.3s ease;
-    }
-    .nav-home:hover {
-      color: var(--cyan);
-      border-color: var(--cyan);
-      background: rgba(0,204,204,0.05);
-    }
-
-    /* ── main layout ── */
-    main {
-      position: relative; z-index: 1;
-      max-width: 900px; margin: 0 auto;
-      padding: 160px 40px 100px;
-    }
-
-    /* ── big heading ── */
-    .headline {
-      font-size: clamp(3rem, 10vw, 6rem);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -3px;
-      margin-bottom: 60px;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
-    }
-    .headline span { color: var(--cyan); }
-    .headline .dim { color: rgba(255,255,255,0.2); }
-
-    @keyframes reveal {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── glass card ── */
-    .glass-card {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px;
-      backdrop-filter: blur(20px);
-      margin-bottom: 28px;
-      opacity: 0;
-      transform: translateY(24px);
-      animation: reveal 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
-      position: relative;
-      overflow: hidden;
-    }
-    .glass-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      opacity: 0.4;
-    }
-    .glass-card:nth-child(2) { animation-delay: 0.35s; }
-    .glass-card:nth-child(3) { animation-delay: 0.5s; }
-    .glass-card:nth-child(4) { animation-delay: 0.65s; }
-
-    .card-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem; letter-spacing: 4px;
-      color: var(--cyan); opacity: 0.6;
-      margin-bottom: 16px;
-      text-transform: uppercase;
-    }
-    .card-text {
-      font-size: 1.05rem; line-height: 1.8;
-      color: #c8c8c8;
-    }
-    .card-text a {
-      color: var(--cyan);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(0,204,204,0.3);
-      transition: border-color 0.2s;
-    }
-    .card-text a:hover { border-color: var(--cyan); }
-
-    /* ── credits grid ── */
-    .credits-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 0;
-    }
-    .credit-item {
-      background: rgba(0, 204, 204, 0.04);
-      border: 1px solid rgba(0,204,204,0.12);
-      border-radius: 12px;
-      padding: 28px;
-      position: relative;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .credit-item:hover {
-      border-color: rgba(0,204,204,0.35);
-      background: rgba(0,204,204,0.07);
-    }
-    .credit-name {
-      font-size: 1.3rem; font-weight: 800;
-      color: #fff; letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-    .credit-handle {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.75rem; color: var(--cyan);
-      opacity: 0.7; letter-spacing: 1px;
-    }
-    .credit-dot {
-      position: absolute; top: 20px; right: 20px;
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--cyan); opacity: 0.5;
-    }
-
-    /* ── divider ── */
-    .divider {
-      width: 60px; height: 1px;
-      background: linear-gradient(90deg, var(--cyan), transparent);
-      margin: 32px 0;
-      opacity: 0.4;
-    }
-
-    @media (max-width: 600px) {
-      main { padding: 120px 20px 80px; }
-      nav { padding: 16px 20px; }
-      .credits-grid { grid-template-columns: 1fr; }
-      .glass-card { padding: 28px 24px; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="about.css">
 </head>
 <body>
 
   <div class="bg-layer"></div>
-  <div class="particles" id="particles"></div>
+  <div class="stars" id="stars"></div>
+
+  <!-- astronaut that follows the pointer -->
+  <div class="astro" id="astro" aria-hidden="true">
+    <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- backpack -->
+      <rect x="32" y="50" width="56" height="62" rx="12" fill="#9fb2c6"/>
+      <!-- legs -->
+      <g class="leg-l">
+        <rect x="42" y="104" width="16" height="30" rx="8" fill="#eef4fa"/>
+        <rect x="40" y="128" width="20" height="12" rx="6" fill="#8aa0b8"/>
+      </g>
+      <g class="leg-r">
+        <rect x="62" y="104" width="16" height="30" rx="8" fill="#eef4fa"/>
+        <rect x="60" y="128" width="20" height="12" rx="6" fill="#8aa0b8"/>
+      </g>
+      <!-- torso -->
+      <rect x="40" y="52" width="40" height="58" rx="17" fill="#f7fafd"/>
+      <rect x="51" y="68" width="18" height="13" rx="3" fill="#d6ecff"/>
+      <circle cx="56" cy="74.5" r="2" fill="#4a6580"/>
+      <circle cx="63" cy="74.5" r="2" fill="#7fa4c8"/>
+      <!-- arms -->
+      <g class="arm-l">
+        <rect x="24" y="58" width="15" height="36" rx="7.5" fill="#eef4fa"/>
+        <circle cx="31.5" cy="96" r="7" fill="#8aa0b8"/>
+      </g>
+      <g class="arm-r">
+        <rect x="81" y="58" width="15" height="36" rx="7.5" fill="#eef4fa"/>
+        <circle cx="88.5" cy="96" r="7" fill="#8aa0b8"/>
+      </g>
+      <!-- helmet -->
+      <circle cx="60" cy="34" r="27" fill="#f7fafd" stroke="#c4d3e2" stroke-width="2"/>
+      <ellipse cx="60" cy="36" rx="19" ry="15" fill="#050c16"/>
+      <ellipse cx="60" cy="36" rx="19" ry="15" fill="none" stroke="#d6ecff" stroke-opacity="0.35" stroke-width="1.5"/>
+      <path d="M48 31 Q53 25 61 25" stroke="#d6ecff" stroke-opacity="0.8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
 
   <nav>
     <a href="index.html" class="nav-logo">USERK8</a>
@@ -253,7 +82,7 @@
           <div class="credit-handle">{userk8}</div>
         </div>
         <div class="credit-item">
-          <div class="credit-dot" style="background: #a070ff;"></div>
+          <div class="credit-dot alt"></div>
           <div class="credit-name">Sameer</div>
           <div class="credit-handle">{SpaceS1}</div>
         </div>
@@ -263,19 +92,53 @@
   </main>
 
   <script>
-    const container = document.getElementById('particles');
-    for (let i = 0; i < 40; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.bottom = '-10px';
-      p.style.animationDuration = (12 + Math.random() * 20) + 's';
-      p.style.animationDelay = (Math.random() * 20) + 's';
-      p.style.width = p.style.height = (Math.random() > 0.6 ? 3 : 2) + 'px';
-      p.style.opacity = 0;
-      if (Math.random() > 0.7) p.style.background = '#a070ff';
-      container.appendChild(p);
+    // ── stars ──
+    const starBox = document.getElementById('stars');
+    for (let i = 0; i < 70; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() > 0.8 ? 3 : 2;
+      s.style.width = s.style.height = size + 'px';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.top = Math.random() * 100 + 'vh';
+      s.style.animationDuration = (3 + Math.random() * 5) + 's';
+      s.style.animationDelay = (Math.random() * 6) + 's';
+      starBox.appendChild(s);
     }
+
+    // ── astronaut follows the pointer ──
+    const astro = document.getElementById('astro');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let tx = innerWidth * 0.75, ty = innerHeight * 0.45;
+    let x = tx, y = ty, rot = 0, active = false;
+    const SPEED = 0.015; // lower = slower, floatier (was 0.045)
+
+    function track(e) {
+      active = true;
+      tx = e.clientX;
+      ty = e.clientY;
+    }
+    addEventListener('pointermove', track, { passive: true });
+    addEventListener('pointerdown', track, { passive: true });
+
+    function loop(t) {
+      if (!active) {
+        // idle drift until the user moves the pointer
+        tx = innerWidth * 0.5 + Math.sin(t / 3000) * innerWidth * 0.3;
+        ty = innerHeight * 0.5 + Math.cos(t / 2300) * innerHeight * 0.25;
+      }
+      const dx = tx - x, dy = ty - y;
+      x += dx * SPEED;
+      y += dy * SPEED;
+      const targetRot = Math.max(-28, Math.min(28, dx * 0.08));
+      rot += (targetRot - rot) * 0.05;
+      const bob = Math.sin(t / 900) * 3;
+      const w = astro.offsetWidth, h = astro.offsetHeight;
+      astro.style.transform =
+        'translate(' + (x - w / 2) + 'px,' + (y - h / 2 + bob) + 'px) rotate(' + rot + 'deg)';
+      if (!reduce) requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
   </script>
 </body>
 </html>
