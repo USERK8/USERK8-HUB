@@ -4,116 +4,125 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Hub — USERK8</title>
-  <link rel="icon" type="image/png" href="logo.png">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --cyan: #00cccc;
-      --bg: #06040f;
-      --glass: rgba(18, 7, 36, 0.6);
-      --border: rgba(0, 204, 204, 0.14);
+      --cyan: #00ffee;
+      --cyan-rgb: 0, 255, 238;
+      --bg: #000;
+      --font-main: 'Sora', sans-serif;
+      --font-mono: 'DM Mono', monospace;
     }
 
     body {
       min-height: 100vh;
       background: var(--bg);
-      font-family: 'Syne', sans-serif;
-      color: #ddd;
+      font-family: var(--font-main);
+      color: #eaffff;
       overflow-x: hidden;
+      position: relative;
     }
 
-    .bg-layer {
-      position: fixed; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 70% 55% at 10% 5%,  rgba(30,13,53,0.95) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 50% at 90% 95%, rgba(0,50,60,0.75)  0%, transparent 55%),
-        #06040f;
+    /* hide the system cursor on mouse devices (the ring replaces it) */
+    @media (hover: hover) and (pointer: fine) {
+      html, body, a, .project-card { cursor: none; }
     }
 
-    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-    .particle {
-      position: absolute; border-radius: 50%;
-      opacity: 0; animation: floatUp linear infinite;
-    }
-    @keyframes floatUp {
-      0%   { opacity: 0; transform: translateY(0); }
-      10%  { opacity: 0.5; }
-      90%  { opacity: 0.1; }
-      100% { opacity: 0; transform: translateY(-100vh); }
-    }
+    /* ── dot field (drawn by dots.js, scrolls with the page) ── */
+    #dots { position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none; }
 
+    /* ── hollow circle cursor ── */
+    .ring {
+      position: fixed; left: 0; top: 0;
+      width: 36px; height: 36px; margin: -18px 0 0 -18px;
+      border: 1.5px solid var(--cyan);
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: 0 0 12px rgba(var(--cyan-rgb), 0.55), inset 0 0 8px rgba(var(--cyan-rgb), 0.2);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      will-change: transform;
+    }
+    .ring.show { opacity: 1; }
+
+    /* ── nav ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 18px 40px;
-      background: rgba(6,4,15,0.75);
+      background: rgba(0, 0, 0, 0.5);
+      -webkit-backdrop-filter: blur(18px);
       backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px dotted rgba(var(--cyan-rgb), 0.3);
     }
     .nav-logo {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem; letter-spacing: 4px;
-      color: var(--cyan); opacity: 0.65; text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.78rem; letter-spacing: 4px;
+      color: var(--cyan); opacity: 0.85; text-decoration: none;
     }
     .nav-home {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.68rem; letter-spacing: 3px;
-      color: #999; text-decoration: none;
-      border: 1px solid rgba(0,204,204,0.18);
-      padding: 7px 14px; border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem; letter-spacing: 3px;
+      color: rgba(var(--cyan-rgb), 0.65); text-decoration: none;
+      border: 1px solid rgba(var(--cyan-rgb), 0.3);
+      padding: 8px 16px; border-radius: 999px;
       transition: all 0.3s;
     }
-    .nav-home:hover { color: var(--cyan); border-color: var(--cyan); background: rgba(0,204,204,0.05); }
+    .nav-home:hover {
+      color: #000; background: var(--cyan); border-color: var(--cyan);
+      box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.5);
+    }
 
+    /* ── layout ── */
     main {
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
       max-width: 900px; margin: 0 auto;
       padding: 140px 24px 80px;
     }
 
     .page-title {
       font-size: clamp(2.4rem, 8vw, 5rem);
-      font-weight: 800; letter-spacing: -2px; line-height: 1;
-      margin-bottom: 12px;
+      font-weight: 800; letter-spacing: -2px; line-height: 1.05;
+      margin-bottom: 14px; color: #fff;
       opacity: 0; transform: translateY(28px);
       animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
     }
-    .page-title span { color: var(--cyan); }
+    .page-title span { color: var(--cyan); text-shadow: 0 0 28px rgba(var(--cyan-rgb), 0.55); }
 
     .page-sub {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem; letter-spacing: 3px;
-      color: #555; margin-bottom: 56px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem; letter-spacing: 3px;
+      color: rgba(var(--cyan-rgb), 0.55); margin-bottom: 56px;
       opacity: 0; animation: reveal 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s forwards;
     }
 
     @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
 
-    /* ── responsive project grid ── */
+    /* ── project grid ── */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      width: 100%;
+      gap: 16px; width: 100%;
     }
 
+    /* opaque cyan cards */
     .project-card {
-      display: flex; flex-direction: column;
-      justify-content: space-between;
-      padding: 28px 26px;
-      background: rgba(18, 7, 36, 0.55);
-      border: 1px solid rgba(0,204,204,0.13);
-      border-radius: 14px;
-      backdrop-filter: blur(16px);
-      text-decoration: none;
-      color: inherit;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 160px; padding: 28px 26px;
+      background: linear-gradient(135deg, #07302f, #031516);
+      border: 1px solid rgba(var(--cyan-rgb), 0.5);
+      border-radius: 18px;
+      box-shadow: 0 0 26px rgba(var(--cyan-rgb), 0.12);
+      text-decoration: none; color: inherit;
       position: relative; overflow: hidden;
       opacity: 0; transform: translateY(20px);
       animation: reveal 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
-      transition: border-color 0.3s, background 0.3s, transform 0.3s;
-      min-height: 160px;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s, box-shadow 0.3s;
     }
     .project-card:nth-child(1) { animation-delay: 0.3s; }
     .project-card:nth-child(2) { animation-delay: 0.4s; }
@@ -123,57 +132,39 @@
     .project-card:nth-child(6) { animation-delay: 0.8s; }
     .project-card:nth-child(7) { animation-delay: 0.9s; }
 
-    .project-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      opacity: 0.3;
-    }
-    .project-card::after {
-      content: ''; position: absolute;
-      bottom: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--cyan), #7a4dbf);
-      opacity: 0; transition: opacity 0.3s;
-    }
     .project-card:hover {
-      border-color: rgba(0,204,204,0.35);
-      background: rgba(0,204,204,0.06);
+      border-color: rgba(var(--cyan-rgb), 0.9);
+      background: linear-gradient(135deg, #0a4443, #041d1e);
+      box-shadow: 0 0 36px rgba(var(--cyan-rgb), 0.3);
       transform: translateY(-4px);
     }
-    .project-card:hover::after { opacity: 1; }
 
     .card-num {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem; letter-spacing: 3px;
-      color: var(--cyan); opacity: 0.4;
-      margin-bottom: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem; letter-spacing: 3px;
+      color: var(--cyan); opacity: 0.6; margin-bottom: 14px;
     }
     .card-name {
-      font-size: 1.15rem; font-weight: 800;
-      color: #f0f0f0; letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      font-size: 1.15rem; font-weight: 700;
+      color: #fff; margin-bottom: 8px;
+      transition: text-shadow 0.3s;
     }
+    .project-card:hover .card-name { text-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.7); }
     .card-desc {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.62rem;
-      line-height: 1.55;
-      color: #667;
-      letter-spacing: 0.4px;
-      flex: 1;
-      transition: color 0.3s;
+      font-family: var(--font-mono);
+      font-size: 0.7rem; line-height: 1.6;
+      color: rgba(190, 255, 250, 0.55);
+      flex: 1; transition: color 0.3s;
     }
-    .project-card:hover .card-desc {
-      color: rgba(0, 204, 204, 0.5);
-    }
+    .project-card:hover .card-desc { color: rgba(var(--cyan-rgb), 0.9); }
     .card-arrow {
+      font-family: var(--font-mono);
       font-size: 1.1rem; color: var(--cyan);
       opacity: 0; transform: translateX(-6px);
       transition: opacity 0.3s, transform 0.3s;
       margin-top: 16px; align-self: flex-end;
-      font-family: 'Space Mono', monospace;
     }
-    .project-card:hover .card-arrow {
-      opacity: 0.7; transform: translateX(0);
-    }
+    .project-card:hover .card-arrow { opacity: 0.9; transform: translateX(0); }
 
     @media (max-width: 480px) {
       nav { padding: 14px 20px; }
@@ -181,12 +172,16 @@
       .projects-grid { grid-template-columns: 1fr; }
       .project-card { min-height: 130px; padding: 22px 20px; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="bg-layer"></div>
-  <div class="particles" id="particles"></div>
+  <canvas id="dots"></canvas>
+  <div class="ring" id="ring"></div>
 
   <nav>
     <a href="index.html" class="nav-logo">USERK8</a>
@@ -251,20 +246,6 @@
     </div>
   </main>
 
-  <script>
-    const c = document.getElementById('particles');
-    for (let i = 0; i < 40; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.bottom = '-8px';
-      const size = Math.random() > 0.6 ? 3 : 2;
-      p.style.width = p.style.height = size + 'px';
-      p.style.animationDuration = (14 + Math.random() * 18) + 's';
-      p.style.animationDelay = (Math.random() * 22) + 's';
-      p.style.background = Math.random() > 0.65 ? '#a070ff' : '#00cccc';
-      c.appendChild(p);
-    }
-  </script>
+  <script src="dots.js"></script>
 </body>
 </html>
