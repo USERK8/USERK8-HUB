@@ -7,18 +7,20 @@
     ease: 0.05,
     color: '255,255,255',
     baseAlpha: 0.16,
+    driftAmount: 6,
+    driftSpeed: 0.7,
     ringHotScale: 1.7
   };
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) CONFIG.ease = 1;
+  if (reduce) { CONFIG.ease = 1; CONFIG.driftAmount = 0; }
 
   const canvas = document.getElementById('dots');
   const ctx = canvas.getContext('2d');
   const ring = document.getElementById('ring');
   const main = document.querySelector('main');
 
-  let w = 0, h = 0, n = 0, hx, hy, px, py;
+  let w = 0, h = 0, n = 0, hx, hy, px, py, ph, sp;
   const client = { x: -9999, y: -9999 };
   let rx = -9999, ry = -9999, rs = 1, rsTarget = 1;
 
@@ -39,16 +41,21 @@
     n = cols * rows;
     hx = new Float32Array(n); hy = new Float32Array(n);
     px = new Float32Array(n); py = new Float32Array(n);
+    ph = new Float32Array(n); sp = new Float32Array(n);
     let i = 0;
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++, i++) {
         hx[i] = px[i] = c * s;
         hy[i] = py[i] = r * s;
+        ph[i] = Math.random() * 6.2832;
+        sp[i] = 0.5 + Math.random();
       }
     }
   }
 
-  function draw() {
+  function draw(time) {
+    const t = (time || 0) * 0.001 * CONFIG.driftSpeed;
+    const A = CONFIG.driftAmount;
     ctx.clearRect(0, 0, w, h);
 
     const mx = client.x + window.scrollX;
@@ -60,7 +67,9 @@
       if (hy[i] < top || hy[i] > bottom) { px[i] = hx[i]; py[i] = hy[i]; continue; }
       const dx = hx[i] - mx, dy = hy[i] - my;
       const d = Math.hypot(dx, dy);
-      let tx = hx[i], ty = hy[i], near = 0;
+      let tx = hx[i] + Math.sin(t * sp[i] + ph[i]) * A;
+      let ty = hy[i] + Math.cos(t * sp[i] * 0.8 + ph[i] * 1.3) * A;
+      let near = 0;
       if (d < R) {
         near = 1 - d / R;
         const push = near * near * P;
