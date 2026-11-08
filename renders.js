@@ -1,124 +1,394 @@
-/* ── userk8__ Renders Gallery ──────────────────────────────────────────
-   Drop this file next to index.html and add:
-     <script src="renders.js" defer></script>
-   Change MEDIA_BASE below if you put the image/video files in a subfolder.
-   ------------------------------------------------------------------- */
+/* ═══════════════════════════════════════════════════════════════════════════
+   USERK8__ // SPATIAL RENDERS CINEMA & HOLO-STACK (renders.js)
+   15-Item Media Engine · Idle Lazy Decoding · Zero-Leak Video Disposal
+   ═══════════════════════════════════════════════════════════════════════════ */
 (function () {
-  const MEDIA_BASE = ''; // e.g. 'renders/' if files live in a subfolder
+  'use strict';
 
-  // order = your list, with userk8.mp4 pinned to the very end
-  const mediaFiles = [
-    'death-ray-render-1.png',
-    'f22-img100012.png',
-    'house-2-img.png',
-    'frame_001.png',
-    'gc-edit-1.jpg',
-    'edit-view-ps.png',
-    'trailer-clip-1.mp4',
-    'final_phone.mp4',
-    'f22-img10001.png',
-    'render-4.png',
-    'userk8_wallpaper.png',
-    'render-9.jpeg',
-    'render-2.png',
-    'render-6.png',
-    'userk8.mp4'
+  const MEDIA_BASE = '';
+
+  const mediaCatalog = [
+    { file: 'death-ray-render-1.png', title: 'AH-64 Tactical Capture', tag: 'DEATH RAY // 3D' },
+    { file: 'f22-img100012.png',      title: 'F-22 Raptor — Dusk Intercept', tag: 'AEROSPACE // 3D' },
+    { file: 'house-2-img.png',        title: 'Dead Zone Outpost Compound', tag: 'ENVIRONMENT // 3D' },
+    { file: 'frame_001.png',          title: 'Sequence Frame 001', tag: 'CINEMATIC // STILL' },
+    { file: 'gc-edit-1.jpg',          title: 'Visual Grade Study', tag: 'COMPOSITING' },
+    { file: 'edit-view-ps.png',       title: 'Viewport & Post Pipeline', tag: 'WORKFLOW' },
+    { file: 'trailer-clip-1.mp4',     title: 'Tactical Sequence Reel', tag: 'MOTION // MP4' },
+    { file: 'final_phone.mp4',        title: 'Hardware Showcase Motion', tag: 'MOTION // MP4' },
+    { file: 'f22-img10001.png',       title: 'F-22 Twin-Tail Silhouette', tag: 'AEROSPACE // 3D' },
+    { file: 'render-4.png',           title: 'Lighting & Surface Study IV', tag: '3D RENDER' },
+    { file: 'userk8_wallpaper.png',   title: 'Garuda Zen OS Rig Wallpaper', tag: 'SYSTEM // RIG' },
+    { file: 'render-9.jpeg',          title: 'Atmospheric Render IX', tag: '3D RENDER' },
+    { file: 'render-2.png',           title: 'Scene Study II', tag: '3D RENDER' },
+    { file: 'render-6.png',           title: 'Linux Engineering Desk Frame', tag: 'WORKSPACE // 3D' },
+    { file: 'userk8.mp4',             title: 'userk8__ Signature Finale', tag: 'FINALE // MP4' }
   ];
 
-  const items = mediaFiles.map(name => ({
-    src: MEDIA_BASE + name,
-    type: /\.(mp4|webm|mov)$/i.test(name) ? 'video' : 'image'
+  const items = mediaCatalog.map((entry, idx) => ({
+    index: idx,
+    src: MEDIA_BASE + entry.file,
+    file: entry.file,
+    title: entry.title,
+    tag: entry.tag,
+    type: /\.(mp4|webm|mov)$/i.test(entry.file) ? 'video' : 'image'
   }));
 
-  const IMAGE_DURATION = 10000; // ms per image
+  const IMAGE_DURATION = 10000;
 
-  /* ── styles ── */
+  /* ── Inject Scoped Cinema Styles ── */
   const style = document.createElement('style');
   style.textContent = `
     #rendersWidget {
-      position: fixed; top: 130px; left: 24px; z-index: 20;
-      width: 88px; height: 88px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      position: fixed;
+      bottom: 26px;
+      left: 26px;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 16px 10px 12px;
+      border-radius: 20px;
+      background: rgba(8, 15, 28, 0.78);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid rgba(223, 244, 255, 0.16);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+      user-select: none;
+    }
+    #rendersWidget:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 240, 230, 0.55);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), 0 0 26px rgba(0, 240, 230, 0.18);
+    }
+    .rw-stack {
+      position: relative;
+      width: 58px;
+      height: 52px;
+      flex-shrink: 0;
     }
     #rendersWidget .stack-img {
-      position: absolute; width: 72px; height: 72px;
-      object-fit: cover; border-radius: 10px;
-      border: 2px solid rgba(0,255,247,0.5);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1.5px solid rgba(223, 244, 255, 0.35);
+      background: #0b1526;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.65);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
     }
-    #rendersWidget .stack-img:nth-child(2) { transform: rotate(-8deg) translate(-6px, 4px); z-index: 1; }
-    #rendersWidget .stack-img:nth-child(3) { transform: rotate(5deg) translate(5px, -3px); z-index: 2; }
-    #rendersWidget .stack-img:nth-child(4) { transform: rotate(-2deg); z-index: 3; }
-    #rendersWidget:hover .stack-img:nth-child(2) { transform: rotate(-14deg) translate(-12px, 8px); }
-    #rendersWidget:hover .stack-img:nth-child(3) { transform: rotate(10deg) translate(10px, -6px); }
-    #rendersWidget:hover .stack-img:nth-child(4) { transform: rotate(-3deg) scale(1.05); }
-    #rendersWidget .stack-count {
-      position: absolute; bottom: -6px; right: -6px; z-index: 4;
-      background: #00fff7; color: #000; font-weight: 800;
-      font-size: 0.65rem; padding: 3px 7px; border-radius: 20px;
-      font-family: 'Segoe UI', sans-serif;
-      box-shadow: 0 0 10px rgba(0,255,247,0.6);
+    #rendersWidget .stack-img:nth-child(1) { transform: rotate(-9deg) translate(-6px, 3px); z-index: 1; }
+    #rendersWidget .stack-img:nth-child(2) { transform: rotate(6deg) translate(6px, -2px); z-index: 2; }
+    #rendersWidget .stack-img:nth-child(3) { transform: rotate(-1deg); z-index: 3; border-color: rgba(0, 240, 230, 0.65); }
+
+    #rendersWidget:hover .stack-img:nth-child(1) { transform: rotate(-16deg) translate(-13px, 5px); }
+    #rendersWidget:hover .stack-img:nth-child(2) { transform: rotate(13deg) translate(13px, -5px); }
+    #rendersWidget:hover .stack-img:nth-child(3) { transform: rotate(-2deg) scale(1.08); }
+
+    .rw-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
-    #rendersWidget .stack-label {
-      position: absolute; top: -22px; left: 0; z-index: 4;
-      font-size: 0.6rem; letter-spacing: 2px; color: #00fff7;
-      opacity: 0.75; font-family: 'Segoe UI', sans-serif; white-space: nowrap;
+    .rw-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.64rem;
+      letter-spacing: 0.16em;
+      color: #00f0e6;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+    .rw-title {
+      font-family: 'Space Grotesk', 'Sora', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #f2f8ff;
+      white-space: nowrap;
+    }
+    .rw-count {
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(0, 240, 230, 0.16);
+      border: 1px solid rgba(0, 240, 230, 0.4);
+      color: #dff4ff;
+      font-size: 0.62rem;
+    }
+
+    /* ── Fullscreen Spatial Cinema Modal ── */
     #rendersModal {
-      position: fixed; inset: 0; z-index: 999;
-      background: rgba(0,0,0,0.96);
-      display: none; flex-direction: column;
-      opacity: 0; transition: opacity 0.25s ease;
+      position: fixed;
+      inset: 0;
+      z-index: 10010;
+      background: rgba(3, 6, 12, 0.96);
+      -webkit-backdrop-filter: blur(26px);
+      backdrop-filter: blur(26px);
+      display: none;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.28s ease;
     }
     #rendersModal.open { display: flex; }
     #rendersModal.visible { opacity: 1; }
-    .rm-topbar { display: flex; align-items: center; gap: 12px; padding: 16px 20px 10px; }
-    .rm-progress-track { flex: 1; height: 4px; display: flex; gap: 3px; }
-    .rm-progress-seg { flex: 1; height: 100%; background: rgba(255,255,255,0.15); border-radius: 4px; position: relative; overflow: hidden; }
-    .rm-progress-seg .fill { position: absolute; top:0; left:0; height:100%; width:0%; background: #00fff7; }
+
+    .rm-ambient {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.22;
+      filter: blur(70px) saturate(160%);
+      transform: scale(1.15);
+      background-position: center;
+      background-size: cover;
+      transition: background-image 0.45s ease;
+    }
+
+    .rm-topbar {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px 22px 10px;
+    }
+    .rm-progress-track {
+      width: 100%;
+      height: 3px;
+      display: flex;
+      gap: 4px;
+    }
+    .rm-progress-seg {
+      flex: 1;
+      height: 100%;
+      background: rgba(223, 244, 255, 0.16);
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .rm-progress-seg .fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00f0e6, #dff4ff);
+      box-shadow: 0 0 8px rgba(0, 240, 230, 0.8);
+    }
+
+    .rm-hud-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .rm-caption-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .rm-slide-counter {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: #00f0e6;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 240, 230, 0.1);
+      border: 1px solid rgba(0, 240, 230, 0.3);
+      white-space: nowrap;
+    }
+    .rm-slide-info {
+      min-width: 0;
+    }
+    .rm-slide-title {
+      font-family: 'Space Grotesk', 'Sora', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #f2f8ff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rm-slide-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.12em;
+      color: #8ea6c2;
+    }
+
+    .rm-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
     .rm-btn {
-      background: rgba(255,255,255,0.08); border: 1px solid rgba(0,255,247,0.4);
-      color: #00fff7; width: 34px; height: 34px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 1rem; flex-shrink: 0;
-      transition: background 0.2s, transform 0.2s;
+      background: rgba(223, 244, 255, 0.07);
+      border: 1px solid rgba(223, 244, 255, 0.18);
+      color: #dff4ff;
+      height: 36px;
+      min-width: 36px;
+      padding: 0 10px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      transition: all 0.2s ease;
     }
-    .rm-btn:hover { background: rgba(0,255,247,0.15); transform: translateY(-1px); }
-    .rm-stage { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px 70px 30px; }
-    .rm-stage img, .rm-stage video { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 0 40px rgba(0,255,247,0.12); }
+    .rm-btn:hover {
+      background: rgba(0, 240, 230, 0.16);
+      border-color: rgba(0, 240, 230, 0.55);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .rm-stage {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 8px 76px 12px;
+      min-height: 0;
+    }
+    #rmMediaHolder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rm-stage img,
+    .rm-stage video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 14px;
+      border: 1px solid rgba(223, 244, 255, 0.14);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.78);
+      animation: rmMediaReveal 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes rmMediaReveal {
+      from { opacity: 0; transform: scale(0.975); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
     .rm-nav {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(0,0,0,0.5); border: 1px solid rgba(0,255,247,0.35);
-      color: #00fff7; width: 46px; height: 46px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 1.3rem; z-index: 5;
-      transition: background 0.2s;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(8, 16, 30, 0.72);
+      border: 1px solid rgba(223, 244, 255, 0.2);
+      color: #dff4ff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.4rem;
+      z-index: 5;
+      transition: all 0.22s ease;
     }
-    .rm-nav:hover { background: rgba(0,255,247,0.18); }
-    .rm-prev { left: 16px; }
-    .rm-next { right: 16px; }
-    @media (max-width: 600px) {
-      #rendersWidget { top: 110px; left: 16px; width: 68px; height: 68px; }
-      #rendersWidget .stack-img { width: 56px; height: 56px; }
-      .rm-stage { padding: 10px 46px 20px; }
-      .rm-nav { width: 38px; height: 38px; font-size: 1.1rem; }
+    .rm-nav:hover {
+      background: rgba(0, 240, 230, 0.2);
+      border-color: #00f0e6;
+      color: #fff;
+      transform: translateY(-50%) scale(1.06);
+    }
+    .rm-prev { left: 18px; }
+    .rm-next { right: 18px; }
+
+    /* Filmstrip Scrubber */
+    .rm-filmstrip {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 20px 18px;
+      overflow-x: auto;
+    }
+    .rm-pill-dot {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: rgba(223, 244, 255, 0.05);
+      border: 1px solid rgba(223, 244, 255, 0.12);
+      color: #8ea6c2;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .rm-pill-dot:hover {
+      border-color: rgba(223, 244, 255, 0.35);
+      color: #fff;
+    }
+    .rm-pill-dot.active {
+      background: rgba(0, 240, 230, 0.16);
+      border-color: #00f0e6;
+      color: #dff4ff;
+      box-shadow: 0 0 14px rgba(0, 240, 230, 0.24);
+    }
+
+    @media (max-width: 680px) {
+      #rendersWidget {
+        bottom: 18px;
+        left: 16px;
+        padding: 8px 12px 8px 10px;
+        gap: 10px;
+      }
+      .rw-stack { width: 46px; height: 42px; }
+      #rendersWidget .stack-img { width: 38px; height: 38px; }
+      .rw-title { font-size: 0.78rem; }
+      .rm-stage { padding: 8px 14px; }
+      .rm-nav { width: 38px; height: 38px; font-size: 1.15rem; }
+      .rm-prev { left: 10px; }
+      .rm-next { right: 10px; }
+      .rm-filmstrip { justify-content: flex-start; }
     }
   `;
   document.head.appendChild(style);
 
-  /* ── widget (photo stack trigger) ── */
+  /* ── Floating Holo-Stack Trigger ── */
   const widget = document.createElement('div');
   widget.id = 'rendersWidget';
+  widget.setAttribute('role', 'button');
+  widget.setAttribute('tabindex', '0');
+  widget.setAttribute('aria-label', 'Open 15-item 3D Renders and Motion Vault');
+
+  const EMPTY_PX = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   const thumbs = items.filter(i => i.type === 'image').slice(0, 3);
-  widget.innerHTML =
-    '<span class="stack-label">RENDERS</span>' +
-    thumbs.map(i => `<img class="stack-img" data-src="${i.src}" alt="" decoding="async">`).join('') +
-    `<span class="stack-count">${items.length}</span>`;
+  widget.innerHTML = `
+    <div class="rw-stack" aria-hidden="true">
+      ${thumbs.map(i => `<img class="stack-img" src="${EMPTY_PX}" data-src="${i.src}" alt="" decoding="async">`).join('')}
+    </div>
+    <div class="rw-meta">
+      <div class="rw-eyebrow"><span>VAULT</span><span class="rw-count">${items.length}</span></div>
+      <div class="rw-title">3D Renders &amp; Reels</div>
+    </div>
+  `;
   document.body.appendChild(widget);
 
-  // don't pay the full-resolution decode cost for these tiny 72px thumbnails
-  // until the browser is actually idle — they're not critical on first paint
   const loadThumbs = () => {
     widget.querySelectorAll('img[data-src]').forEach(img => {
       img.src = img.dataset.src;
@@ -128,39 +398,72 @@
   if ('requestIdleCallback' in window) requestIdleCallback(loadThumbs, { timeout: 2000 });
   else setTimeout(loadThumbs, 1200);
 
-  /* ── modal / lightbox ── */
+  /* ── Cinema Lightbox DOM ── */
   const modal = document.createElement('div');
   modal.id = 'rendersModal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
   modal.innerHTML = `
+    <div class="rm-ambient" id="rmAmbient"></div>
     <div class="rm-topbar">
       <div class="rm-progress-track" id="rmTrack"></div>
-      <div class="rm-btn" id="rmPlayPause" title="Play/Pause">⏸</div>
-      <div class="rm-btn" id="rmMute" title="Mute/Unmute">🔇</div>
-      <div class="rm-btn" id="rmClose" title="Close (Esc)">✕</div>
+      <div class="rm-hud-row">
+        <div class="rm-caption-group">
+          <span class="rm-slide-counter" id="rmCounter">01 / 15</span>
+          <div class="rm-slide-info">
+            <div class="rm-slide-title" id="rmSlideTitle">Render</div>
+            <div class="rm-slide-tag" id="rmSlideTag">3D RENDER</div>
+          </div>
+        </div>
+        <div class="rm-controls">
+          <button type="button" class="rm-btn" id="rmPlayPause" title="Play / Pause (Space)">⏸</button>
+          <button type="button" class="rm-btn" id="rmMute" title="Mute / Unmute Video (M)">🔇</button>
+          <button type="button" class="rm-btn" id="rmClose" title="Close Vault (Esc)">✕</button>
+        </div>
+      </div>
     </div>
-    <div class="rm-stage">
-      <div class="rm-nav rm-prev" id="rmPrev" title="Previous (←)">‹</div>
+    <div class="rm-stage" id="rmStage">
+      <button type="button" class="rm-nav rm-prev" id="rmPrev" aria-label="Previous slide">‹</button>
       <div id="rmMediaHolder"></div>
-      <div class="rm-nav rm-next" id="rmNext" title="Next (→)">›</div>
+      <button type="button" class="rm-nav rm-next" id="rmNext" aria-label="Next slide">›</button>
     </div>
+    <div class="rm-filmstrip" id="rmFilmstrip"></div>
   `;
   document.body.appendChild(modal);
 
+  const ambientEl = modal.querySelector('#rmAmbient');
   const trackEl = modal.querySelector('#rmTrack');
-  items.forEach(() => {
-    const seg = document.createElement('div');
-    seg.className = 'rm-progress-seg';
-    seg.innerHTML = '<div class="fill"></div>';
-    trackEl.appendChild(seg);
-  });
-  const segs = Array.from(trackEl.querySelectorAll('.rm-progress-seg'));
-
+  const filmstripEl = modal.querySelector('#rmFilmstrip');
+  const counterEl = modal.querySelector('#rmCounter');
+  const titleEl = modal.querySelector('#rmSlideTitle');
+  const tagEl = modal.querySelector('#rmSlideTag');
   const mediaHolder = modal.querySelector('#rmMediaHolder');
   const playPauseBtn = modal.querySelector('#rmPlayPause');
   const muteBtn = modal.querySelector('#rmMute');
   const closeBtn = modal.querySelector('#rmClose');
   const prevBtn = modal.querySelector('#rmPrev');
   const nextBtn = modal.querySelector('#rmNext');
+  const stageEl = modal.querySelector('#rmStage');
+
+  items.forEach((item, idx) => {
+    const seg = document.createElement('div');
+    seg.className = 'rm-progress-seg';
+    seg.title = item.title;
+    seg.innerHTML = '<div class="fill"></div>';
+    seg.addEventListener('click', () => loadSlide(idx));
+    trackEl.appendChild(seg);
+
+    const pill = document.createElement('button');
+    pill.type = 'button';
+    pill.className = 'rm-pill-dot';
+    pill.innerHTML = `<span>${String(idx + 1).padStart(2, '0')}</span><span>${item.type === 'video' ? '▶' : '◈'}</span>`;
+    pill.title = item.title;
+    pill.addEventListener('click', () => loadSlide(idx));
+    filmstripEl.appendChild(pill);
+  });
+
+  const segs = Array.from(trackEl.querySelectorAll('.rm-progress-seg'));
+  const pills = Array.from(filmstripEl.querySelectorAll('.rm-pill-dot'));
 
   let currentIndex = 0;
   let playing = true;
@@ -175,16 +478,19 @@
     try {
       v.pause();
       v.removeAttribute('src');
-      v.load(); // forces the browser to actually drop the decoded/buffered frames
-    } catch (e) { /* no-op */ }
+      v.load();
+    } catch (_) {}
   }
 
   function setFill(pct) {
-    segs[currentIndex].querySelector('.fill').style.width = (pct * 100) + '%';
+    if (segs[currentIndex]) {
+      segs[currentIndex].querySelector('.fill').style.width = (pct * 100) + '%';
+    }
   }
 
   function openModal(startIndex) {
-    currentIndex = startIndex || 0;
+    if (window.UserK8Audio) window.UserK8Audio.open();
+    currentIndex = typeof startIndex === 'number' ? Math.max(0, Math.min(items.length - 1, startIndex)) : 0;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => modal.classList.add('visible'));
@@ -196,9 +502,15 @@
     modal.classList.remove('visible');
     document.removeEventListener('keydown', onKeydown);
     stopTicker();
-    if (activeVideoEl) { releaseVideo(activeVideoEl); activeVideoEl = null; }
+    if (activeVideoEl) {
+      releaseVideo(activeVideoEl);
+      activeVideoEl = null;
+    }
     document.body.style.overflow = '';
-    setTimeout(() => modal.classList.remove('open'), 250);
+    if (location.hash === '#renders') {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+    setTimeout(() => modal.classList.remove('open'), 260);
   }
 
   function onKeydown(e) {
@@ -206,30 +518,47 @@
     else if (e.key === 'ArrowRight') goNext();
     else if (e.key === 'ArrowLeft') goPrev();
     else if (e.key === ' ') { e.preventDefault(); togglePlay(); }
+    else if (e.key.toLowerCase() === 'm') toggleMute();
   }
 
   function loadSlide(index) {
     stopTicker();
-    if (activeVideoEl) { releaseVideo(activeVideoEl); activeVideoEl = null; }
+    if (activeVideoEl) {
+      releaseVideo(activeVideoEl);
+      activeVideoEl = null;
+    }
+    currentIndex = index;
     mediaHolder.innerHTML = '';
+
     segs.forEach((s, i) => {
       s.querySelector('.fill').style.width = i < index ? '100%' : '0%';
     });
+    pills.forEach((p, i) => {
+      const active = i === index;
+      p.classList.toggle('active', active);
+      if (active) p.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
 
     const item = items[index];
+    counterEl.textContent = `${String(index + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+    titleEl.textContent = item.title;
+    tagEl.textContent = `${item.tag} · ${item.file}`;
+
     playing = true;
     playPauseBtn.textContent = '⏸';
 
     if (item.type === 'image') {
+      ambientEl.style.backgroundImage = `url("${item.src}")`;
       const img = document.createElement('img');
       img.decoding = 'async';
       img.src = item.src;
-      img.alt = '';
+      img.alt = item.title;
       mediaHolder.appendChild(img);
       currentDuration = IMAGE_DURATION;
       elapsedMs = 0;
       startImageTicker();
     } else {
+      ambientEl.style.backgroundImage = 'none';
       const video = document.createElement('video');
       video.preload = 'auto';
       video.src = item.src;
@@ -280,12 +609,16 @@
   }
 
   function goNext() {
-    if (currentIndex < items.length - 1) loadSlide(++currentIndex);
+    if (window.UserK8Audio) window.UserK8Audio.click();
+    if (currentIndex < items.length - 1) loadSlide(currentIndex + 1);
     else closeModal();
   }
+
   function goPrev() {
-    if (currentIndex > 0) loadSlide(--currentIndex);
+    if (window.UserK8Audio) window.UserK8Audio.click();
+    if (currentIndex > 0) loadSlide(currentIndex - 1);
   }
+
   function togglePlay() {
     playing = !playing;
     playPauseBtn.textContent = playing ? '⏸' : '▶';
@@ -294,16 +627,54 @@
       else activeVideoEl.pause();
     }
   }
+
   function toggleMute() {
     muted = !muted;
     muteBtn.textContent = muted ? '🔇' : '🔊';
     if (activeVideoEl) activeVideoEl.muted = muted;
   }
 
+  // Touch swipe support on mobile
+  let touchStartX = 0;
+  stageEl.addEventListener('touchstart', e => {
+    if (e.touches && e.touches[0]) touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  stageEl.addEventListener('touchend', e => {
+    if (!e.changedTouches || !e.changedTouches[0]) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 48) {
+      if (dx < 0) goNext();
+      else goPrev();
+    }
+  }, { passive: true });
+
+  widget.addEventListener('mouseenter', () => {
+    if (window.UserK8Audio) window.UserK8Audio.hover();
+  });
   widget.addEventListener('click', () => openModal(0));
+  widget.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openModal(0);
+    }
+  });
+
   closeBtn.addEventListener('click', closeModal);
   prevBtn.addEventListener('click', goPrev);
   nextBtn.addEventListener('click', goNext);
   playPauseBtn.addEventListener('click', togglePlay);
   muteBtn.addEventListener('click', toggleMute);
+
+  window.UserK8Renders = {
+    open: openModal,
+    close: closeModal,
+    count: items.length
+  };
+
+  if (location.hash === '#renders') {
+    setTimeout(() => openModal(0), 220);
+  }
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#renders') openModal(0);
+  });
 })();
