@@ -1,13 +1,17 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   USERK8__ // ORBITAL CORE ENGINE (core.js)
-   Shared Navigation · Procedural Web Audio · Command Palette (⌘K) · 3D Tilt
-   ═══════════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
+  const SHARED_SCRIPT = document.currentScript ? document.currentScript.src : location.href;
+  const PAGES = {
+    orbit: '../home/index.html',
+    hub: '../projects/ph.html',
+    about: '../about/about_us.html',
+    crew: '../contact/contact.html'
+  };
+  const pageUrl = rel => new URL(rel, SHARED_SCRIPT).href;
+
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── 1. Procedural Web Audio Synthesizer (Zero External Assets) ───────── */
   const AudioEngine = (() => {
     let ctx = null;
     let enabled = sessionStorage.getItem('uk8_sfx') === '1';
@@ -75,7 +79,6 @@
         const ac = ensureCtx();
         if (!ac) return;
         const now = ac.currentTime;
-        // Filtered noise thruster sweep
         const bufSize = ac.sampleRate * 1.1;
         const buf = ac.createBuffer(1, bufSize, ac.sampleRate);
         const data = buf.getChannelData(0);
@@ -105,7 +108,6 @@
 
   window.UserK8Audio = AudioEngine;
 
-  /* ── 2. Toast Notification Utility ────────────────────────────────────── */
   let toastTimer = null;
   function showToast(msg) {
     let el = document.getElementById('orbitalToast');
@@ -121,21 +123,19 @@
   }
   window.UserK8Toast = showToast;
 
-  /* ── 3. Detect Active Page & Inject Unified Orbital Navigation ────────── */
-  const path = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  const here = location.pathname.toLowerCase();
   const activeKey =
-    path.includes('ph') ? 'hub' :
-    path.includes('about') ? 'about' :
-    path.includes('contact') ? 'crew' : 'orbit';
+    here.includes('/projects/') ? 'hub' :
+    here.includes('/about/') ? 'about' :
+    here.includes('/contact/') ? 'crew' : 'orbit';
 
   const navPages = [
-    { key: 'orbit', idx: '00', label: 'ORBIT', href: 'index.html' },
-    { key: 'hub',   idx: '01', label: 'PROJECT HUB', href: 'ph.html' },
-    { key: 'about', idx: '02', label: 'ABOUT', href: 'about_us.html' },
-    { key: 'crew',  idx: '03', label: 'CREW', href: 'contact.html' }
+    { key: 'orbit', idx: '00', label: 'ORBIT', href: pageUrl(PAGES.orbit) },
+    { key: 'hub',   idx: '01', label: 'PROJECT HUB', href: pageUrl(PAGES.hub) },
+    { key: 'about', idx: '02', label: 'ABOUT', href: pageUrl(PAGES.about) },
+    { key: 'crew',  idx: '03', label: 'CREW', href: pageUrl(PAGES.crew) }
   ];
 
-  // Top scroll progress bar
   const progressEl = document.createElement('div');
   progressEl.id = 'orbitalScrollProgress';
   document.body.appendChild(progressEl);
@@ -149,7 +149,6 @@
   window.addEventListener('scroll', updateScrollProgress, { passive: true });
   window.addEventListener('resize', updateScrollProgress, { passive: true });
 
-  // Inject Navigation if placeholder or body ready
   const existingNav = document.querySelector('nav.orbital-nav');
   if (!existingNav) {
     const nav = document.createElement('nav');
@@ -159,7 +158,7 @@
     const shortcutLabel = isMac ? '⌘K' : 'Ctrl K';
 
     nav.innerHTML = `
-      <a href="index.html" class="orbital-brand" id="navBrandHome">
+      <a href="${pageUrl(PAGES.orbit)}" class="orbital-brand" id="navBrandHome">
         <span class="orbital-brand-beacon"></span>
         <span>USERK8__</span>
         <span class="orbital-brand-sub" id="orbitalClock">// ORBITAL</span>
@@ -210,7 +209,6 @@
     });
   }
 
-  // Live UTC mission telemetry clock in navbar
   const clockEl = document.getElementById('orbitalClock');
   function tickClock() {
     if (!clockEl) return;
@@ -227,19 +225,18 @@
     btn.addEventListener('click', () => AudioEngine.toggle());
   });
 
-  /* ── 4. Universal Command Palette (⌘K / Ctrl+K) ───────────────────────── */
   const COMMANDS = [
-    { group: 'Orbital Sectors', icon: '00', title: 'Orbit Command (Home)', sub: 'Galactic 3D engine, eight AI, DEATH RAY & terminal', badge: 'PAGE', action: () => go('index.html') },
-    { group: 'Orbital Sectors', icon: '01', title: 'Project Hub', sub: 'Explore all 7 live deployments & reactive dot matrix', badge: 'PAGE', action: () => go('ph.html') },
-    { group: 'Orbital Sectors', icon: '02', title: 'About & Garuda Rig', sub: 'Zero-G EVA astronaut, origin story & Linux telemetry', badge: 'PAGE', action: () => go('about_us.html') },
-    { group: 'Orbital Sectors', icon: '03', title: 'Crew & Subspace Comms', sub: 'userk8, Sameer Mishra, Gaurav Sardar & direct channels', badge: 'PAGE', action: () => go('contact.html') },
+    { group: 'Orbital Sectors', icon: '00', title: 'Orbit Command (Home)', sub: 'Galactic 3D engine, eight AI, DEATH RAY & terminal', badge: 'PAGE', action: () => go(pageUrl(PAGES.orbit)) },
+    { group: 'Orbital Sectors', icon: '01', title: 'Project Hub', sub: 'Explore all 7 live deployments & reactive dot matrix', badge: 'PAGE', action: () => go(pageUrl(PAGES.hub)) },
+    { group: 'Orbital Sectors', icon: '02', title: 'About & Garuda Rig', sub: 'Zero-G EVA astronaut, origin story & Linux telemetry', badge: 'PAGE', action: () => go(pageUrl(PAGES.about)) },
+    { group: 'Orbital Sectors', icon: '03', title: 'Crew & Subspace Comms', sub: 'userk8, Sameer Mishra, Gaurav Sardar & direct channels', badge: 'PAGE', action: () => go(pageUrl(PAGES.crew)) },
     { group: 'Interactive Systems', icon: '◈', title: 'Open Renders Cinema (15)', sub: '3D vehicle art, Apache, F-22 Raptor, Linux rig & films', badge: 'VAULT', action: () => {
       if (window.UserK8Renders && window.UserK8Renders.open) window.UserK8Renders.open(0);
-      else go('index.html#renders');
+      else go(pageUrl(PAGES.orbit) + '#renders');
     }},
     { group: 'Interactive Systems', icon: '⚡', title: 'Engage Hyperjump Warp Surge', sub: 'Accelerate the 3D spiral galaxy into hyperspace streaks', badge: 'FX', action: () => {
       if (window.UserK8Galaxy && window.UserK8Galaxy.warp) window.UserK8Galaxy.warp();
-      else go('index.html#warp');
+      else go(pageUrl(PAGES.orbit) + '#warp');
     }},
     { group: 'Interactive Systems', icon: '♪', title: 'Toggle Procedural Sci-Fi Audio', sub: 'Synthesized Web Audio hover & thruster soundscape', badge: 'AUDIO', action: () => AudioEngine.toggle() },
     { group: 'Interactive Systems', icon: '✉', title: 'Copy userk8 Email Address', sub: 'userk8.dev@gmail.com', badge: 'COPY', action: () => {
@@ -255,12 +252,13 @@
   ];
 
   function go(url) {
-    const targetBase = url.split('#')[0];
-    if (targetBase === path && url.includes('#')) {
-      location.hash = url.split('#')[1];
+    const target = new URL(url, location.href);
+    const clean = p => p.replace(/index\.html$/i, '');
+    if (target.hash && clean(target.pathname) === clean(location.pathname)) {
+      location.hash = target.hash.slice(1);
       return;
     }
-    location.href = url;
+    location.href = target.href;
   }
 
   function ext(url) {
@@ -422,7 +420,6 @@
     }
   });
 
-  /* ── 5. 3D Specular Tilt & Magnetic Button Physics ────────────────────── */
   function bindInteractiveSurfaces() {
     if (reduceMotion) return;
 
@@ -469,7 +466,6 @@
     });
   }
 
-  /* ── 6. Kinetic Text Scramble Utility ─────────────────────────────────── */
   const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/_<>[]*#';
   function scrambleText(el, finalStr, durationMs) {
     if (!el || reduceMotion) {

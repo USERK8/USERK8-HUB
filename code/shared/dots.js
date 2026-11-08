@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   USERK8__ // GRAVITATIONAL DOT-MATRIX & SHOCKWAVE ENGINE (dots.js)
-   Float32Array Zero-GC Physics · Thermal Color Shift · Radial Click Ripples
-   ═══════════════════════════════════════════════════════════════════════════ */
 (() => {
   'use strict';
 
@@ -91,7 +87,6 @@
     const A = CONFIG.driftAmount;
     ctx.clearRect(0, 0, w, h);
 
-    // Advance shockwaves
     for (let s = shockwaves.length - 1; s >= 0; s--) {
       const sw = shockwaves[s];
       sw.radius += dt * 560;
@@ -130,7 +125,6 @@
         targetHeat = near;
       }
 
-      // Apply radial shockwaves
       for (let s = 0; s < shockwaves.length; s++) {
         const sw = shockwaves[s];
         const sdx = hx[i] - sw.x;

@@ -6,12 +6,29 @@ Welcome to the central command of the **userk8__** journey. This repository host
 
 ---
 
+## 📁 Repository Structure
+
+```text
+main
+├── README.md
+├── index.html            (redirects to code/home/)
+├── assets/               (renders, images, svgs, logo.png)
+└── code/
+    ├── home/             index.html, renders.js
+    ├── about/            about_us.html, about.css
+    ├── contact/          contact.html
+    ├── projects/         ph.html, dots.js
+    └── shared/           core.css, core.js
+```
+
+---
+
 ## 🛠️ Core Engineering & Features
 
 This portfolio isn't just a static directory—it serves as a standalone canvas sandbox displaying several custom interactive systems:
 
-* **Interactive HTML5 Galactic Engine (`index.html`)**: A lightweight canvas rendering loop simulating a 3D rotating starfield. Uses native trigonometric mapping to project stars along an adjustable $28^\circ$ orbital tilt plane with particle drift, automatic twinkle phases, and randomly seeded shooting stars.
-* **Vanilla Story Lightbox Core (`renders.js`)**: A custom-engineered, mobile-optimized media gallery engine. Features:
+* **Interactive HTML5 Galactic Engine (`code/home/index.html`)**: A lightweight canvas rendering loop simulating a 3D rotating starfield. Uses native trigonometric mapping to project stars along an adjustable $28^\circ$ orbital tilt plane with particle drift, automatic twinkle phases, and randomly seeded shooting stars.
+* **Vanilla Story Lightbox Core (`code/home/renders.js`)**: A custom-engineered, mobile-optimized media gallery engine. Features:
     * An animated interactive photo-stack widget with dynamic rotational offsets on hover.
     * Asynchronous idle lazy loading via `requestIdleCallback` to protect Initial Input Delay (FID).
     * State-tracked multi-segment progress bars mapping real-time image slide duration ($10\text{s}$) alongside dynamic HTML5 video metadata hooks for auto-advance synchronization.
@@ -24,14 +41,14 @@ This portfolio isn't just a static directory—it serves as a standalone canvas 
 
 Here are some of the 3D environmental design assets, vehicle art setups, and workspace configurations featured directly within the **renders widget**:
 
-### 🎯 Featured: Linux Workspace Development Frame (`render-6.png`)
+### 🎯 Featured: Linux Workspace Development Frame (`assets/render-6.png`)
 The primary engineering space running custom environment configurations:
-![Linux Workspace Development Frame](render-6.png)
+![Linux Workspace Development Frame](assets/render-6.png)
 
 ### 🚁 Combat & Architecture Render Set
 | 01. DEATH RAY Helicopter Capture | 02. Dilapidated Post-Apocalyptic Compound |
 | :---: | :---: |
-| ![DEATH RAY Apache](death-ray-render-1.png) | ![Post-Apocalyptic Compound](house-2-img.png) |
+| ![DEATH RAY Apache](assets/death-ray-render-1.png) | ![Post-Apocalyptic Compound](assets/house-2-img.png) |
 
 ---
 
@@ -59,7 +76,7 @@ The primary engineering space running custom environment configurations:
 ## 📟 Personal Dev Environment (Garuda Configuration)
 The backdrop environment used for coding this site, configured on a dedicated rolling release system:
 
-![Garuda Dev Setup](userk8_wallpaper.png)
+![Garuda Dev Setup](assets/userk8_wallpaper.png)
 
 ```ini
 [SYSTEM INFORMATIONAL METRICS]

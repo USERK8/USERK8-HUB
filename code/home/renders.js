@@ -1,11 +1,7 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   USERK8__ // SPATIAL RENDERS CINEMA & HOLO-STACK (renders.js)
-   15-Item Media Engine · Idle Lazy Decoding · Zero-Leak Video Disposal
-   ═══════════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  const MEDIA_BASE = '';
+  const MEDIA_BASE = '../../assets/';
 
   const mediaCatalog = [
     { file: 'death-ray-render-1.png', title: 'AH-64 Tactical Capture', tag: 'DEATH RAY // 3D' },
@@ -36,7 +32,6 @@
 
   const IMAGE_DURATION = 10000;
 
-  /* ── Inject Scoped Cinema Styles ── */
   const style = document.createElement('style');
   style.textContent = `
     #rendersWidget {
@@ -120,7 +115,6 @@
       font-size: 0.62rem;
     }
 
-    /* ── Fullscreen Spatial Cinema Modal ── */
     #rendersModal {
       position: fixed;
       inset: 0;
@@ -312,7 +306,6 @@
     .rm-prev { left: 18px; }
     .rm-next { right: 18px; }
 
-    /* Filmstrip Scrubber */
     .rm-filmstrip {
       position: relative;
       z-index: 3;
@@ -369,7 +362,6 @@
   `;
   document.head.appendChild(style);
 
-  /* ── Floating Holo-Stack Trigger ── */
   const widget = document.createElement('div');
   widget.id = 'rendersWidget';
   widget.setAttribute('role', 'button');
@@ -398,7 +390,6 @@
   if ('requestIdleCallback' in window) requestIdleCallback(loadThumbs, { timeout: 2000 });
   else setTimeout(loadThumbs, 1200);
 
-  /* ── Cinema Lightbox DOM ── */
   const modal = document.createElement('div');
   modal.id = 'rendersModal';
   modal.setAttribute('role', 'dialog');
@@ -634,7 +625,6 @@
     if (activeVideoEl) activeVideoEl.muted = muted;
   }
 
-  // Touch swipe support on mobile
   let touchStartX = 0;
   stageEl.addEventListener('touchstart', e => {
     if (e.touches && e.touches[0]) touchStartX = e.touches[0].clientX;

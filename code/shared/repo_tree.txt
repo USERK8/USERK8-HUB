@@ -1,0 +1,37 @@
+main
+├── README.md
+├── index.html
+├── assets/
+│   ├── logo.png
+│   ├── poster-death-ray.jpg
+│   ├── death-ray-render-1.png
+│   ├── f22-img100012.png
+│   ├── f22-img10001.png
+│   ├── house-2-img.png
+│   ├── frame_001.png
+│   ├── gc-edit-1.jpg
+│   ├── edit-view-ps.png
+│   ├── render-2.png
+│   ├── render-4.png
+│   ├── render-6.png
+│   ├── render-9.jpeg
+│   ├── userk8_wallpaper.png
+│   ├── trailer-clip-1.mp4
+│   ├── final_phone.mp4
+│   └── userk8.mp4
+└── code/
+    ├── home/
+    │   ├── index.html
+    │   └── renders.js
+    ├── about/
+    │   ├── about_us.html
+    │   └── about.css
+    ├── contact/
+    │   └── contact.html
+    ├── projects/
+    │   ├── ph.html
+    │   └── dots.js
+    └── shared/
+        ├── core.css
+        ├── core.js
+        └── repo-tree.txt

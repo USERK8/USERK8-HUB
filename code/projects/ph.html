@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Hub — userk8__</title>
+  <meta name="description" content="Explore all 7 live deployments built by userk8__: eight AI (1B on-device LLM), 3D8 mesh studio, Code Word, Quiz Bot, Periodic Table, Text Animation, and One Question." />
+  <link rel="icon" type="image/png" href="../../assets/logo.png" />
+  <link rel="apple-touch-icon" href="../../assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared/core.css" />
+  <style>
+    @media (hover: hover) and (pointer: fine) {
+      main, .project-card { cursor: none; }
+    }
+
+    #dots {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .ring {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 44px;
+      height: 44px;
+      margin: -22px 0 0 -22px;
+      border: 1.5px solid var(--cyan);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 230, 0.14) 0%, transparent 70%);
+      box-shadow: 0 0 16px rgba(0, 240, 230, 0.45);
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      will-change: transform;
+    }
+    .ring::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      margin: -2px 0 0 -2px;
+      border-radius: 50%;
+      background: var(--ice);
+    }
+    .ring.show { opacity: 1; }
+
+    main {
+      position: relative;
+      z-index: 2;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 132px 24px 72px;
+    }
+
+    .hub-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 42px;
+    }
+
+    .page-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: var(--cyan);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 7vw, 4.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: reveal 0.85s var(--ease-out-expo) 0.08s forwards;
+    }
+
+    .page-title span {
+      color: var(--cyan);
+    }
+
+    .page-sub {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      opacity: 0;
+      animation: reveal 0.85s var(--ease-out-expo) 0.2s forwards;
+    }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hub-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding: 12px 16px;
+      border-radius: 18px;
+      background: rgba(8, 16, 30, 0.72);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(223, 244, 255, 0.12);
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid rgba(223, 244, 255, 0.12);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      color: #fff;
+      border-color: rgba(0, 240, 230, 0.4);
+    }
+
+    .filter-btn.active {
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: #021014;
+      font-weight: 500;
+    }
+
+    .hub-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(223, 244, 255, 0.12);
+      min-width: 230px;
+    }
+
+    .hub-search input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      width: 100%;
+    }
+    .hub-search input::placeholder { color: var(--text-muted); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
+      width: 100%;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 224px;
+      padding: 28px;
+      background: linear-gradient(150deg, rgba(14, 32, 54, 0.66) 0%, rgba(6, 13, 25, 0.84) 100%);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(223, 244, 255, 0.15);
+      border-radius: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: reveal 0.65s var(--ease-out-expo) forwards;
+      transition: border-color 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .project-card.featured {
+      border-color: rgba(0, 240, 230, 0.38);
+      background: linear-gradient(145deg, rgba(0, 240, 230, 0.1) 0%, rgba(8, 19, 36, 0.86) 65%);
+    }
+
+    .project-card:nth-child(1) { animation-delay: 0.12s; }
+    .project-card:nth-child(2) { animation-delay: 0.18s; }
+    .project-card:nth-child(3) { animation-delay: 0.24s; }
+    .project-card:nth-child(4) { animation-delay: 0.30s; }
+    .project-card:nth-child(5) { animation-delay: 0.36s; }
+    .project-card:nth-child(6) { animation-delay: 0.42s; }
+    .project-card:nth-child(7) { animation-delay: 0.48s; }
+
+    .project-card:hover {
+      border-color: rgba(0, 240, 230, 0.72);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 32px rgba(0, 240, 230, 0.16);
+    }
+
+    .project-card.hidden-card {
+      display: none;
+    }
+
+    .card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--cyan);
+    }
+
+    .card-chip {
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(223, 244, 255, 0.06);
+      border: 1px solid rgba(223, 244, 255, 0.12);
+      color: var(--ice);
+    }
+
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 1.38rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .card-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid rgba(223, 244, 255, 0.08);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .card-launch {
+      color: var(--cyan);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.22s ease;
+    }
+
+    .project-card:hover .card-launch {
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 640px) {
+      main { padding: 108px 16px 56px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .hub-search { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dots" aria-hidden="true"></canvas>
+  <div class="ring" id="ring" aria-hidden="true"></div>
+
+  <main>
+    <div class="hub-header">
+      <div>
+        <div class="page-eyebrow">// SECTOR 01 · DEPLOYMENT MATRIX</div>
+        <h1 class="page-title">Project <span>Hub.</span></h1>
+        <p class="page-sub">// click anywhere on the field to send a gravitational shockwave</p>
+      </div>
+    </div>
+
+    <div class="hub-toolbar">
+      <div class="filter-pills" role="tablist" aria-label="Filter projects by category">
+        <button type="button" class="filter-btn active" data-filter="all" id="filterAll">ALL [07]</button>
+        <button type="button" class="filter-btn" data-filter="ai3d" id="filterAi3d">AI &amp; 3D</button>
+        <button type="button" class="filter-btn" data-filter="code" id="filterCode">CODE &amp; QUIZ</button>
+        <button type="button" class="filter-btn" data-filter="exp" id="filterExp">EXPERIMENTS</button>
+      </div>
+      <div class="hub-search">
+        <span style="color:var(--cyan);font-family:var(--font-mono);font-size:0.78rem;">/</span>
+        <input type="text" id="hubSearchInput" placeholder="Filter modules..." aria-label="Filter modules by keyword" />
+      </div>
+    </div>
+
+    <div class="projects-grid" id="projectsGrid">
+
+      <a class="project-card featured" data-cat="ai3d" data-tilt data-tilt-max="4.5" href="https://userk8.github.io/eight-ai/" target="_blank" rel="noopener noreferrer" id="cardEightAi">
+        <div>
+          <div class="card-top-row">
+            <span class="card-num">MOD // 06</span>
+            <span class="card-chip">1B INT4 LLM</span>
+          </div>
+          <div class="card-name">eight AI</div>
+          <div class="card-desc">Fine-tuned Gemma 3 1B model compiled with 4-bit quantization for private, client-side intelligence—go ahead, stress test it.</div>
+        </div>
+        <div class="card-bottom-row">
+          <span>ON-DEVICE ML</span>
+          <span class="card-launch">LAUNCH ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card featured" data-cat="ai3d" data-tilt data-tilt-max="4.5" href="https://userk8.github.io/3D8/" target="_blank" rel="noopener noreferrer" id="card3D8">
+        <div>
+          <div class="card-top-row">
+            <span class="card-num">MOD // 07</span>
+            <span class="card-chip">3D ENGINE</span>
+          </div>
+          <div class="card-name">3D8</div>
+          <div class="card-desc">Browser-based 3D viewer and mesh editor with real-time modeling primitives, viewport controls, and export support.</div>
+        </div>
+        <div class="card-bottom-row">
+          <span>SPATIAL / MESH</span>
+          <span class="card-launch">LAUNCH ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-tilt data-tilt-max="4.5" href="https://userk8.github.io/CODE-WORD/" target="_blank" rel="noopener noreferrer" id="cardCodeWord">
+        <div>
+          <div class="card-top-row">
+            <span class="card-num">MOD // 01</span>
+            <span class="card-chip">TERMINAL</span>
+          </div>
+          <div class="card-name">Code Word</div>
+          <div class="card-desc">Learn programming logic and terminal syntax through clean, interactive puzzle challenges.</div>
+        </div>
+        <div class="card-bottom-row">
+          <span>CIPHER / DEV</span>
+          <span class="card-launch">LAUNCH ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="code" data-tilt data-tilt-max="4.5" href="https://userk8.github.io/QUIZ-BOT/" target="_blank" rel="noopener noreferrer" id="cardQuizBot">
+        <div>
+          <div class="card-top-row">
+            <span class="card-num">MOD // 02</span>
+            <span class="card-chip">ARENA</span>
+          </div>
+          <div class="card-name">Quiz Bot</div>
+          <div class="card-desc">Challenge friends, test your rapid-fire recall, and climb the global leaderboard.</div>
+        </div>
+        <div class="card-bottom-row">
+          <span>ASYNC TRIVIA</span>
+          <span class="card-launch">LAUNCH ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="exp" data-tilt data-tilt-max="4.5" href="https://userk8.github.io/PERIODIC-TABLE/" target="_blank" rel="noopener noreferrer" id="cardPeriodic">
+        <div>
+          <div class="card-top-row">
+            <span class="card-num">MOD // 05</span>
+            <span class="card-chip">MATRIX</span>
+          </div>
+          <div class="card-name">Periodic Table</div>
+          <div class="card-desc">Explore the chemical coordinate matrix with interactive atomic properties, element groups, and clean layout physics.</div>
+        </div>
+        <div class="card-bottom-row">
+          <span>DATA VISUAL</span>
+          <span class="card-launch">LAUNCH ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="exp" data-tilt data-tilt-max="4.5" href="https://userk8.github.io/text_animation/" target="_blank" rel="noopener noreferrer" id="cardTextAnim">
+        <div>
+          <div class="card-top-row">
+            <span class="card-num">MOD // 03</span>
+            <span class="card-chip">KINETIC</span>
+          </div>
+          <div class="card-name">Text Animation</div>
+          <div class="card-desc">Send your friends custom kinetic animated text strings [developer's choice].</div>
+        </div>
+        <div class="card-bottom-row">
+          <span>KEYFRAME LAB</span>
+          <span class="card-launch">LAUNCH ↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" data-cat="exp" data-tilt data-tilt-max="4.5" href="https://userk8.github.io/A-QUESTION/" target="_blank" rel="noopener noreferrer" id="cardOneQuestion">
+        <div>
+          <div class="card-top-row">
+            <span class="card-num">MOD // 04</span>
+            <span class="card-chip">MICRO-EXP</span>
+          </div>
+          <div class="card-name">One Question</div>
+          <div class="card-desc">A minimalist interactive micro-experience built around one important question—and one unforgettable answer.</div>
+        </div>
+        <div class="card-bottom-row">
+          <span>PROMPT ART</span>
+          <span class="card-launch">LAUNCH ↗</span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer class="orbital-footer">
+    <div>SECTOR 01 // 07 MODULES ONLINE</div>
+    <div class="orbital-footer-links">
+      <a href="../home/index.html">← Orbit Home</a>
+      <a href="../about/about_us.html">About</a>
+      <a href="../contact/contact.html">Crew &amp; Contact</a>
+    </div>
+  </footer>
+
+  <script src="../shared/core.js"></script>
+  <script src="dots.js"></script>
+  <script>
+    (() => {
+      const btns = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.project-card');
+      const search = document.getElementById('hubSearchInput');
+      let currentCat = 'all';
+
+      function applyFilter() {
+        const q = (search.value || '').trim().toLowerCase();
+        cards.forEach(card => {
+          const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
+          const textMatch = !q || card.textContent.toLowerCase().includes(q);
+          card.classList.toggle('hidden-card', !(catMatch && textMatch));
+        });
+      }
+
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (window.UserK8Audio) window.UserK8Audio.click();
+          btns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCat = btn.dataset.filter;
+          applyFilter();
+        });
+      });
+
+      search.addEventListener('input', applyFilter);
+    })();
+</script>
+</body>
+</html>

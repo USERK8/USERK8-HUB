@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — userk8__</title>
+  <meta name="description" content="Meet userk8: 17-year-old developer building custom 3D web engines, on-device language models, and interactive tech experiments on Garuda Linux." />
+  <link rel="icon" type="image/png" href="../../assets/logo.png" />
+  <link rel="apple-touch-icon" href="../../assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared/core.css" />
+  <link rel="stylesheet" href="about.css" />
+</head>
+<body>
+  <canvas id="spaceCanvas" aria-hidden="true"></canvas>
+
+  <div class="astro" id="astro" aria-hidden="true">
+    <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="48" width="60" height="64" rx="12" fill="#8ea5bc"/>
+      <circle cx="60" cy="48" r="3" fill="#00f0e6"/>
+      <g class="leg-l">
+        <rect x="42" y="104" width="16" height="30" rx="8" fill="#eef4fa"/>
+        <rect x="40" y="128" width="20" height="12" rx="6" fill="#00f0e6" fill-opacity="0.65"/>
+      </g>
+      <g class="leg-r">
+        <rect x="62" y="104" width="16" height="30" rx="8" fill="#eef4fa"/>
+        <rect x="60" y="128" width="20" height="12" rx="6" fill="#00f0e6" fill-opacity="0.65"/>
+      </g>
+      <rect x="40" y="52" width="40" height="58" rx="17" fill="#f7fafd"/>
+      <rect x="50" y="67" width="20" height="14" rx="3.5" fill="#071526" stroke="#00f0e6" stroke-width="1"/>
+      <circle cx="56" cy="74" r="2" fill="#00f0e6"/>
+      <circle cx="64" cy="74" r="2" fill="#ff9f43"/>
+      <g class="arm-l">
+        <rect x="24" y="58" width="15" height="36" rx="7.5" fill="#eef4fa"/>
+        <circle cx="31.5" cy="96" r="7" fill="#8aa0b8"/>
+      </g>
+      <g class="arm-r">
+        <rect x="81" y="58" width="15" height="36" rx="7.5" fill="#eef4fa"/>
+        <circle cx="88.5" cy="96" r="7" fill="#8aa0b8"/>
+      </g>
+      <circle cx="60" cy="34" r="27" fill="#f7fafd" stroke="#c4d3e2" stroke-width="2"/>
+      <ellipse cx="60" cy="36" rx="19" ry="15" fill="#040b16"/>
+      <ellipse cx="60" cy="36" rx="19" ry="15" fill="none" stroke="#00f0e6" stroke-opacity="0.55" stroke-width="1.5"/>
+      <path d="M48 31 Q53 25 62 25" stroke="#dff4ff" stroke-opacity="0.9" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <main class="about-main">
+    <div class="about-eyebrow">// SECTOR 02 · DIGITAL BEDROOM &amp; ORIGIN</div>
+
+    <h1 class="headline">
+      Hello<span class="accent">.</span><br />
+      <span class="dim">we're glad</span><br />
+      you're here<span class="accent">.</span>
+    </h1>
+
+    <div class="about-bento">
+      <div class="glass-card" data-tilt data-tilt-max="3.5">
+        <div class="card-label">// about me</div>
+        <p class="card-text">
+          Hey, I'm <strong style="color:var(--ice);">userk8</strong>. Yes, that's my anonymous name, and no, I'm not telling you the real one (nice try). I'm 17 years old, which means I run on pure curiosity, questionable sleep and way too many open browser tabs.
+        </p>
+        <div class="divider"></div>
+        <p class="card-text">
+          This site is basically my digital bedroom: tech experiments, half-finished ideas, and a few things that somehow worked on the first try. Go check out the <a href="../projects/ph.html">Project Hub</a>, click on everything, break stuff (gently). Nothing here bites. Except maybe the bugs.
+        </p>
+      </div>
+
+      <div class="glass-card tabs-widget" data-tilt data-tilt-max="4.5">
+        <div>
+          <div class="card-label">// live tab telemetry</div>
+          <div class="tabs-count-big" id="openTabsCount">84</div>
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-top:4px;">OPEN BROWSER TABS</div>
+        </div>
+        <div class="tabs-status" id="openTabsStatus">Status: Curiosity peaking. Swap memory slightly nervous.</div>
+        <button type="button" class="tabs-btn" id="btnAddTab">+ OPEN ONE MORE TAB</button>
+      </div>
+    </div>
+
+    <div class="glass-card rig-showcase" data-tilt data-tilt-max="3">
+      <div class="rig-wallpaper-frame">
+        <img src="../../assets/render-6.png" alt="Linux Engineering Workspace 3D Render" loading="lazy" />
+      </div>
+      <div>
+        <div class="card-label">// primary engineering rig</div>
+        <p class="card-text" style="margin-bottom:18px;">
+          Every experiment on this hub is forged on a rolling-release Garuda Linux setup tuned for low-overhead native performance:
+        </p>
+        <div class="rig-specs-list">
+          <div class="rig-spec-row"><span class="rig-spec-k">OS</span><span class="rig-spec-v">Garuda Linux x86_64</span></div>
+          <div class="rig-spec-row"><span class="rig-spec-k">KERNEL</span><span class="rig-spec-v">6.19.11-zen1-1-zen</span></div>
+          <div class="rig-spec-row"><span class="rig-spec-k">DESKTOP</span><span class="rig-spec-v">KDE Plasma 6.6.4</span></div>
+          <div class="rig-spec-row"><span class="rig-spec-k">SHELL / TERM</span><span class="rig-spec-v">fish 4.6 · konsole 25.12</span></div>
+          <div class="rig-spec-row"><span class="rig-spec-k">SILICON</span><span class="rig-spec-v">Intel i5-6200U @ 2.8GHz</span></div>
+          <div class="rig-spec-row"><span class="rig-spec-k">DISPLAY</span><span class="rig-spec-v">1366×768 @ 60 Hz</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card" data-tilt data-tilt-max="3.5">
+      <div class="card-label">// what this is &amp; direct signal</div>
+      <p class="card-text">
+        If you run into any problems with the pages, have questions, or just want to say something — we're listening. Drop us a message and we'll get back to you as fast as we can.
+      </p>
+      <div class="divider"></div>
+      <p class="card-text">
+        Reach us at <a href="mailto:userk8.dev@gmail.com">userk8.dev@gmail.com</a> · or meet the rest of the squad in <a href="../contact/contact.html">Crew &amp; Comms →</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="orbital-footer">
+    <div>SECTOR 02 // MOVE CURSOR TO GUIDE EVA ASTRONAUT · DOUBLE-CLICK FOR ZERO-G FLIP</div>
+    <div class="orbital-footer-links">
+      <a href="../home/index.html">← Orbit Home</a>
+      <a href="../projects/ph.html">Project Hub</a>
+      <a href="../contact/contact.html">Crew &amp; Contact</a>
+    </div>
+  </footer>
+
+  <script src="../shared/core.js"></script>
+  <script>
+    (() => {
+      const c = document.getElementById('spaceCanvas');
+      const ctx = c.getContext('2d');
+      let w = 0, h = 0;
+      function resize() {
+        w = c.width = window.innerWidth;
+        h = c.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      const stars = Array.from({ length: 120 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        r: Math.random() * 1.4 + 0.35,
+        depth: 0.2 + Math.random() * 0.8,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.008 + Math.random() * 0.018
+      }));
+
+      let px = 0, py = 0, tx = 0, ty = 0;
+      window.addEventListener('pointermove', e => {
+        tx = (e.clientX / Math.max(1, w) - 0.5) * 28;
+        ty = (e.clientY / Math.max(1, h) - 0.5) * 28;
+      }, { passive: true });
+
+      function drawStars() {
+        ctx.clearRect(0, 0, w, h);
+        px += (tx - px) * 0.05;
+        py += (ty - py) * 0.05;
+
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          s.phase += s.speed;
+          const a = (0.18 + 0.55 * s.depth) * (0.65 + 0.35 * Math.sin(s.phase));
+          const sx = (s.x * w - px * s.depth + w) % w;
+          const sy = (s.y * h - py * s.depth + h) % h;
+          ctx.fillStyle = `rgba(223, 244, 255, ${a.toFixed(3)})`;
+          ctx.beginPath();
+          ctx.arc(sx, sy, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(drawStars);
+      }
+      drawStars();
+    })();
+
+    (() => {
+      const astro = document.getElementById('astro');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const SPEED = 0.024;
+      let tx = innerWidth * 0.78, ty = innerHeight * 0.34;
+      let x = tx, y = ty, rot = 0, spinBonus = 0, active = false, last = 0, puffCooldown = 0;
+      const w = astro.offsetWidth, h = astro.offsetHeight;
+
+      function spawnRcsPuff(px, py, vx, vy) {
+        const puff = document.createElement('div');
+        puff.className = 'rcs-puff';
+        puff.style.left = px + 'px';
+        puff.style.top = py + 'px';
+        document.body.appendChild(puff);
+        requestAnimationFrame(() => {
+          puff.style.transform = `translate(${(-vx * 1.4 + (Math.random() - 0.5) * 14).toFixed(1)}px, ${(-vy * 1.4 + (Math.random() - 0.5) * 14).toFixed(1)}px) scale(0.2)`;
+          puff.style.opacity = '0';
+        });
+        setTimeout(() => puff.remove(), 560);
+      }
+
+      function track(e) {
+        active = true;
+        tx = e.clientX;
+        ty = e.clientY;
+      }
+      window.addEventListener('pointermove', track, { passive: true });
+      window.addEventListener('dblclick', () => {
+        spinBonus += 360;
+        if (window.UserK8Audio) window.UserK8Audio.open();
+        if (window.UserK8Toast) window.UserK8Toast('EVA ZERO-G MANEUVER // 360°');
+      });
+
+      function loop(t) {
+        const dt = Math.min(t - last, 50);
+        last = t;
+        const frames = dt / 16.667;
+        const k = 1 - Math.pow(1 - SPEED, frames);
+        const kr = 1 - Math.pow(1 - 0.07, frames);
+
+        if (!active) {
+          tx = innerWidth * 0.5 + Math.sin(t / 3000) * innerWidth * 0.3;
+          ty = innerHeight * 0.5 + Math.cos(t / 2300) * innerHeight * 0.25;
+        }
+
+        const dx = tx - x, dy = ty - y;
+        const vx = dx * k, vy = dy * k;
+        x += vx;
+        y += vy;
+
+        puffCooldown -= dt;
+        if (Math.hypot(vx, vy) > 2.6 && puffCooldown <= 0 && !reduce) {
+          puffCooldown = 95;
+          spawnRcsPuff(x, y, vx * 4, vy * 4);
+        }
+
+        spinBonus *= Math.pow(0.92, frames);
+        const targetRot = Math.max(-28, Math.min(28, dx * 0.08));
+        rot += (targetRot - rot) * kr;
+        const bob = Math.sin(t / 900) * 3.5;
+
+        astro.style.transform =
+          `translate3d(${(x - w / 2).toFixed(2)}px, ${(y - h / 2 + bob).toFixed(2)}px, 0) rotate(${(rot + spinBonus).toFixed(2)}deg)`;
+
+        if (!reduce) requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
+
+    (() => {
+      const countEl = document.getElementById('openTabsCount');
+      const statusEl = document.getElementById('openTabsStatus');
+      const btn = document.getElementById('btnAddTab');
+      let tabs = 84;
+      const quips = [
+        'Status: StackOverflow + 14 MDN docs + 3 shaders.',
+        'Status: Cooling fan preparing for supersonic takeoff.',
+        'Status: "I will definitely read all of these tonight."',
+        'Status: Garuda Zen kernel refusing to surrender.',
+        'Status: Pure 3:00 AM creative velocity unlocked.'
+      ];
+      btn.addEventListener('click', () => {
+        tabs += Math.floor(Math.random() * 4) + 1;
+        countEl.textContent = String(tabs);
+        statusEl.textContent = quips[tabs % quips.length];
+        if (window.UserK8Audio) window.UserK8Audio.click();
+      });
+    })();
+</script>
+</body>
+</html>

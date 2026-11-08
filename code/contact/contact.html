@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members of the Team — userk8__</title>
+  <meta name="description" content="Meet the userk8__ team (userk8, Sameer Mishra, Gaurav Sardar), direct subspace contact channels, and active deployments." />
+  <link rel="icon" type="image/png" href="../../assets/logo.png" />
+  <link rel="apple-touch-icon" href="../../assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shared/core.css" />
+  <style>
+    #commsCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    main.crew-main {
+      position: relative;
+      z-index: 2;
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 136px 24px 72px;
+    }
+
+    .page-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 7.6vw, 4.9rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.03;
+      margin-bottom: 48px;
+      color: var(--text-primary);
+      opacity: 0;
+      transform: translateY(18px);
+      animation: reveal 0.55s var(--ease-out-expo) forwards;
+    }
+
+    .page-title span {
+      color: var(--cyan);
+    }
+
+    @keyframes reveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      color: var(--cyan);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .glass-section {
+      background: var(--surface-card);
+      border: 1px solid rgba(223, 244, 255, 0.14);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      backdrop-filter: blur(24px) saturate(150%);
+      box-shadow: 0 22px 58px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: reveal 0.6s var(--ease-out-expo) 0.05s forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .team-member {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 26px;
+      background: rgba(9, 18, 34, 0.72);
+      border: 1px solid rgba(223, 244, 255, 0.12);
+      border-radius: 18px;
+      transition: border-color 0.28s ease, background 0.28s ease;
+    }
+
+    .team-member:hover {
+      border-color: rgba(0, 240, 230, 0.45);
+      background: rgba(13, 26, 48, 0.86);
+    }
+
+    .member-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .member-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .avatar-cyan {
+      background: rgba(0, 240, 230, 0.12);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 230, 0.35);
+    }
+
+    .avatar-amber {
+      background: rgba(255, 159, 67, 0.12);
+      color: var(--amber);
+      border: 1px solid rgba(255, 159, 67, 0.35);
+    }
+
+    .avatar-ice {
+      background: rgba(223, 244, 255, 0.08);
+      color: var(--ice);
+      border: 1px solid rgba(223, 244, 255, 0.25);
+    }
+
+    .member-beacon {
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .member-name {
+      font-family: var(--font-display);
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .member-handle {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    .member-role {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      padding-top: 12px;
+      border-top: 1px solid rgba(223, 244, 255, 0.08);
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 15px 20px;
+      background: rgba(9, 18, 34, 0.65);
+      border: 1px solid rgba(223, 244, 255, 0.1);
+      border-radius: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .contact-item:hover {
+      border-color: rgba(0, 240, 230, 0.36);
+      background: rgba(13, 26, 48, 0.82);
+    }
+
+    .contact-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .contact-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .contact-item a {
+      color: var(--ice);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      word-break: break-all;
+    }
+    .contact-item a:hover { color: var(--cyan); }
+
+    .copy-email-btn {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(223, 244, 255, 0.06);
+      border: 1px solid rgba(223, 244, 255, 0.15);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-email-btn:hover {
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: #021014;
+      font-weight: 500;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+      gap: 14px;
+    }
+
+    .project-tile {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 20px 22px;
+      background: rgba(9, 18, 34, 0.65);
+      border: 1px solid rgba(223, 244, 255, 0.11);
+      border-radius: 14px;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: all 0.25s var(--ease-out-expo);
+    }
+
+    .project-tile:hover {
+      border-color: rgba(0, 240, 230, 0.48);
+      background: rgba(0, 240, 230, 0.08);
+      transform: translateY(-3px);
+    }
+
+    .project-tile-top {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      color: var(--cyan);
+      letter-spacing: 0.14em;
+    }
+
+    @media (max-width: 840px) {
+      .team-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      main.crew-main { padding: 110px 16px 60px; }
+      .glass-section { padding: 26px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="commsCanvas" aria-hidden="true"></canvas>
+
+  <main class="crew-main">
+    <div class="page-eyebrow">// SECTOR 03 · CREW ROSTER &amp; SUBSPACE COMMS</div>
+    <h1 class="page-title">Members of<br />the <span>team.</span></h1>
+
+    <section class="glass-section">
+      <div class="section-label">// the team</div>
+      <div class="team-grid">
+
+        <div class="team-member" data-tilt data-tilt-max="5">
+          <div>
+            <div class="member-top">
+              <div class="member-avatar avatar-cyan">U</div>
+              <span class="member-beacon">UNIT // 01</span>
+            </div>
+            <div style="margin-top:18px;">
+              <div class="member-name">userk8</div>
+              <div class="member-handle">{userk8}</div>
+            </div>
+          </div>
+          <div class="member-role">Owner · Moderator</div>
+        </div>
+
+        <div class="team-member" data-tilt data-tilt-max="5">
+          <div>
+            <div class="member-top">
+              <div class="member-avatar avatar-amber">S</div>
+              <span class="member-beacon">UNIT // 02</span>
+            </div>
+            <div style="margin-top:18px;">
+              <div class="member-name">Sameer Mishra</div>
+              <div class="member-handle" style="color:var(--amber);">{SpaceS1}</div>
+            </div>
+          </div>
+          <div class="member-role">Member</div>
+        </div>
+
+        <div class="team-member" data-tilt data-tilt-max="5">
+          <div>
+            <div class="member-top">
+              <div class="member-avatar avatar-ice">G</div>
+              <span class="member-beacon">UNIT // 03</span>
+            </div>
+            <div style="margin-top:18px;">
+              <div class="member-name">Gaurav Sardar</div>
+              <div class="member-handle" style="color:var(--ice);">{GauravS}</div>
+            </div>
+          </div>
+          <div class="member-role">Part-Time Helper</div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="glass-section">
+      <div class="section-label">// contact</div>
+      <div class="contact-list">
+        <div class="contact-item">
+          <div class="contact-left">
+            <div class="contact-dot" style="background: var(--cyan); box-shadow: 0 0 8px var(--cyan);"></div>
+            <a href="mailto:userk8.dev@gmail.com">userk8.dev@gmail.com</a>
+          </div>
+          <button type="button" class="copy-email-btn" data-copy="userk8.dev@gmail.com">COPY</button>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-left">
+            <div class="contact-dot" style="background: var(--amber); box-shadow: 0 0 8px var(--amber);"></div>
+            <a href="mailto:pratimaaarush4696@gmail.com">pratima4696@gmail.com</a>
+          </div>
+          <button type="button" class="copy-email-btn" data-copy="pratimaaarush4696@gmail.com">COPY</button>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-left">
+            <div class="contact-dot" style="background: var(--ice); box-shadow: 0 0 8px var(--ice);"></div>
+            <a href="mailto:GauravSardar1234@gmail.com">gauravsardar1234@gmail.com</a>
+          </div>
+          <button type="button" class="copy-email-btn" data-copy="GauravSardar1234@gmail.com">COPY</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="glass-section">
+      <div class="section-label">// shipped projects</div>
+      <div class="projects-grid">
+        <a class="project-tile" href="https://userk8.github.io/CODE-WORD/" target="_blank" rel="noopener noreferrer">
+          <div class="project-tile-top"><span>01</span><span>↗</span></div>
+          <div>Code-Word</div>
+        </a>
+        <a class="project-tile" href="https://userk8.github.io/QUIZ-BOT/" target="_blank" rel="noopener noreferrer">
+          <div class="project-tile-top"><span>02</span><span>↗</span></div>
+          <div>Quiz-Bot</div>
+        </a>
+        <a class="project-tile" href="https://userk8.github.io/text_animation/" target="_blank" rel="noopener noreferrer">
+          <div class="project-tile-top"><span>03</span><span>↗</span></div>
+          <div>Text Animation</div>
+        </a>
+        <a class="project-tile" href="https://userk8.github.io/A-QUESTION/" target="_blank" rel="noopener noreferrer">
+          <div class="project-tile-top"><span>04</span><span>↗</span></div>
+          <div>A-Question</div>
+        </a>
+        <a class="project-tile" href="https://userk8.github.io/PERIODIC-TABLE/" target="_blank" rel="noopener noreferrer">
+          <div class="project-tile-top"><span>05</span><span>↗</span></div>
+          <div>Periodic Table</div>
+        </a>
+        <a class="project-tile" href="https://userk8.github.io/eight-ai/" target="_blank" rel="noopener noreferrer">
+          <div class="project-tile-top"><span>06</span><span>↗</span></div>
+          <div>eight AI</div>
+        </a>
+        <a class="project-tile" href="https://userk8.github.io/3D8/" target="_blank" rel="noopener noreferrer">
+          <div class="project-tile-top"><span>07</span><span>↗</span></div>
+          <div>3D8</div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="orbital-footer">
+    <div>SECTOR 03 // SUBSPACE CHANNELS OPEN</div>
+    <div class="orbital-footer-links">
+      <a href="../home/index.html">← Orbit Home</a>
+      <a href="../projects/ph.html">Project Hub</a>
+      <a href="../about/about_us.html">About</a>
+    </div>
+  </footer>
+
+  <script src="../shared/core.js"></script>
+  <script>
+    (() => {
+      const c = document.getElementById('commsCanvas');
+      const ctx = c.getContext('2d');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let w = 0, h = 0;
+      function resize() {
+        w = c.width = window.innerWidth;
+        h = c.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      const nodes = Array.from({ length: 46 }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.42,
+        vy: (Math.random() - 0.5) * 0.42,
+        r: Math.random() * 1.6 + 0.9
+      }));
+
+      let mx = -9999, my = -9999;
+      window.addEventListener('pointermove', e => {
+        mx = e.clientX;
+        my = e.clientY;
+      }, { passive: true });
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          if (!reduce) {
+            a.x += a.vx;
+            a.y += a.vy;
+            if (a.x < 0 || a.x > w) a.vx *= -1;
+            if (a.y < 0 || a.y > h) a.vy *= -1;
+          }
+
+          const md = Math.hypot(a.x - mx, a.y - my);
+          if (md < 170) {
+            ctx.strokeStyle = `rgba(0, 240, 230, ${((1 - md / 170) * 0.35).toFixed(3)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(mx, my);
+            ctx.stroke();
+          }
+
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            const d = Math.hypot(a.x - b.x, a.y - b.y);
+            if (d < 135) {
+              ctx.strokeStyle = `rgba(223, 244, 255, ${((1 - d / 135) * 0.1).toFixed(3)})`;
+              ctx.lineWidth = 0.8;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+
+          ctx.fillStyle = md < 170 ? '#00f0e6' : 'rgba(223, 244, 255, 0.45)';
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (!reduce) requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const addr = btn.dataset.copy;
+        navigator.clipboard.writeText(addr).then(() => {
+          if (window.UserK8Audio) window.UserK8Audio.open();
+          if (window.UserK8Toast) window.UserK8Toast(`COPIED // ${addr}`);
+          const prev = btn.textContent;
+          btn.textContent = 'COPIED ✓';
+          setTimeout(() => { btn.textContent = prev; }, 1800);
+        }).catch(() => {});
+      });
+    });
+</script>
+</body>
+</html>
