@@ -59,16 +59,14 @@ body::after {
   80%  { transform: translate(2%, -1%); }
   100% { transform: translate(0, 0); }
 }
+/* soft vignette only (no bars) */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 9989;
   pointer-events: none;
-  background:
-    linear-gradient(#000, #000) top / 100% clamp(18px, 5.5vh, 64px) no-repeat,
-    linear-gradient(#000, #000) bottom / 100% clamp(18px, 5.5vh, 64px) no-repeat,
-    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
 }
 
 /* ---- Typography ---- */
@@ -80,9 +78,10 @@ h1, h2, h3, .section-heading, .project-title, .live-card-title,
   letter-spacing: 0.2em !important;
 }
 h1 {
-  font-size: clamp(2rem, 5.2vw, 4.4rem) !important;
-  line-height: 1.12 !important;
-  letter-spacing: 0.24em !important;
+  font-size: clamp(1.7rem, 3.6vw, 3rem) !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0.3em !important;
+  max-width: 900px !important;
   background: linear-gradient(180deg, #fff 20%, #8a979c 100%) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
@@ -140,7 +139,7 @@ header.hero-stage::before {
 /* ---- Navigation ---- */
 .orbital-nav {
   border-radius: 0 !important;
-  top: calc(clamp(18px, 5.5vh, 64px) + 8px);
+  top: 12px;
   background: rgba(2, 4, 6, 0.55);
   border: 0; border-bottom: 1px solid rgba(255,255,255,0.08);
   box-shadow: none;
@@ -224,4 +223,84 @@ header.hero-stage::before {
 }
 @media (prefers-reduced-motion: reduce) {
   body::after, header.hero-stage::before { animation: none !important; }
+}
+
+
+/* ==========================================================
+   v2 — breathing room + extra detail
+   ========================================================== */
+header.hero-stage { padding-top: 150px !important; padding-bottom: 110px !important; }
+header.hero-stage > * { margin-top: 0; }
+.logo { margin-bottom: 44px !important; }
+.hero-coords { margin-bottom: 26px !important; }
+h1 { margin-bottom: 30px !important; }
+.hero-lead { margin-bottom: 46px !important; font-size: 0.98rem !important; }
+.btn-container { gap: 12px !important; margin-bottom: 84px !important; }
+.btn-container .btn-glass { padding-inline: 22px; }
+
+.orbital-section { max-width: 1000px !important; padding: 150px 24px !important; }
+.origin-grid, .live-showcase { gap: 56px !important; }
+.spatial-panel, .live-showcase, .deathray-card { padding: 52px !important; }
+.ecosystem-strip { gap: 28px !important; margin-top: 40px !important; }
+.mini-mod-card { padding: 32px !important; }
+.origin-copy p + p { margin-top: 22px; }
+.section-heading { margin-bottom: 64px !important; }
+
+/* telemetry: lighter, no box */
+.telemetry-strip { background: transparent !important; border-radius: 0 !important; width: min(720px, 100%) !important; backdrop-filter: none !important; }
+.telemetry-cell { padding: 26px 10px !important; }
+.telemetry-lbl { font-size: 0.58rem !important; letter-spacing: 0.28em !important; }
+
+/* sections: hairline divider with centered amber tick + ghost chapter numeral */
+.orbital-section { counter-increment: chapter; }
+body { counter-reset: chapter; }
+.orbital-section::before {
+  content: '';
+  position: absolute; top: 0; left: 50%;
+  width: min(760px, 80%); height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+}
+.orbital-section::after {
+  content: '0' counter(chapter);
+  position: absolute; top: 70px; right: 24px;
+  font-family: var(--font-display); font-weight: 200;
+  font-size: clamp(5rem, 14vw, 11rem); line-height: 1;
+  color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.06);
+  pointer-events: none; user-select: none;
+}
+.section-heading::after {
+  content: ''; display: block; width: 48px; height: 1px; margin-top: 22px;
+  background: var(--amber);
+}
+
+/* hero extras: timecode + scroll cue refinement */
+header.hero-stage::after {
+  content: 'REC  ●  00:00:08:24  //  2.39:1';
+  position: absolute; left: 24px; bottom: 36px;
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.3em;
+  color: var(--text-muted);
+  animation: recBlink 3s steps(1) infinite;
+}
+@keyframes recBlink { 50% { opacity: 0.45; } }
+.scroll-cue { opacity: 0.7; }
+.scroll-cue-line { background: linear-gradient(var(--amber), transparent) !important; }
+
+/* cards: slow lift + warm edge light on hover */
+.mini-mod-card, .spatial-panel, .live-showcase { transition: border-color 0.8s ease, transform 0.8s var(--ease-out-expo) !important; }
+.mini-mod-card:hover { transform: translateY(-6px); }
+.mini-mod-card { position: relative; overflow: hidden; }
+.mini-mod-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  opacity: 0; transition: opacity 0.8s ease;
+}
+.mini-mod-card:hover::before { opacity: 0.8; }
+.live-showcase { background: linear-gradient(135deg, rgba(var(--amber-rgb),0.05), rgba(3,5,8,0.9) 55%) !important; }
+
+@media (max-width: 720px) {
+  .orbital-section { padding: 90px 18px !important; }
+  .spatial-panel, .live-showcase, .deathray-card { padding: 28px 22px !important; }
+  header.hero-stage::after { display: none; }
+  .orbital-section::after { font-size: 4rem; top: 40px; }
 }
